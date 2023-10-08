@@ -1,27 +1,49 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.Properties
+
 plugins {
-    kotlin("jvm") version "1.9.0"
-    application
+    alias(libs.plugins.kotlin.jvm)
 }
 
+// ------------------------------------------------------------------
+// Attributes
+// ------------------------------------------------------------------
+
 group = "io.dotanuki"
-version = "1.0-SNAPSHOT"
+version = "0.1.0"
+
+// ------------------------------------------------------------------
+// Plugins
+// ------------------------------------------------------------------
+
+kotlin {
+    jvmToolchain(11)
+}
+
+// ------------------------------------------------------------------
+// Dependencies
+// ------------------------------------------------------------------
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    implementation(libs.ajalt.clikt)
+    implementation(libs.ajalt.mordant)
+    implementation(libs.arrow.core)
+
+    // Test only
+    testImplementation(libs.junit)
+    testImplementation(libs.google.truth)
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
+// ------------------------------------------------------------------
+// Tasks
+// ------------------------------------------------------------------
 
-kotlin {
-    jvmToolchain(8)
-}
-
-application {
-    mainClass.set("MainKt")
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions.freeCompilerArgs.set(
+        listOf("-Xcontext-receivers")
+    )
 }
