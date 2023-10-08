@@ -1,3 +1,5 @@
+package io.dotanuki.arw
+
 fun main(args: Array<String>) {
     println("Hello World!")
 
