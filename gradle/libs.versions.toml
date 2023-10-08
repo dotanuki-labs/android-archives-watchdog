@@ -6,7 +6,7 @@ kotlin-jvm = "org.jetbrains.kotlin.jvm:1.9.10"
 # Application
 ajalt-clikt = "com.github.ajalt.clikt:clikt:4.0.0"
 ajalt-mordant = "com.github.ajalt.mordant:mordant:2.0.0"
-arrow-core = "io.arrow-kt:arrow-core:1.2.0"
+arrow-core = "io.arrow-kt:arrow-core:1.2.1"
 
 # Testing
 junit = "junit:junit:4.13.2"
