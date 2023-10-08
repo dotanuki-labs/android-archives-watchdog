@@ -1,8 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.util.Properties
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
 }
 
 // ------------------------------------------------------------------
@@ -18,6 +20,17 @@ version = "0.1.0"
 
 kotlin {
     jvmToolchain(11)
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    config.setFrom("$rootDir/detekt.yml")
+}
+
+configure<KtlintExtension> {
+    filter {
+        exclude { element -> element.file.path.contains("generated/") }
+    }
 }
 
 // ------------------------------------------------------------------
