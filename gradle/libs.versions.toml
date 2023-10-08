@@ -1,7 +1,7 @@
 [plugins]
 kotlin-jvm = "org.jetbrains.kotlin.jvm:1.9.10"
 detekt = "io.gitlab.arturbosch.detekt:1.23.0"
-ktlint = "org.jlleitschuh.gradle.ktlint:11.5.0"
+ktlint = "org.jlleitschuh.gradle.ktlint:11.6.0"
 
 [libraries]
 
