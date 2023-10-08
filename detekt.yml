@@ -1,0 +1,23 @@
+build:
+  maxIssues: 0
+  excludeCorrectable: false
+
+config:
+  validation: true
+  warningsAsErrors: false
+
+style:
+  active: true
+  MagicNumber:
+    active: false
+
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: false
+  SwallowedException:
+    active: false
+
+performance:
+  SpreadOperator:
+    active: false
