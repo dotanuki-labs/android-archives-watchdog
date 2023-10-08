@@ -7,7 +7,7 @@ ktlint = "org.jlleitschuh.gradle.ktlint:11.5.0"
 
 # Application
 ajalt-clikt = "com.github.ajalt.clikt:clikt:4.2.1"
-ajalt-mordant = "com.github.ajalt.mordant:mordant:2.0.0"
+ajalt-mordant = "com.github.ajalt.mordant:mordant:2.2.0"
 arrow-core = "io.arrow-kt:arrow-core:1.2.1"
 
 # Testing
