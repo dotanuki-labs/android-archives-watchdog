@@ -1,10 +1,13 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.shadow)
 }
 
 // ------------------------------------------------------------------
@@ -12,7 +15,7 @@ plugins {
 // ------------------------------------------------------------------
 
 group = "io.dotanuki"
-version = "0.1.0"
+version = evaluateVersion()
 
 // ------------------------------------------------------------------
 // Plugins
@@ -60,3 +63,23 @@ tasks.withType<KotlinCompile>().configureEach {
         listOf("-Xcontext-receivers")
     )
 }
+
+tasks.withType<ShadowJar>().configureEach {
+    minimize()
+    manifest {
+        attributes["Add-Opens"] = "java.base/java.lang.invoke"
+        attributes["Main-Class"] = "io.dotanuki.arw.MainKt"
+        archiveFileName.set("arw-$version.jar")
+    }
+}
+
+// ------------------------------------------------------------------
+// Other helpers
+// ------------------------------------------------------------------
+
+fun evaluateVersion(): String =
+    File("$rootDir/src/main/resources/versions.properties")
+        .inputStream()
+        .use { stream ->
+            Properties().apply { load(stream) }["latest"].toString()
+        }
