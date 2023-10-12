@@ -30,4 +30,8 @@ jobs:
         uses: crate-ci/typos@v1.16.19
 
       - name: Run Gradle build
-        run: ./gradlew build
+        run: ./gradlew build shadowJar
+
+      - name: Running acceptance tests
+        run: ./scripts/acceptance.sh
+
