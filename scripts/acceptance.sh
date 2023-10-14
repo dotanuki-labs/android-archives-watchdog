@@ -6,17 +6,18 @@ dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${dir%/*}"
 
 readonly arw="build/bin/arw"
+readonly fixtures="src/test/resources"
 
 test_no_arguments_passed() {
   "$arw" | grep "Usage" >/dev/null
 }
 
 test_overview_console() {
-  "$arw" overview
+  "$arw" overview --target="$fixtures/app-debug.apk"
 }
 
 test_overview_values() {
-  overview=$("$arw" overview --json)
+  overview=$("$arw" overview --target="$fixtures/app-debug.apk" --json)
   (( $(echo "$overview" | jq '.min_sdk') == 28 ))
   (( $(echo "$overview" | jq '.target_sdk') == 33 ))
 }

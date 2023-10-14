@@ -11,6 +11,14 @@ ajalt-clikt = "com.github.ajalt.clikt:clikt:4.2.1"
 ajalt-mordant = "com.github.ajalt.mordant:mordant:2.2.0"
 arrow-core = "io.arrow-kt:arrow-core:1.2.1"
 
+android-tools-sdklib = "com.android.tools:sdklib:31.1.2"
+android-tools-apkanalyzer = "com.android.tools.apkparser:apkanalyzer:31.1.2"
+android-tools-binaryresources = "com.android.tools.apkparser:binary-resources:31.1.2"
+android-tools-repository = "com.android.tools:repository:31.1.2"
+android-tools-sdkcommon = "com.android.tools:sdk-common:31.1.2"
+android-tools-common = "com.android.tools:common:30.1.3"
+
 # Testing
 junit = "junit:junit:4.13.2"
+google-guava = "com.google.guava:guava:32.1.3-jre"
 google-truth = "com.google.truth:truth:1.1.5"
