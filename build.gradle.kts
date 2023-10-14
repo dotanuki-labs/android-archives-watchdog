@@ -1,7 +1,8 @@
+
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
-import java.util.Properties
+import java.util.*
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -42,15 +43,23 @@ configure<KtlintExtension> {
 
 repositories {
     mavenCentral()
+    google()
 }
 
 dependencies {
     implementation(libs.ajalt.clikt)
     implementation(libs.ajalt.mordant)
     implementation(libs.arrow.core)
+    implementation(libs.android.tools.apkanalyzer)
+    implementation(libs.android.tools.binaryresources)
+    implementation(libs.android.tools.common)
+    implementation(libs.android.tools.repository)
+    implementation(libs.android.tools.sdkcommon)
+    implementation(libs.android.tools.sdklib)
 
     // Test only
     testImplementation(libs.junit)
+    testImplementation(libs.google.guava)
     testImplementation(libs.google.truth)
 }
 
@@ -65,7 +74,6 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 tasks.withType<ShadowJar>().configureEach {
-    minimize()
     manifest {
         attributes["Add-Opens"] = "java.base/java.lang.invoke"
         attributes["Main-Class"] = "io.dotanuki.arw.MainKt"
