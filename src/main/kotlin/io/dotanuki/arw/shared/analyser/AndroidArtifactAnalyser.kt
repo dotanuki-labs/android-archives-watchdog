@@ -30,7 +30,7 @@ object AndroidArtifactAnalyser {
             dangerousPermissions = AndroidPermissions.hasDangerous(appInfo.permissions),
             minSdk = parsedManifest.minSdkVersion,
             targetSdk = parsedManifest.targetSdkVersion,
-            debuggable = parsedManifest.debuggable
+            debuggable = parsedManifest.debuggable ?: false
         )
     }
 
