@@ -24,7 +24,7 @@ class OverviewReporter {
                 .replace(PLACEHOLDER_MIN_SDK, minSdk.toString())
                 .replace(PLACEHOLDER_TARGET_SDK, targetSdk.toString())
                 .replace(PLACEHOLDER_TOTAL_PERMISSIONS, totalPermissions.toString())
-                .replace(PLACEHOLDER_SENSITIVE_PERMISSIONS, sensitivePermissions.toString())
+                .replace(PLACEHOLDER_SENSITIVE_PERMISSIONS, dangerousPermissions.toString())
                 .replace(PLACEHOLDER_DEBUGGABLE, debuggable.toString())
         }
 
@@ -40,7 +40,7 @@ class OverviewReporter {
                 body { row(magenta("Minimum SDK"), minSdk) }
                 body { row(magenta("Target SDK"), targetSdk) }
                 body { row(magenta("Total Manifest permissions"), totalPermissions) }
-                body { row(magenta("Sensitive permissions"), sensitivePermissions.asAffirmation()) }
+                body { row(magenta("Dangerous permissions"), dangerousPermissions.asAffirmation()) }
             }
         }
         terminal.emptyLine()
@@ -66,7 +66,7 @@ class OverviewReporter {
                 "min_sdk":$PLACEHOLDER_MIN_SDK,
                 "target_sdk":$PLACEHOLDER_TARGET_SDK,
                 "total_manifest_permissions":$PLACEHOLDER_TOTAL_PERMISSIONS,
-                "uses_sensitive_permissions":$PLACEHOLDER_SENSITIVE_PERMISSIONS,
+                "uses_dangerous_permissions":$PLACEHOLDER_SENSITIVE_PERMISSIONS,
                 "debuggable":$PLACEHOLDER_DEBUGGABLE
             }
             """.trimIndent()

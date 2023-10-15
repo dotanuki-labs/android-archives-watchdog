@@ -20,7 +20,7 @@ class AndroidArtifactAnalyserTests {
                     minSdk = 28,
                     targetSdk = 33,
                     totalPermissions = 5,
-                    sensitivePermissions = false
+                    dangerousPermissions = false
                 )
 
                 assertThat(overview).isEqualTo(expected)
