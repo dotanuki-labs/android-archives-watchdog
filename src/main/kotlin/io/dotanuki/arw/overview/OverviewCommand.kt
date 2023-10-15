@@ -1,5 +1,6 @@
 package io.dotanuki.arw.overview
 
+import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
@@ -24,10 +25,16 @@ class OverviewCommand : CliktCommand(
     private val target: String by option("-t", "--target").required()
 
     private val reporter by lazy { OverviewReporter() }
-    private val analyser by lazy { AndroidArtifactAnalyser() }
 
     override fun run() {
-        val overview = analyser.overview(target)
-        reporter.report(overview, format)
+        recover(
+            block = {
+                reporter.report(AndroidArtifactAnalyser.overview(target), format)
+            },
+            recover = {
+                println(it.description)
+                println()
+            }
+        )
     }
 }
