@@ -5,10 +5,16 @@ object AndroidPermissions {
     // https://developer.android.com/reference/android/Manifest.permission
 
     fun hasDangerous(androidPermissions: Set<String>): Boolean =
-        dangerous.any { it in androidPermissions.toSet() }
+        androidPermissions
+            .map { it.replace("android.permission.", "") }
+            .let { normalised ->
+                dangerousPermissions.any { dangerous ->
+                    dangerous in normalised
+                }
+            }
 
     fun isDangerous(androidPermission: String): Boolean =
-        androidPermission.replace("android.permission.", "") in dangerous
+        androidPermission.replace("android.permission.", "") in dangerousPermissions
 
     val all = setOf(
         "ACCEPT_HANDOVER",
@@ -317,7 +323,7 @@ object AndroidPermissions {
         "WRITE_SYNC_SETTINGS"
     )
 
-    val dangerous = setOf(
+    private val dangerousPermissions = setOf(
         "ACCEPT_HANDOVER",
         "ACCESS_BACKGROUND_LOCATION",
         "ACCESS_COARSE_LOCATION",
