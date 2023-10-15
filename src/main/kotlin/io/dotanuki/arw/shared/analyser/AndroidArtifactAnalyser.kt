@@ -27,9 +27,9 @@ object AndroidArtifactAnalyser {
         return ReleasableOverview(
             applicationId = appInfo.packageId,
             totalPermissions = appInfo.permissions.size,
+            dangerousPermissions = AndroidPermissions.hasDangerous(appInfo.permissions),
             minSdk = parsedManifest.minSdkVersion,
             targetSdk = parsedManifest.targetSdkVersion,
-            sensitivePermissions = false, // TODO : evaluate sensitive permissions
             debuggable = parsedManifest.debuggable
         )
     }

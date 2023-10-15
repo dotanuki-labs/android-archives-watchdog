@@ -5,6 +5,6 @@ data class ReleasableOverview(
     val minSdk: Int,
     val targetSdk: Int,
     val totalPermissions: Int,
-    val sensitivePermissions: Boolean,
+    val dangerousPermissions: Boolean,
     val debuggable: Boolean
 )
