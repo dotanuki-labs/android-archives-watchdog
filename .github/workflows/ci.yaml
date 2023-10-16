@@ -27,7 +27,7 @@ jobs:
         uses: gradle/gradle-build-action@v2.9.0
 
       - name: Check typos on code
-        uses: crate-ci/typos@v1.16.19
+        uses: crate-ci/typos@v1.16.20
 
       - name: Run Gradle build
         run: ./gradlew build shadowJar
