@@ -1,6 +1,5 @@
 package io.dotanuki.arw.shared.analyser
 
-import arrow.core.raise.Raise
 import com.android.ide.common.xml.AndroidManifestParser
 import com.android.prefs.AndroidLocationsSingleton
 import com.android.sdklib.repository.AndroidSdkHandler
@@ -11,6 +10,7 @@ import com.android.tools.apk.analyzer.BinaryXmlParser
 import com.android.utils.NullLogger
 import io.dotanuki.arw.overview.ReleasableOverview
 import io.dotanuki.arw.shared.errors.ArwError
+import io.dotanuki.arw.shared.errors.ErrorAware
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Files
@@ -19,7 +19,7 @@ import kotlin.io.path.absolutePathString
 
 object AndroidArtifactAnalyser {
 
-    context (Raise<ArwError>)
+    context (ErrorAware)
     fun overview(pathToTarget: String): ReleasableOverview {
         val appInfo = retrieveAppInfoWithAapt(pathToTarget)
         val parsedManifest = retrieveParsedAndroidManifest(pathToTarget)
@@ -34,7 +34,7 @@ object AndroidArtifactAnalyser {
         )
     }
 
-    context (Raise<ArwError>)
+    context (ErrorAware)
     private fun retrieveParsedAndroidManifest(pathToArtifact: String) =
         try {
             val archiveContext = Archives.open(pathToArtifact.asPath())
@@ -48,7 +48,7 @@ object AndroidArtifactAnalyser {
             raise(ArwError("Failed when reading AndroidManifest", incoming))
         }
 
-    context (Raise<ArwError>)
+    context (ErrorAware)
     private fun retrieveAppInfoWithAapt(pathToArtifact: String) =
         try {
             val sdkHandler = AndroidSdkHandler.getInstance(
@@ -60,7 +60,7 @@ object AndroidArtifactAnalyser {
 
             AndroidApplicationInfo.parseBadging(aaptInvoker.dumpBadging(pathToArtifact.asFile()))
         } catch (incoming: Throwable) {
-            raise(ArwError("Failed when invoking aapt", incoming))
+            raise(ArwError("Failed when invoking aapt from Android SDK", incoming))
         }
 
     private fun String.asPath() = Paths.get(this)

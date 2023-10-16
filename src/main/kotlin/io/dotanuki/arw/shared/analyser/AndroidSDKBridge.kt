@@ -1,12 +1,12 @@
 package io.dotanuki.arw.shared.analyser
 
-import arrow.core.raise.Raise
 import arrow.core.raise.ensure
 import io.dotanuki.arw.shared.errors.ArwError
+import io.dotanuki.arw.shared.errors.ErrorAware
 
 object AndroidSDKBridge {
 
-    context (Raise<ArwError>)
+    context (ErrorAware)
     fun sdkFolder(): String =
         with(System.getenv()) {
             when {
