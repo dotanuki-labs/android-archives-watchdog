@@ -2,15 +2,23 @@ package io.dotanuki.arw.overview
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.magenta
+import com.github.ajalt.mordant.rendering.TextColors.red
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
+import io.dotanuki.arw.shared.errors.ArwError
 import io.dotanuki.arw.shared.helpers.emptyLine
 
-class OverviewReporter {
+object OverviewReporter {
 
     private val terminal by lazy { Terminal() }
 
-    fun report(overview: ReleasableOverview, format: String) {
+    fun reportFailure(error: ArwError) {
+        terminal.emptyLine()
+        terminal.println(red(error.description))
+        terminal.emptyLine()
+    }
+
+    fun reportSuccess(overview: ReleasableOverview, format: String) {
         when (format) {
             "console" -> reportAsText(overview)
             "json" -> reportAsJson(overview)
@@ -50,25 +58,22 @@ class OverviewReporter {
 
     private fun Boolean.asAffirmation() = if (this) "Yes" else "No"
 
-    private companion object {
+    private const val PLACEHOLDER_APP_ID = "APPLICATION_ID"
+    private const val PLACEHOLDER_MIN_SDK = "MIN_SDK"
+    private const val PLACEHOLDER_TARGET_SDK = "TARGET_SDK"
+    private const val PLACEHOLDER_TOTAL_PERMISSIONS = "TOTAL_PERMS"
+    private const val PLACEHOLDER_SENSITIVE_PERMISSIONS = "SENSITIVE_PERMS"
+    private const val PLACEHOLDER_DEBUGGABLE = "DEBUGGABLE"
 
-        const val PLACEHOLDER_APP_ID = "APPLICATION_ID"
-        const val PLACEHOLDER_MIN_SDK = "MIN_SDK"
-        const val PLACEHOLDER_TARGET_SDK = "TARGET_SDK"
-        const val PLACEHOLDER_TOTAL_PERMISSIONS = "TOTAL_PERMS"
-        const val PLACEHOLDER_SENSITIVE_PERMISSIONS = "SENSITIVE_PERMS"
-        const val PLACEHOLDER_DEBUGGABLE = "DEBUGGABLE"
-
-        val jsonTemplate =
-            """
-            {
-                "app_id":"$PLACEHOLDER_APP_ID",
-                "min_sdk":$PLACEHOLDER_MIN_SDK,
-                "target_sdk":$PLACEHOLDER_TARGET_SDK,
-                "total_manifest_permissions":$PLACEHOLDER_TOTAL_PERMISSIONS,
-                "uses_dangerous_permissions":$PLACEHOLDER_SENSITIVE_PERMISSIONS,
-                "debuggable":$PLACEHOLDER_DEBUGGABLE
-            }
-            """.trimIndent()
-    }
+    private val jsonTemplate =
+        """
+        {
+            "app_id":"$PLACEHOLDER_APP_ID",
+            "min_sdk":$PLACEHOLDER_MIN_SDK,
+            "target_sdk":$PLACEHOLDER_TARGET_SDK,
+            "total_manifest_permissions":$PLACEHOLDER_TOTAL_PERMISSIONS,
+            "uses_dangerous_permissions":$PLACEHOLDER_SENSITIVE_PERMISSIONS,
+            "debuggable":$PLACEHOLDER_DEBUGGABLE
+        }
+        """.trimIndent()
 }

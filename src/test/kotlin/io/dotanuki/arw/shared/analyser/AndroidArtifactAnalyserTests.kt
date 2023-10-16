@@ -1,14 +1,14 @@
 package io.dotanuki.arw.shared.analyser
 
 import com.google.common.truth.Truth.assertThat
+import io.dotanuki.arw.helpers.errorAwareTest
 import io.dotanuki.arw.helpers.fixtureFromResources
-import io.dotanuki.arw.helpers.raiseAware
 import io.dotanuki.arw.overview.ReleasableOverview
 import org.junit.Test
 
 class AndroidArtifactAnalyserTests {
 
-    @Test fun `should analyse a debug apk with success`() = raiseAware {
+    @Test fun `should analyse a debug apk with success`() = errorAwareTest {
         val target = fixtureFromResources("app-debug.apk")
         val overview = AndroidArtifactAnalyser.overview(target)
 
@@ -24,7 +24,7 @@ class AndroidArtifactAnalyserTests {
         assertThat(overview).isEqualTo(expected)
     }
 
-    @Test fun `should analyse a release apk with success`() = raiseAware {
+    @Test fun `should analyse a release apk with success`() = errorAwareTest {
         val target = fixtureFromResources("app-release.apk")
         val overview = AndroidArtifactAnalyser.overview(target)
 
