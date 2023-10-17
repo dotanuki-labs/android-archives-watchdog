@@ -1,4 +1,4 @@
-package io.dotanuki.arw.shared.analyser
+package io.dotanuki.arw.core.domain.models
 
 object AndroidPermissions {
 

@@ -1,8 +1,8 @@
-package io.dotanuki.arw.shared.analyser
+package io.dotanuki.arw.core.infrastructure.android
 
 import arrow.core.raise.ensure
-import io.dotanuki.arw.shared.errors.ArwError
-import io.dotanuki.arw.shared.errors.ErrorAware
+import io.dotanuki.arw.core.domain.errors.ArwError
+import io.dotanuki.arw.core.domain.errors.ErrorAware
 
 object AndroidSDKBridge {
 
