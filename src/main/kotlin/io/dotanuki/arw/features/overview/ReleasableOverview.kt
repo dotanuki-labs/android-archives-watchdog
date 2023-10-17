@@ -1,4 +1,4 @@
-package io.dotanuki.arw.overview
+package io.dotanuki.arw.features.overview
 
 data class ReleasableOverview(
     val applicationId: String,

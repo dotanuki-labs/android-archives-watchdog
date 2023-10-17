@@ -1,12 +1,12 @@
-package io.dotanuki.arw.overview
+package io.dotanuki.arw.features.overview
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.magenta
 import com.github.ajalt.mordant.rendering.TextColors.red
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
-import io.dotanuki.arw.shared.errors.ArwError
-import io.dotanuki.arw.shared.helpers.emptyLine
+import io.dotanuki.arw.core.domain.errors.ArwError
+import io.dotanuki.arw.core.infrastructure.cli.emptyLine
 
 object OverviewReporter {
 

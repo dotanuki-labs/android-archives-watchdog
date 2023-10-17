@@ -1,9 +1,9 @@
-package io.dotanuki.arw.shared.analyser
+package io.dotanuki.arw.core.infrastructure.android
 
 import com.google.common.truth.Truth.assertThat
+import io.dotanuki.arw.features.overview.ReleasableOverview
 import io.dotanuki.arw.helpers.errorAwareTest
 import io.dotanuki.arw.helpers.fixtureFromResources
-import io.dotanuki.arw.overview.ReleasableOverview
 import org.junit.Test
 
 class AndroidArtifactAnalyserTests {

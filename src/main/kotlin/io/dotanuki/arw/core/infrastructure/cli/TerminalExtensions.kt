@@ -1,4 +1,4 @@
-package io.dotanuki.arw.shared.helpers
+package io.dotanuki.arw.core.infrastructure.cli
 
 import com.github.ajalt.mordant.terminal.Terminal
 

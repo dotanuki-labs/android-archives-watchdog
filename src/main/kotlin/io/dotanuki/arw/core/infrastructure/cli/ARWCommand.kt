@@ -1,4 +1,4 @@
-package io.dotanuki.arw.cli
+package io.dotanuki.arw.core.infrastructure.cli
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context

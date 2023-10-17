@@ -1,4 +1,4 @@
-package io.dotanuki.arw.overview
+package io.dotanuki.arw.features.overview
 
 import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
@@ -6,9 +6,9 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
-import io.dotanuki.arw.shared.analyser.AndroidArtifactAnalyser
-import io.dotanuki.arw.shared.errors.ArwError
-import io.dotanuki.arw.shared.errors.ErrorAware
+import io.dotanuki.arw.core.domain.errors.ArwError
+import io.dotanuki.arw.core.domain.errors.ErrorAware
+import io.dotanuki.arw.core.infrastructure.android.AndroidArtifactAnalyser
 
 class OverviewCommand : CliktCommand(
     help = "arw overview [--console | --json] ",

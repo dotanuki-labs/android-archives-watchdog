@@ -1,4 +1,4 @@
-package io.dotanuki.arw.shared.analyser
+package io.dotanuki.arw.core.infrastructure.android
 
 import com.android.ide.common.xml.AndroidManifestParser
 import com.android.prefs.AndroidLocationsSingleton
@@ -8,9 +8,10 @@ import com.android.tools.apk.analyzer.AndroidApplicationInfo
 import com.android.tools.apk.analyzer.Archives
 import com.android.tools.apk.analyzer.BinaryXmlParser
 import com.android.utils.NullLogger
-import io.dotanuki.arw.overview.ReleasableOverview
-import io.dotanuki.arw.shared.errors.ArwError
-import io.dotanuki.arw.shared.errors.ErrorAware
+import io.dotanuki.arw.core.domain.errors.ArwError
+import io.dotanuki.arw.core.domain.errors.ErrorAware
+import io.dotanuki.arw.core.domain.models.AndroidPermissions
+import io.dotanuki.arw.features.overview.ReleasableOverview
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Files
