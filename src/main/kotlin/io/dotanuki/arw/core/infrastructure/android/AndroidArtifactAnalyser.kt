@@ -10,8 +10,7 @@ import com.android.tools.apk.analyzer.BinaryXmlParser
 import com.android.utils.NullLogger
 import io.dotanuki.arw.core.domain.errors.ArwError
 import io.dotanuki.arw.core.domain.errors.ErrorAware
-import io.dotanuki.arw.core.domain.models.AndroidPermissions
-import io.dotanuki.arw.features.overview.ReleasableOverview
+import io.dotanuki.arw.core.domain.models.AnalysedArtifact
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Files
@@ -21,14 +20,13 @@ import kotlin.io.path.absolutePathString
 object AndroidArtifactAnalyser {
 
     context (ErrorAware)
-    fun overview(pathToTarget: String): ReleasableOverview {
+    fun overview(pathToTarget: String): AnalysedArtifact {
         val appInfo = retrieveAppInfoWithAapt(pathToTarget)
         val parsedManifest = retrieveParsedAndroidManifest(pathToTarget)
 
-        return ReleasableOverview(
+        return AnalysedArtifact(
             applicationId = appInfo.packageId,
-            totalPermissions = appInfo.permissions.size,
-            dangerousPermissions = AndroidPermissions.hasDangerous(appInfo.permissions),
+            androidPermissions = appInfo.permissions,
             minSdk = parsedManifest.minSdkVersion,
             targetSdk = parsedManifest.targetSdkVersion,
             debuggable = parsedManifest.debuggable ?: false
