@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
 import io.dotanuki.arw.core.domain.errors.ArwError
 import io.dotanuki.arw.core.domain.errors.ErrorAware
+import io.dotanuki.arw.core.domain.models.AndroidPermissions
 import io.dotanuki.arw.core.infrastructure.android.AndroidArtifactAnalyser
 
 class OverviewCommand : CliktCommand(
@@ -30,7 +31,19 @@ class OverviewCommand : CliktCommand(
 
     context (ErrorAware)
     private fun extractOverview() {
-        val overview = AndroidArtifactAnalyser.overview(target)
+        val analysed = AndroidArtifactAnalyser.overview(target)
+
+        val overview = with(analysed) {
+            ArtifactOverview(
+                applicationId,
+                minSdk,
+                targetSdk,
+                debuggable,
+                totalPermissions = androidPermissions.size,
+                dangerousPermissions = AndroidPermissions.hasDangerous(androidPermissions)
+            )
+        }
+
         OverviewReporter.reportSuccess(overview, format)
     }
 

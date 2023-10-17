@@ -18,14 +18,14 @@ object OverviewReporter {
         terminal.emptyLine()
     }
 
-    fun reportSuccess(overview: ReleasableOverview, format: String) {
+    fun reportSuccess(overview: ArtifactOverview, format: String) {
         when (format) {
             "console" -> reportAsText(overview)
             "json" -> reportAsJson(overview)
         }
     }
 
-    private fun reportAsJson(overview: ReleasableOverview) {
+    private fun reportAsJson(overview: ArtifactOverview) {
         val content = with(overview) {
             jsonTemplate
                 .replace(PLACEHOLDER_APP_ID, applicationId)
@@ -39,7 +39,7 @@ object OverviewReporter {
         terminal.println(content)
     }
 
-    private fun reportAsText(overview: ReleasableOverview) {
+    private fun reportAsText(overview: ArtifactOverview) {
         val content = with(overview) {
             table {
                 header { row(cyan("Attribute"), cyan("Evaluation")) }
