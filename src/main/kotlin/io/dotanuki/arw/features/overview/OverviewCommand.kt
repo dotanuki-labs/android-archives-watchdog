@@ -39,6 +39,7 @@ class OverviewCommand : CliktCommand(
                 minSdk,
                 targetSdk,
                 debuggable,
+                totalUsedFeatures = androidFeatures.size,
                 totalPermissions = androidPermissions.size,
                 dangerousPermissions = AndroidPermissions.hasDangerous(androidPermissions)
             )

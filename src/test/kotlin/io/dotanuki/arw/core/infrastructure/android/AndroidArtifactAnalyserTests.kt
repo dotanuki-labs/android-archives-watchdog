@@ -23,6 +23,10 @@ class AndroidArtifactAnalyserTests {
                 "android.permission.POST_NOTIFICATIONS",
                 "android.permission.WRITE_EXTERNAL_STORAGE",
                 "io.dotanuki.norris.android.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+            ),
+            androidFeatures = setOf(
+                "android.hardware.screen.portrait",
+                "android.hardware.faketouch"
             )
         )
 
@@ -41,6 +45,10 @@ class AndroidArtifactAnalyserTests {
             androidPermissions = setOf(
                 "android.permission.INTERNET",
                 "io.dotanuki.norris.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+            ),
+            androidFeatures = setOf(
+                "android.hardware.screen.portrait",
+                "android.hardware.faketouch"
             )
         )
 
