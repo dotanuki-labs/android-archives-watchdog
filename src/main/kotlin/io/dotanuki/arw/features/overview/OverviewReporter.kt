@@ -2,31 +2,12 @@ package io.dotanuki.arw.features.overview
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.magenta
-import com.github.ajalt.mordant.rendering.TextColors.red
 import com.github.ajalt.mordant.table.table
-import com.github.ajalt.mordant.terminal.Terminal
-import io.dotanuki.arw.core.domain.errors.ArwError
 import io.dotanuki.arw.core.infrastructure.cli.emptyLine
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonNamingStrategy
 
-@OptIn(ExperimentalSerializationApi::class)
 object OverviewReporter {
 
-    private val terminal by lazy { Terminal() }
-    private val jsonEncoder by lazy {
-        Json {
-            namingStrategy = JsonNamingStrategy.SnakeCase
-        }
-    }
-
-    fun reportFailure(error: ArwError) {
-        terminal.emptyLine()
-        terminal.println(red(error.description))
-        terminal.emptyLine()
-    }
-
+    context (OverviewContext)
     fun reportSuccess(overview: ArtifactOverview, format: String) {
         when (format) {
             "console" -> reportAsText(overview)
@@ -34,11 +15,13 @@ object OverviewReporter {
         }
     }
 
+    context (OverviewContext)
     private fun reportAsJson(overview: ArtifactOverview) {
-        val content = jsonEncoder.encodeToString(ArtifactOverview.serializer(), overview)
+        val content = jsonSerializer.encodeToString(ArtifactOverview.serializer(), overview)
         terminal.println(content)
     }
 
+    context (OverviewContext)
     private fun reportAsText(overview: ArtifactOverview) {
         val content = with(overview) {
             table {

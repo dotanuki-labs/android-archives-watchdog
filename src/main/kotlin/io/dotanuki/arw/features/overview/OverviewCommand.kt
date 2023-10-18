@@ -11,23 +11,20 @@ import io.dotanuki.arw.core.domain.models.AndroidPermissions
 import io.dotanuki.arw.core.infrastructure.android.AndroidArtifactAnalyser
 import io.dotanuki.arw.core.infrastructure.cli.ErrorReporter
 
+context (OverviewContext)
 class OverviewCommand : CliktCommand(
     help = "arw overview [--console | --json] ",
     name = "overview"
 ) {
 
-    private val switches = listOf(
-        "--json" to "json",
-        "--console" to "console"
-    )
+    private val switches = listOf("--json" to "json", "--console" to "console").toTypedArray()
 
-    private val format: String by option()
-        .switch(*switches.toTypedArray())
-        .default("console")
-
+    private val format: String by option().switch(*switches).default("console")
     private val target: String by option("-t", "--target").required()
 
-    override fun run() = recover(::extractOverview, ErrorReporter::reportFailure)
+    override fun run() {
+        recover(::extractOverview, ErrorReporter::reportFailure)
+    }
 
     context (ErrorAware)
     private fun extractOverview() {
