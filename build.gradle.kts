@@ -6,6 +6,7 @@ import java.util.*
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
     alias(libs.plugins.shadow)
@@ -56,6 +57,10 @@ dependencies {
     implementation(libs.android.tools.repository)
     implementation(libs.android.tools.sdkcommon)
     implementation(libs.android.tools.sdklib)
+    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.kotlinx.serialization.jvm)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.peanutz.tomlkt)
 
     // Test only
     testImplementation(libs.junit)
