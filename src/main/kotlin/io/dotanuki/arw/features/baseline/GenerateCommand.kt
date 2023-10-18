@@ -8,7 +8,8 @@ import io.dotanuki.arw.core.domain.errors.ErrorAware
 import io.dotanuki.arw.core.infrastructure.android.AndroidArtifactAnalyser
 import io.dotanuki.arw.core.infrastructure.cli.ErrorReporter
 
-class GenerateBaselineCommand : CliktCommand(
+context (BaselineContext)
+class GenerateCommand : CliktCommand(
     help = "arw generate -t/--target <path/to/target>",
     name = "generate"
 ) {

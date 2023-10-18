@@ -9,9 +9,9 @@ object ErrorReporter {
 
     private val terminal by lazy { Terminal() }
 
-    fun reportFailure(error: ArwError) {
+    fun reportFailure(surfaced: ArwError) {
         terminal.emptyLine()
-        terminal.println(red(error.description))
+        terminal.println(red(surfaced.description))
         terminal.emptyLine()
 
         exitProcess(42)
