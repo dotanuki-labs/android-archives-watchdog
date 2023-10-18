@@ -7,10 +7,19 @@ import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
 import io.dotanuki.arw.core.domain.errors.ArwError
 import io.dotanuki.arw.core.infrastructure.cli.emptyLine
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNamingStrategy
 
+@OptIn(ExperimentalSerializationApi::class)
 object OverviewReporter {
 
     private val terminal by lazy { Terminal() }
+    private val jsonEncoder by lazy {
+        Json {
+            namingStrategy = JsonNamingStrategy.SnakeCase
+        }
+    }
 
     fun reportFailure(error: ArwError) {
         terminal.emptyLine()
@@ -26,17 +35,7 @@ object OverviewReporter {
     }
 
     private fun reportAsJson(overview: ArtifactOverview) {
-        val content = with(overview) {
-            jsonTemplate
-                .replace(PLACEHOLDER_APP_ID, applicationId)
-                .replace(PLACEHOLDER_MIN_SDK, minSdk.toString())
-                .replace(PLACEHOLDER_TARGET_SDK, targetSdk.toString())
-                .replace(PLACEHOLDER_TOTAL_PERMISSIONS, totalPermissions.toString())
-                .replace(PLACEHOLDER_SENSITIVE_PERMISSIONS, dangerousPermissions.toString())
-                .replace(PLACEHOLDER_DEBUGGABLE, debuggable.toString())
-                .replace(PLACEHOLDER_TOTAL_FEATURES, totalUsedFeatures.toString())
-        }
-
+        val content = jsonEncoder.encodeToString(ArtifactOverview.serializer(), overview)
         terminal.println(content)
     }
 
@@ -59,25 +58,4 @@ object OverviewReporter {
     }
 
     private fun Boolean.asAffirmation() = if (this) "Yes" else "No"
-
-    private const val PLACEHOLDER_APP_ID = "APPLICATION_ID"
-    private const val PLACEHOLDER_MIN_SDK = "MIN_SDK"
-    private const val PLACEHOLDER_TARGET_SDK = "TARGET_SDK"
-    private const val PLACEHOLDER_TOTAL_PERMISSIONS = "TOTAL_PERMS"
-    private const val PLACEHOLDER_SENSITIVE_PERMISSIONS = "SENSITIVE_PERMS"
-    private const val PLACEHOLDER_DEBUGGABLE = "DEBUGGABLE"
-    private const val PLACEHOLDER_TOTAL_FEATURES = "TOTAL_FEATURES"
-
-    private val jsonTemplate =
-        """
-        {
-            "app_id":"$PLACEHOLDER_APP_ID",
-            "min_sdk":$PLACEHOLDER_MIN_SDK,
-            "target_sdk":$PLACEHOLDER_TARGET_SDK,
-            "total_manifest_permissions":$PLACEHOLDER_TOTAL_PERMISSIONS,
-            "uses_dangerous_permissions":$PLACEHOLDER_SENSITIVE_PERMISSIONS,
-            "total_used_features":$PLACEHOLDER_TOTAL_FEATURES,
-            "debuggable":$PLACEHOLDER_DEBUGGABLE
-        }
-        """.trimIndent()
 }

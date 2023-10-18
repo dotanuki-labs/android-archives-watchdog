@@ -6,10 +6,10 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
-import io.dotanuki.arw.core.domain.errors.ArwError
 import io.dotanuki.arw.core.domain.errors.ErrorAware
 import io.dotanuki.arw.core.domain.models.AndroidPermissions
 import io.dotanuki.arw.core.infrastructure.android.AndroidArtifactAnalyser
+import io.dotanuki.arw.core.infrastructure.cli.ErrorReporter
 
 class OverviewCommand : CliktCommand(
     help = "arw overview [--console | --json] ",
@@ -27,7 +27,7 @@ class OverviewCommand : CliktCommand(
 
     private val target: String by option("-t", "--target").required()
 
-    override fun run() = recover(::extractOverview, ::reportFailure)
+    override fun run() = recover(::extractOverview, ErrorReporter::reportFailure)
 
     context (ErrorAware)
     private fun extractOverview() {
@@ -46,9 +46,5 @@ class OverviewCommand : CliktCommand(
         }
 
         OverviewReporter.reportSuccess(overview, format)
-    }
-
-    private fun reportFailure(incoming: ArwError) {
-        OverviewReporter.reportFailure(incoming)
     }
 }
