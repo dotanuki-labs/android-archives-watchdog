@@ -5,6 +5,7 @@ data class ArtifactOverview(
     val minSdk: Int,
     val targetSdk: Int,
     val debuggable: Boolean,
+    val totalUsedFeatures: Int,
     val totalPermissions: Int,
     val dangerousPermissions: Boolean
 )

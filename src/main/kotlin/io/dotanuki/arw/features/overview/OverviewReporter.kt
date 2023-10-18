@@ -34,6 +34,7 @@ object OverviewReporter {
                 .replace(PLACEHOLDER_TOTAL_PERMISSIONS, totalPermissions.toString())
                 .replace(PLACEHOLDER_SENSITIVE_PERMISSIONS, dangerousPermissions.toString())
                 .replace(PLACEHOLDER_DEBUGGABLE, debuggable.toString())
+                .replace(PLACEHOLDER_TOTAL_FEATURES, totalUsedFeatures.toString())
         }
 
         terminal.println(content)
@@ -47,6 +48,7 @@ object OverviewReporter {
                 body { row(magenta("Debuggable"), overview.debuggable.asAffirmation()) }
                 body { row(magenta("Minimum SDK"), minSdk) }
                 body { row(magenta("Target SDK"), targetSdk) }
+                body { row(magenta("Total Used Features"), totalUsedFeatures) }
                 body { row(magenta("Total Manifest permissions"), totalPermissions) }
                 body { row(magenta("Dangerous permissions"), dangerousPermissions.asAffirmation()) }
             }
@@ -64,6 +66,7 @@ object OverviewReporter {
     private const val PLACEHOLDER_TOTAL_PERMISSIONS = "TOTAL_PERMS"
     private const val PLACEHOLDER_SENSITIVE_PERMISSIONS = "SENSITIVE_PERMS"
     private const val PLACEHOLDER_DEBUGGABLE = "DEBUGGABLE"
+    private const val PLACEHOLDER_TOTAL_FEATURES = "TOTAL_FEATURES"
 
     private val jsonTemplate =
         """
@@ -73,6 +76,7 @@ object OverviewReporter {
             "target_sdk":$PLACEHOLDER_TARGET_SDK,
             "total_manifest_permissions":$PLACEHOLDER_TOTAL_PERMISSIONS,
             "uses_dangerous_permissions":$PLACEHOLDER_SENSITIVE_PERMISSIONS,
+            "total_used_features":$PLACEHOLDER_TOTAL_FEATURES,
             "debuggable":$PLACEHOLDER_DEBUGGABLE
         }
         """.trimIndent()

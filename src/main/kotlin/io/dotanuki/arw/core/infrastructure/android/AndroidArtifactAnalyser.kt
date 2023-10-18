@@ -26,7 +26,8 @@ object AndroidArtifactAnalyser {
 
         return AnalysedArtifact(
             applicationId = appInfo.packageId,
-            androidPermissions = appInfo.permissions,
+            androidPermissions = appInfo.permissions.apply { sorted() },
+            androidFeatures = appInfo.usesFeature.keys.apply { sorted() },
             minSdk = parsedManifest.minSdkVersion,
             targetSdk = parsedManifest.targetSdkVersion,
             debuggable = parsedManifest.debuggable ?: false

@@ -5,5 +5,6 @@ data class AnalysedArtifact(
     val minSdk: Int,
     val targetSdk: Int,
     val debuggable: Boolean,
-    val androidPermissions: Set<String>
+    val androidPermissions: Set<String>,
+    val androidFeatures: Set<String>
 )
