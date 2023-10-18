@@ -31,9 +31,6 @@ test_generate_baseline() {
   local toml="io.dotanuki.norris.android.debug.toml"
 
   echo
-  echo "At $toml"
-
-  echo
   cat "$toml"
   echo
 
