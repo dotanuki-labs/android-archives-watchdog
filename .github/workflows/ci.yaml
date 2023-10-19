@@ -29,9 +29,12 @@ jobs:
       - name: Check typos on code
         uses: crate-ci/typos@v1.16.20
 
+      - name: Run Gradle tests
+        run: ./gradlew test --rerun
+
       - name: Run Gradle build
         run: ./gradlew build shadowJar
 
-      - name: Running acceptance tests
+      - name: Run acceptance tests
         run: ./scripts/acceptance.sh
 

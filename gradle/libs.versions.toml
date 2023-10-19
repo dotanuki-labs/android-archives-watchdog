@@ -4,6 +4,7 @@ kotlinx-serialization = "org.jetbrains.kotlin.plugin.serialization:1.9.10"
 detekt = "io.gitlab.arturbosch.detekt:1.23.1"
 ktlint = "org.jlleitschuh.gradle.ktlint:11.6.1"
 shadow = "com.github.johnrengelman.shadow:8.1.1"
+test-logger = "com.adarshr.test-logger:4.0.0"
 
 [libraries]
 

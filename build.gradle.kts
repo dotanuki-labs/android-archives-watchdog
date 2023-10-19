@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
     alias(libs.plugins.shadow)
+    alias(libs.plugins.test.logger)
 }
 
 // ------------------------------------------------------------------
