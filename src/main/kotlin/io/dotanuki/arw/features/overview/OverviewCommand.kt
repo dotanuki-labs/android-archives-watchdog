@@ -7,6 +7,8 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
 import io.dotanuki.arw.core.domain.errors.ErrorAware
+import io.dotanuki.arw.core.domain.models.AnalysedArtifact
+import io.dotanuki.arw.core.domain.models.AndroidComponentType
 import io.dotanuki.arw.core.domain.models.AndroidPermissions
 import io.dotanuki.arw.core.infrastructure.android.AndroidArtifactAnalyser
 import io.dotanuki.arw.core.infrastructure.cli.ErrorReporter
@@ -38,10 +40,17 @@ class OverviewCommand : CliktCommand(
                 debuggable,
                 totalUsedFeatures = androidFeatures.size,
                 totalPermissions = androidPermissions.size,
-                dangerousPermissions = AndroidPermissions.hasDangerous(androidPermissions)
+                dangerousPermissions = AndroidPermissions.hasDangerous(androidPermissions),
+                totalActivities = componentCount(AndroidComponentType.ACTIVITY),
+                totalServices = componentCount(AndroidComponentType.SERVICE),
+                totalReceivers = componentCount(AndroidComponentType.RECEIVER),
+                totalProviders = componentCount(AndroidComponentType.PROVIDER)
             )
         }
 
         OverviewReporter.reportSuccess(overview, format)
     }
+
+    private fun AnalysedArtifact.componentCount(selected: AndroidComponentType) =
+        androidComponents.count { it.type == selected }
 }

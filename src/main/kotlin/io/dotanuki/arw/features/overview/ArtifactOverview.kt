@@ -10,5 +10,9 @@ data class ArtifactOverview(
     val debuggable: Boolean,
     val totalUsedFeatures: Int,
     val totalPermissions: Int,
-    val dangerousPermissions: Boolean
+    val dangerousPermissions: Boolean,
+    val totalActivities: Int,
+    val totalServices: Int,
+    val totalReceivers: Int,
+    val totalProviders: Int
 )
