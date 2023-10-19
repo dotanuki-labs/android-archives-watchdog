@@ -33,6 +33,10 @@ object OverviewReporter {
                 body { row(magenta("Total Used Features"), totalUsedFeatures) }
                 body { row(magenta("Total Manifest permissions"), totalPermissions) }
                 body { row(magenta("Dangerous permissions"), dangerousPermissions.asAffirmation()) }
+                body { row(magenta("Activities"), totalActivities) }
+                body { row(magenta("Services"), totalServices) }
+                body { row(magenta("Broadcast Receivers"), totalReceivers) }
+                body { row(magenta("Content Providers"), totalProviders) }
             }
         }
         terminal.emptyLine()
