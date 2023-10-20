@@ -33,7 +33,7 @@ class AndroidArtifactAnalyserTests {
                 "android.hardware.screen.portrait",
                 "android.hardware.faketouch"
             ),
-            androidComponents = listOf(
+            androidComponents = setOf(
                 AndroidComponent("io.dotanuki.app.SplashActivity", ACTIVITY),
                 AndroidComponent("io.dotanuki.features.facts.ui.FactsActivity", ACTIVITY),
                 AndroidComponent("io.dotanuki.features.search.ui.SearchActivity", ACTIVITY),
@@ -70,7 +70,7 @@ class AndroidArtifactAnalyserTests {
                 "android.hardware.screen.portrait",
                 "android.hardware.faketouch"
             ),
-            androidComponents = listOf(
+            androidComponents = setOf(
                 AndroidComponent("io.dotanuki.app.SplashActivity", ACTIVITY),
                 AndroidComponent("io.dotanuki.features.facts.ui.FactsActivity", ACTIVITY),
                 AndroidComponent("io.dotanuki.features.search.ui.SearchActivity", ACTIVITY),

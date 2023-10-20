@@ -67,7 +67,7 @@ object AndroidArtifactAnalyser {
             raise(ArwError("Failed when invoking aapt from Android SDK", incoming))
         }
 
-    private fun ManifestData.extractComponents(): List<AndroidComponent> =
+    private fun ManifestData.extractComponents(): Set<AndroidComponent> =
         keepClasses
             .sortedBy { it.type }
             .map {
@@ -76,6 +76,7 @@ object AndroidArtifactAnalyser {
                     AndroidComponentType.valueOf(it.type.uppercase())
                 )
             }
+            .toSet()
 
     private fun String.asPath() = Paths.get(this)
 
