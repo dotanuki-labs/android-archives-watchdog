@@ -1,11 +1,16 @@
 package io.dotanuki.arw.features.comparison
 
+import io.dotanuki.arw.core.domain.errors.ArwError
+import io.dotanuki.arw.core.domain.errors.ErrorAware
 import io.dotanuki.arw.core.domain.models.AnalysedArtifact
 import io.dotanuki.arw.core.domain.models.AndroidComponentType
 
 object ArtifactsComparator {
 
+    context (ErrorAware)
     fun compare(target: AnalysedArtifact, baseline: AnalysedArtifact): Set<ComparisonFinding> {
+        ensureSameApplication(target, baseline)
+
         val permissions = evaluateChanges(
             target.androidPermissions,
             baseline.androidPermissions
@@ -49,6 +54,19 @@ object ArtifactsComparator {
         }
 
         return permissions + features + activities + services + receivers union providers
+    }
+
+    context (ErrorAware)
+    private fun ensureSameApplication(target: AnalysedArtifact, baseline: AnalysedArtifact) {
+        if (target.applicationId != baseline.applicationId) {
+            val description = """
+            Your application packages dont match !!!
+            From your artifact : ${target.applicationId}
+            From your baseline : ${baseline.applicationId}
+            """.trimIndent()
+
+            raise(ArwError(description))
+        }
     }
 
     private fun evaluateChanges(target: Set<String>, baseline: Set<String>): Set<Pair<String, BrokenExpectation>> {
