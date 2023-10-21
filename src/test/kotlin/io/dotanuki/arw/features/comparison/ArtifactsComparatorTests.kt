@@ -1,5 +1,6 @@
 package io.dotanuki.arw.features.comparison
 
+import arrow.core.raise.recover
 import com.google.common.truth.Truth.assertThat
 import io.dotanuki.arw.core.domain.models.AnalysedArtifact
 import io.dotanuki.arw.core.domain.models.AndroidComponent
@@ -8,6 +9,7 @@ import io.dotanuki.arw.core.domain.models.AndroidComponentType.APPLICATION
 import io.dotanuki.arw.core.domain.models.AndroidComponentType.PROVIDER
 import io.dotanuki.arw.core.domain.models.AndroidComponentType.RECEIVER
 import io.dotanuki.arw.core.domain.models.AndroidComponentType.SERVICE
+import io.dotanuki.arw.helpers.errorAwareTest
 import org.junit.Test
 
 class ArtifactsComparatorTests {
@@ -34,12 +36,23 @@ class ArtifactsComparatorTests {
         )
     )
 
-    @Test fun `should detect no changes when comparing the same artefact`() {
+    @Test fun `should detect no changes when comparing the same artefact`() = errorAwareTest {
         val comparison = ArtifactsComparator.compare(referenceArtifact, referenceArtifact)
         assertThat(comparison).isEmpty()
     }
 
-    @Test fun `should detect a new permission added on target artifact`() {
+    @Test fun `should reject artefacts from different application`() {
+        val debugVersion = referenceArtifact.copy(applicationId = "io.dotanuki.norris.android.debug")
+        recover(
+            block = { ArtifactsComparator.compare(referenceArtifact, debugVersion) },
+            recover = { surfaced ->
+
+                assertThat(surfaced.description).contains("Your application packages dont match")
+            }
+        )
+    }
+
+    @Test fun `should detect a new permission added on target artifact`() = errorAwareTest {
         val cameraPermission = "android.permission.CAMERA"
         val newPermissions = referenceArtifact.androidPermissions + "android.permission.CAMERA"
         val subject = referenceArtifact.copy(androidPermissions = newPermissions)
@@ -53,7 +66,7 @@ class ArtifactsComparatorTests {
         assertThat(comparison).isEqualTo(expected)
     }
 
-    @Test fun `should detect a permission removed from target artifact`() {
+    @Test fun `should detect a permission removed from target artifact`() = errorAwareTest {
         val removedPermission = "io.dotanuki.norris.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         val newPermissions = referenceArtifact.androidPermissions - removedPermission
         val subject = referenceArtifact.copy(androidPermissions = newPermissions)
@@ -67,7 +80,7 @@ class ArtifactsComparatorTests {
         assertThat(comparison).isEqualTo(expected)
     }
 
-    @Test fun `should detect a new service added in the target artifact`() {
+    @Test fun `should detect a new service added in the target artifact`() = errorAwareTest {
         val serviceName = "io.dotanuki.app.MediaPlayerService"
         val missingService = AndroidComponent(serviceName, SERVICE)
         val withMissingService = referenceArtifact.androidComponents + missingService
@@ -82,7 +95,7 @@ class ArtifactsComparatorTests {
         assertThat(comparison).isEqualTo(expected)
     }
 
-    @Test fun `should detect an invalid activity tracked on the baseline`() {
+    @Test fun `should detect an invalid activity tracked on the baseline`() = errorAwareTest {
         val activityName = "io.dotanuki.app.DeepLinkActivity"
         val dereferencedActivity = AndroidComponent(activityName, ACTIVITY)
         val withDereferencedActivity = referenceArtifact.androidComponents + dereferencedActivity
@@ -97,7 +110,7 @@ class ArtifactsComparatorTests {
         assertThat(comparison).isEqualTo(expected)
     }
 
-    @Test fun `should detect multiple changes`() {
+    @Test fun `should detect multiple changes`() = errorAwareTest {
         val serviceName = "io.dotanuki.app.TrackingService"
         val missingService = AndroidComponent(serviceName, SERVICE)
 
