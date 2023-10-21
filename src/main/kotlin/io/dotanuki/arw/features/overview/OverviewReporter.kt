@@ -27,7 +27,6 @@ object OverviewReporter {
             table {
                 header { row(cyan("Attribute"), cyan("Evaluation")) }
                 body { row(magenta("Application Id"), overview.applicationId) }
-                body { row(magenta("Debuggable"), overview.debuggable.asAffirmation()) }
                 body { row(magenta("Minimum SDK"), minSdk) }
                 body { row(magenta("Target SDK"), targetSdk) }
                 body { row(magenta("Total Used Features"), totalUsedFeatures) }
