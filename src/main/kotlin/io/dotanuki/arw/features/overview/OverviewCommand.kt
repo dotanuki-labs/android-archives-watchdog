@@ -30,7 +30,7 @@ class OverviewCommand : CliktCommand(
 
     context (ErrorAware)
     private fun extractOverview() {
-        val analysed = AndroidArtifactAnalyser.overview(target)
+        val analysed = AndroidArtifactAnalyser.analyse(target)
 
         val overview = with(analysed) {
             ArtifactOverview(

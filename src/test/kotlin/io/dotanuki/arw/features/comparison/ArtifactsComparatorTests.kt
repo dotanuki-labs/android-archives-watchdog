@@ -47,7 +47,7 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(subject, referenceArtifact)
 
         val expected = setOf(
-            DetectedChange(cameraPermission, ProposedAction.ADD_TO_BASELINE)
+            ComparisonOutcome(cameraPermission, ComparisonFinding.MISSING_ON_BASELINE)
         )
 
         assertThat(comparison).isEqualTo(expected)
@@ -61,7 +61,7 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(subject, referenceArtifact)
 
         val expected = setOf(
-            DetectedChange(removedPermission, ProposedAction.REMOVE_FROM_BASELINE)
+            ComparisonOutcome(removedPermission, ComparisonFinding.MISSING_ON_ARTIFACT)
         )
 
         assertThat(comparison).isEqualTo(expected)
@@ -76,7 +76,7 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(newReference, referenceArtifact)
 
         val expected = setOf(
-            DetectedChange(serviceName, ProposedAction.ADD_TO_BASELINE)
+            ComparisonOutcome(serviceName, ComparisonFinding.MISSING_ON_BASELINE)
         )
 
         assertThat(comparison).isEqualTo(expected)
@@ -91,7 +91,7 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(referenceArtifact, newReference)
 
         val expected = setOf(
-            DetectedChange(activityName, ProposedAction.REMOVE_FROM_BASELINE)
+            ComparisonOutcome(activityName, ComparisonFinding.MISSING_ON_ARTIFACT)
         )
 
         assertThat(comparison).isEqualTo(expected)
@@ -113,8 +113,8 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(newReference, referenceArtifact)
 
         val expected = setOf(
-            DetectedChange(addedPermission, ProposedAction.ADD_TO_BASELINE),
-            DetectedChange(serviceName, ProposedAction.ADD_TO_BASELINE)
+            ComparisonOutcome(addedPermission, ComparisonFinding.MISSING_ON_BASELINE),
+            ComparisonOutcome(serviceName, ComparisonFinding.MISSING_ON_BASELINE)
         )
 
         assertThat(comparison).isEqualTo(expected)
