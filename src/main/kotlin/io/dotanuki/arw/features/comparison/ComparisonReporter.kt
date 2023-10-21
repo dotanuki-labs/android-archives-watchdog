@@ -8,7 +8,7 @@ import kotlin.system.exitProcess
 object ComparisonReporter {
 
     context (CompareContext)
-    fun reportChanges(comparison: Set<ComparisonOutcome>) {
+    fun reportChanges(comparison: Set<ComparisonFinding>) {
         if (comparison.isEmpty()) {
             terminal.emptyLine()
             terminal.println("No changes detected")
@@ -17,26 +17,27 @@ object ComparisonReporter {
         }
 
         terminal.emptyLine()
-        terminal.println("Your baseline file does not match the supplied artifact")
+        terminal.println("Your baseline file does not match the supplied artifact !!!")
         terminal.emptyLine()
 
         val changeAsTable = table {
-            header { row(cyan("What"), cyan("Finding")) }
+            header { row(cyan("Category"), cyan("Finding"), cyan("Description")) }
             comparison.map {
                 body {
-                    row(it.what, it.comparisonFinding.recommendation())
+                    row(it.category.description, it.what, it.expectation.description())
                 }
             }
         }
 
         terminal.println(changeAsTable)
         terminal.emptyLine()
+        terminal.println("Please update your baseline accordingly")
         exitProcess(42)
     }
 
     context (CompareContext)
-    private fun ComparisonFinding.recommendation() = when (this) {
-        ComparisonFinding.MISSING_ON_BASELINE -> "Missing on your baseline file"
-        ComparisonFinding.MISSING_ON_ARTIFACT -> "Not present in your artifact "
+    private fun BrokenExpectation.description() = when (this) {
+        BrokenExpectation.MISSING_ON_BASELINE -> "Missing on your baseline file"
+        BrokenExpectation.MISSING_ON_ARTIFACT -> "Not found in your artifact "
     }
 }
