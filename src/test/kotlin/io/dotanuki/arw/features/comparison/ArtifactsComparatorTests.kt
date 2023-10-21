@@ -47,7 +47,7 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(subject, referenceArtifact)
 
         val expected = setOf(
-            ComparisonOutcome(cameraPermission, ComparisonFinding.MISSING_ON_BASELINE)
+            ComparisonFinding(cameraPermission, BrokenExpectation.MISSING_ON_BASELINE, FindingCategory.PERMISSION)
         )
 
         assertThat(comparison).isEqualTo(expected)
@@ -61,7 +61,7 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(subject, referenceArtifact)
 
         val expected = setOf(
-            ComparisonOutcome(removedPermission, ComparisonFinding.MISSING_ON_ARTIFACT)
+            ComparisonFinding(removedPermission, BrokenExpectation.MISSING_ON_ARTIFACT, FindingCategory.PERMISSION)
         )
 
         assertThat(comparison).isEqualTo(expected)
@@ -76,7 +76,7 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(newReference, referenceArtifact)
 
         val expected = setOf(
-            ComparisonOutcome(serviceName, ComparisonFinding.MISSING_ON_BASELINE)
+            ComparisonFinding(serviceName, BrokenExpectation.MISSING_ON_BASELINE, FindingCategory.COMPONENT)
         )
 
         assertThat(comparison).isEqualTo(expected)
@@ -91,7 +91,7 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(referenceArtifact, newReference)
 
         val expected = setOf(
-            ComparisonOutcome(activityName, ComparisonFinding.MISSING_ON_ARTIFACT)
+            ComparisonFinding(activityName, BrokenExpectation.MISSING_ON_ARTIFACT, FindingCategory.COMPONENT)
         )
 
         assertThat(comparison).isEqualTo(expected)
@@ -113,8 +113,8 @@ class ArtifactsComparatorTests {
         val comparison = ArtifactsComparator.compare(newReference, referenceArtifact)
 
         val expected = setOf(
-            ComparisonOutcome(addedPermission, ComparisonFinding.MISSING_ON_BASELINE),
-            ComparisonOutcome(serviceName, ComparisonFinding.MISSING_ON_BASELINE)
+            ComparisonFinding(addedPermission, BrokenExpectation.MISSING_ON_BASELINE, FindingCategory.PERMISSION),
+            ComparisonFinding(serviceName, BrokenExpectation.MISSING_ON_BASELINE, FindingCategory.COMPONENT)
         )
 
         assertThat(comparison).isEqualTo(expected)

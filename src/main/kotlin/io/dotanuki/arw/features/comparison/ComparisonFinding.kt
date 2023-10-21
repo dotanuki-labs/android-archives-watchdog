@@ -1,6 +1,7 @@
 package io.dotanuki.arw.features.comparison
 
-enum class ComparisonFinding {
-    MISSING_ON_BASELINE,
-    MISSING_ON_ARTIFACT
-}
+data class ComparisonFinding(
+    val what: String,
+    val expectation: BrokenExpectation,
+    val category: FindingCategory
+)
