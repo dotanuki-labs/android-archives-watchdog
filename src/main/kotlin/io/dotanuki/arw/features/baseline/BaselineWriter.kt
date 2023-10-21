@@ -2,6 +2,7 @@ package io.dotanuki.arw.features.baseline
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import io.dotanuki.arw.core.infrastructure.cli.emptyLine
+import io.dotanuki.arw.features.common.ArtifactBaseline
 import java.nio.file.Paths
 import kotlin.io.path.writeText
 

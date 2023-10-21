@@ -14,7 +14,6 @@ class ArtifactsComparatorTests {
 
     private val referenceArtifact = AnalysedArtifact(
         applicationId = "io.dotanuki.norris.android",
-        debuggable = false,
         minSdk = 28,
         targetSdk = 33,
         androidPermissions = setOf(

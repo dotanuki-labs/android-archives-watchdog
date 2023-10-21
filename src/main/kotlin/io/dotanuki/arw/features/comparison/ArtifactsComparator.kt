@@ -50,7 +50,4 @@ object ArtifactsComparator {
 
         return missingOnBaseline union missingOnTarget
     }
-
-    private fun AnalysedArtifact.filterComponent(componentType: AndroidComponentType): Set<String> =
-        androidComponents.filter { it.type == componentType }.map { it.name }.toSet()
 }

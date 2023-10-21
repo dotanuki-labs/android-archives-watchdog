@@ -19,7 +19,6 @@ class AndroidArtifactAnalyserTests {
 
         val expected = AnalysedArtifact(
             applicationId = "io.dotanuki.norris.android.debug",
-            debuggable = true,
             minSdk = 28,
             targetSdk = 33,
             androidPermissions = setOf(
@@ -59,7 +58,6 @@ class AndroidArtifactAnalyserTests {
 
         val expected = AnalysedArtifact(
             applicationId = "io.dotanuki.norris.android",
-            debuggable = false,
             minSdk = 28,
             targetSdk = 33,
             androidPermissions = setOf(

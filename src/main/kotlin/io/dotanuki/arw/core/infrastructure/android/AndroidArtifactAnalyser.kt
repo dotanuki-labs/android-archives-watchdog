@@ -33,8 +33,7 @@ object AndroidArtifactAnalyser {
             androidFeatures = appInfo.usesFeature.keys.apply { sorted() },
             androidComponents = parsedManifest.extractComponents(),
             minSdk = parsedManifest.minSdkVersion,
-            targetSdk = parsedManifest.targetSdkVersion,
-            debuggable = parsedManifest.debuggable ?: false
+            targetSdk = parsedManifest.targetSdkVersion
         )
     }
 
