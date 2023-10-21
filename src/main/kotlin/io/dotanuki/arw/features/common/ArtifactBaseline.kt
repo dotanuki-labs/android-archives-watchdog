@@ -1,6 +1,7 @@
 package io.dotanuki.arw.features.common
 
 import io.dotanuki.arw.core.domain.models.AnalysedArtifact
+import io.dotanuki.arw.core.domain.models.AndroidComponent
 import io.dotanuki.arw.core.domain.models.AndroidComponentType.ACTIVITY
 import io.dotanuki.arw.core.domain.models.AndroidComponentType.PROVIDER
 import io.dotanuki.arw.core.domain.models.AndroidComponentType.RECEIVER
@@ -19,6 +20,22 @@ data class ArtifactBaseline(
     val receivers: Set<String> = emptySet(),
     val providers: Set<String> = emptySet()
 ) {
+    fun asArtifact(): AnalysedArtifact =
+        AnalysedArtifact(
+            applicationId,
+            minSdk,
+            targetSdk,
+            permissions,
+            features,
+            aggregateComponents()
+        )
+
+    private fun aggregateComponents() =
+        activities.map { AndroidComponent(it, ACTIVITY) }.toSet() +
+            services.map { AndroidComponent(it, SERVICE) }.toSet() +
+            receivers.map { AndroidComponent(it, RECEIVER) }.toSet() +
+            providers.map { AndroidComponent(it, PROVIDER) }.toSet()
+
     companion object {
         fun from(analysed: AnalysedArtifact) = with(analysed) {
             ArtifactBaseline(

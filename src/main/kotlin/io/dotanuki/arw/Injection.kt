@@ -5,6 +5,8 @@ import com.github.ajalt.mordant.terminal.Terminal
 import io.dotanuki.arw.core.infrastructure.cli.ARWCommand
 import io.dotanuki.arw.features.baseline.BaselineContext
 import io.dotanuki.arw.features.baseline.GenerateCommand
+import io.dotanuki.arw.features.comparison.CompareCommand
+import io.dotanuki.arw.features.comparison.CompareContext
 import io.dotanuki.arw.features.overview.OverviewCommand
 import io.dotanuki.arw.features.overview.OverviewContext
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -51,7 +53,17 @@ object Injection {
         }
     }
 
+    private val compareContext by lazy {
+        CompareContext(terminal, tomlSerializer)
+    }
+
+    private val compareCommand by lazy {
+        with(compareContext) {
+            CompareCommand()
+        }
+    }
+
     val entrypoint by lazy {
-        ARWCommand().subcommands(overviewCommand, generateCommand)
+        ARWCommand().subcommands(overviewCommand, generateCommand, compareCommand)
     }
 }

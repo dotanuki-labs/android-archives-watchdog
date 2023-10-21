@@ -21,7 +21,7 @@ class GenerateCommand : CliktCommand(
 
     context (ErrorAware)
     private fun extractBaseline() {
-        val analysed = AndroidArtifactAnalyser.overview(target)
+        val analysed = AndroidArtifactAnalyser.analyse(target)
         val outputFile = "${analysed.applicationId}.toml"
 
         val baseline = ArtifactBaseline.from(analysed)

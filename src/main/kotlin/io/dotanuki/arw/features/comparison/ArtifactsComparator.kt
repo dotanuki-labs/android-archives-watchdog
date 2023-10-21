@@ -5,7 +5,7 @@ import io.dotanuki.arw.core.domain.models.AndroidComponentType
 
 object ArtifactsComparator {
 
-    fun compare(target: AnalysedArtifact, baseline: AnalysedArtifact): Set<DetectedChange> {
+    fun compare(target: AnalysedArtifact, baseline: AnalysedArtifact): Set<ComparisonOutcome> {
         val permissionsDiff = evaluateChanges(
             target.androidPermissions,
             baseline.androidPermissions
@@ -39,13 +39,13 @@ object ArtifactsComparator {
         return permissionsDiff + featuresDiff + activitiesDiff + servicesDiff + receiversDiff + providersDiff
     }
 
-    private fun evaluateChanges(target: Set<String>, baseline: Set<String>): Set<DetectedChange> {
+    private fun evaluateChanges(target: Set<String>, baseline: Set<String>): Set<ComparisonOutcome> {
         val missingOnBaseline = (target subtract baseline).map {
-            DetectedChange(it, ProposedAction.ADD_TO_BASELINE)
+            ComparisonOutcome(it, ComparisonFinding.MISSING_ON_BASELINE)
         }
 
         val missingOnTarget = (baseline subtract target).map {
-            DetectedChange(it, ProposedAction.REMOVE_FROM_BASELINE)
+            ComparisonOutcome(it, ComparisonFinding.MISSING_ON_ARTIFACT)
         }
 
         return missingOnBaseline union missingOnTarget

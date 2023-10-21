@@ -15,7 +15,7 @@ class AndroidArtifactAnalyserTests {
 
     @Test fun `should analyse a debug apk with success`() = errorAwareTest {
         val target = fixtureFromResources("app-debug.apk")
-        val analysed = AndroidArtifactAnalyser.overview(target)
+        val analysed = AndroidArtifactAnalyser.analyse(target)
 
         val expected = AnalysedArtifact(
             applicationId = "io.dotanuki.norris.android.debug",
@@ -54,7 +54,7 @@ class AndroidArtifactAnalyserTests {
 
     @Test fun `should analyse a release apk with success`() = errorAwareTest {
         val target = fixtureFromResources("app-release.apk")
-        val analysed = AndroidArtifactAnalyser.overview(target)
+        val analysed = AndroidArtifactAnalyser.analyse(target)
 
         val expected = AnalysedArtifact(
             applicationId = "io.dotanuki.norris.android",

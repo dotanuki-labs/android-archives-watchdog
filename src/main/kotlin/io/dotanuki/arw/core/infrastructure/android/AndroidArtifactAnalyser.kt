@@ -23,7 +23,7 @@ import kotlin.io.path.absolutePathString
 object AndroidArtifactAnalyser {
 
     context (ErrorAware)
-    fun overview(pathToTarget: String): AnalysedArtifact {
+    fun analyse(pathToTarget: String): AnalysedArtifact {
         val appInfo = retrieveAppInfoWithAapt(pathToTarget)
         val parsedManifest = retrieveParsedAndroidManifest(pathToTarget)
 
