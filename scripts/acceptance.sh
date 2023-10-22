@@ -12,6 +12,11 @@ test_usage() {
   "$arw" | grep "Usage" >/dev/null
 }
 
+test_invalid_inputs() {
+  comparison=$("$arw" overview -t "$fixtures/missing.apk" -b "$toml" || true)
+  echo "$comparison" | grep "missing.apk does not exist" >/dev/null
+}
+
 test_overview() {
 
   echo "✔ Testing artifact overview"

@@ -14,6 +14,6 @@ object ErrorReporter {
         terminal.println(red(surfaced.description))
         terminal.emptyLine()
 
-        exitProcess(42)
+        exitProcess(ExitCodes.FAILURE)
     }
 }

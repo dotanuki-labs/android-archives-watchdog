@@ -2,6 +2,7 @@ package io.dotanuki.arw.features.comparison
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.table.table
+import io.dotanuki.arw.core.infrastructure.cli.ExitCodes
 import io.dotanuki.arw.core.infrastructure.cli.emptyLine
 import kotlin.system.exitProcess
 
@@ -32,7 +33,7 @@ object ComparisonReporter {
         terminal.println(changeAsTable)
         terminal.emptyLine()
         terminal.println("Please update your baseline accordingly")
-        exitProcess(42)
+        exitProcess(ExitCodes.FAILURE)
     }
 
     context (CompareContext)
