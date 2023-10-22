@@ -8,6 +8,7 @@ pull_request_rules:
       - author~=^renovate\[bot\]$
       - check-success=checks (11)
       - check-success=checks (17)
+      - check-success=checks (21)
     actions:
       merge:
         method: squash
@@ -17,6 +18,7 @@ pull_request_rules:
       - author~=^ubiratansoares
       - check-success=checks (11)
       - check-success=checks (17)
+      - check-success=checks (21)
     actions:
       merge:
         method: squash
