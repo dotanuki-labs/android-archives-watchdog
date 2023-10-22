@@ -12,6 +12,7 @@ import io.dotanuki.arw.core.domain.models.AndroidComponentType
 import io.dotanuki.arw.core.domain.models.AndroidPermissions
 import io.dotanuki.arw.core.infrastructure.android.AndroidArtifactAnalyser
 import io.dotanuki.arw.core.infrastructure.cli.ErrorReporter
+import io.dotanuki.arw.features.common.ValidatedFile
 
 context (OverviewContext)
 class OverviewCommand : CliktCommand(
@@ -30,7 +31,7 @@ class OverviewCommand : CliktCommand(
 
     context (ErrorAware)
     private fun extractOverview() {
-        val analysed = AndroidArtifactAnalyser.analyse(target)
+        val analysed = AndroidArtifactAnalyser.analyse(ValidatedFile(target))
 
         val overview = with(analysed) {
             ArtifactOverview(
