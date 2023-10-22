@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        jdk: [ '11', '17' ]
+        jdk: [ '11', '17', '21' ]
 
     steps:
       - name: Project Checkout
