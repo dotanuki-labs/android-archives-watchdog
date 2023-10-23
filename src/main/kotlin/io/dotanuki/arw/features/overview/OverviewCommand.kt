@@ -3,6 +3,7 @@ package io.dotanuki.arw.features.overview
 import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
@@ -24,8 +25,10 @@ class OverviewCommand : CliktCommand(
 
     private val format: String by option().switch(*switches).default("console")
     private val target: String by option("-t", "--target").required()
+    private val debugMode by option("--stacktrace").flag(default = false)
 
     override fun run() {
+        ErrorReporter.printStackTraces = debugMode
         recover(::extractOverview, ErrorReporter::reportFailure)
     }
 
