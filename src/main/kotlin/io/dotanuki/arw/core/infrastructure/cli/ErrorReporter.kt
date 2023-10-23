@@ -7,13 +7,21 @@ import kotlin.system.exitProcess
 
 object ErrorReporter {
 
+    var printStackTraces: Boolean = false
+
     private val terminal by lazy { Terminal() }
 
     fun reportFailure(surfaced: ArwError) {
         terminal.emptyLine()
         terminal.println(red(surfaced.description))
-        terminal.emptyLine()
 
+        if (printStackTraces) {
+            val trace = surfaced.wrapped ?: return
+            terminal.emptyLine()
+            trace.printStackTrace()
+        }
+
+        terminal.emptyLine()
         exitProcess(ExitCodes.FAILURE)
     }
 }

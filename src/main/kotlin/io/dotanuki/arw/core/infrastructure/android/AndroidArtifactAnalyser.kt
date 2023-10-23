@@ -47,8 +47,8 @@ object AndroidArtifactAnalyser {
             val inputStream = ByteArrayInputStream(decodedXml)
 
             AndroidManifestParser.parse(inputStream)
-        } catch (incoming: Throwable) {
-            raise(ArwError("Failed when reading AndroidManifest", incoming))
+        } catch (surfaced: Throwable) {
+            raise(ArwError("Failed when reading AndroidManifest", surfaced))
         }
 
     context (ErrorAware)
@@ -62,8 +62,8 @@ object AndroidArtifactAnalyser {
             val aaptInvoker = AaptInvoker(sdkHandler, NullLogger())
 
             AndroidApplicationInfo.parseBadging(aaptInvoker.dumpBadging(pathToArtifact.asFile()))
-        } catch (incoming: Throwable) {
-            raise(ArwError("Failed when invoking aapt from Android SDK", incoming))
+        } catch (surfaced: Throwable) {
+            raise(ArwError("Failed when invoking aapt from Android SDK", surfaced))
         }
 
     private fun ManifestData.extractComponents(): Set<AndroidComponent> =
