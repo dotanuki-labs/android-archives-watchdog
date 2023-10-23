@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  checks:
+  build:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -37,3 +37,31 @@ jobs:
 
       - name: Run acceptance tests
         run: ./scripts/acceptance.sh
+
+      - name: Archive executable
+        uses: actions/upload-artifact@v3.1.3
+        with:
+          name: arw-executable-jdk-${{ matrix.jdk }}
+          path: build/bin
+
+  e2e:
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+      - name: Project Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3.13.0
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Fetch executable from previous build
+        uses: actions/download-artifact@v3.0.2
+
+      - name: Add binary to the CLI path
+        run: chmod +x arw-executable-jdk-11/arw && echo "$GITHUB_WORKSPACE/arw-executable-jdk-11" >> "$GITHUB_PATH"
+
+      - name: Run E2E tests
+        run: ./e2e/e2e-tests.sh

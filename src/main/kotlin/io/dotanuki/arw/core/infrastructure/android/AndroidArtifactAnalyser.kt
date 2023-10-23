@@ -69,6 +69,7 @@ object AndroidArtifactAnalyser {
     private fun ManifestData.extractComponents(): Set<AndroidComponent> =
         keepClasses
             .sortedBy { it.type }
+            .filter { it.type.uppercase() in AndroidComponentType.entries.map { it.name } }
             .map {
                 AndroidComponent(
                     it.name,
