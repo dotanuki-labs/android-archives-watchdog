@@ -1,4 +1,4 @@
-package io.dotanuki.arw.features.common
+package io.dotanuki.arw.core.infrastructure.filesystem
 
 import io.dotanuki.arw.core.domain.errors.ArwError
 import io.dotanuki.arw.core.domain.errors.ErrorAware

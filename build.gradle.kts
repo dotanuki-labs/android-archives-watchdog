@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.android.tools.common)
     implementation(libs.android.tools.repository)
     implementation(libs.android.tools.sdkcommon)
+    implementation(libs.android.tools.bundletool)
     implementation(libs.android.tools.sdklib)
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.kotlinx.serialization.jvm)

@@ -8,8 +8,8 @@ import com.github.ajalt.clikt.parameters.options.required
 import io.dotanuki.arw.core.domain.errors.ErrorAware
 import io.dotanuki.arw.core.infrastructure.android.AndroidArtifactAnalyser
 import io.dotanuki.arw.core.infrastructure.cli.ErrorReporter
+import io.dotanuki.arw.core.infrastructure.filesystem.ValidatedFile
 import io.dotanuki.arw.features.common.ArtifactBaseline
-import io.dotanuki.arw.features.common.ValidatedFile
 
 context (BaselineContext)
 class GenerateCommand : CliktCommand(

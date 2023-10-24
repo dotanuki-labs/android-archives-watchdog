@@ -46,7 +46,7 @@ test_compare_baseline_with_artifact() {
   echo
   echo "✔ Testing comparison between baseline and artifacts"
 
-  "$arw" generate --target="$fixtures/app-release.apk"
+  "$arw" generate --target="$fixtures/app-release.aab"
 
   local toml="io.dotanuki.norris.android.toml"
   comparison=$("$arw" compare -t "$fixtures/app-release-changed.apk" -b "$toml" || true)

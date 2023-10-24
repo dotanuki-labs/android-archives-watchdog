@@ -36,7 +36,7 @@ test_duckduckgo() {
 test_woocomerce() {
   local repo="woocommerce/woocommerce-android"
   local version="15.7"
-  local artifact="wcandroid-$version-universal.apk"
+  local artifact="wcandroid-$version.aab"
   local baseline="e2e/baselines/woocommerce-$version.toml"
 
   e2e "$repo" "$version" "$artifact" "$baseline"
