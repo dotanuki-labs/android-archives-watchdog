@@ -42,12 +42,12 @@ data class SerializableBaseline(
                 applicationId,
                 minSdk,
                 targetSdk,
-                androidPermissions,
-                androidFeatures,
-                filterComponent(ACTIVITY),
-                filterComponent(SERVICE),
-                filterComponent(RECEIVER),
-                filterComponent(PROVIDER)
+                androidPermissions.toSortedSet(),
+                androidFeatures.toSortedSet(),
+                filterComponent(ACTIVITY).toSortedSet(),
+                filterComponent(SERVICE).toSortedSet(),
+                filterComponent(RECEIVER).toSortedSet(),
+                filterComponent(PROVIDER).toSortedSet()
             )
         }
     }

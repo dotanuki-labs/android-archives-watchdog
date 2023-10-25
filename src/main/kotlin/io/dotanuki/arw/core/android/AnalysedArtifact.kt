@@ -9,5 +9,8 @@ data class AnalysedArtifact(
     val androidComponents: Set<AndroidComponent>
 ) {
     fun filterComponent(componentType: AndroidComponentType): Set<String> =
-        androidComponents.filter { it.type == componentType }.map { it.name }.toSet()
+        androidComponents
+            .filter { it.type == componentType }
+            .map { it.name }
+            .toSet()
 }
