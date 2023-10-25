@@ -53,6 +53,15 @@ test_firefox() {
   e2e "$repo" "$release_version" "$artifact" "$baseline"
 }
 
+test_protonmail() {
+  local repo="ProtonMail/proton-mail-android"
+  local version="3.0.17"
+  local artifact="ProtonMail-$version.apk"
+  local baseline="e2e/baselines/protonmail-$version.toml"
+
+  e2e "$repo" "$version" "$artifact" "$baseline"
+}
+
 if ! which arw >/dev/null; then
   echo "✗ Error : missing 'arw' executable in your path"
   echo
@@ -67,6 +76,7 @@ echo "🔥 Running E2E tests"
 test_duckduckgo
 test_woocomerce
 test_firefox
+test_protonmail
 
 rm -rf ".tmp"
 
