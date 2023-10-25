@@ -30,7 +30,7 @@ targeting the following Android products with public open-source releases on Git
 The following snippets use 
 [ProntonMail](https://github.com/ProtonMail/proton-mail-android) 
 releases as examples, in particular versions 
-[3.0.5](https://github.com/ProtonMail/proton-mail-android/releases/tag/3.0.5) (September/2022) and
+[3.0.7](https://github.com/ProtonMail/proton-mail-android/releases/tag/3.0.7) (November/2022) and
 [3.0.17](https://github.com/ProtonMail/proton-mail-android/releases/tag/3.0.17) (October/2023)
 
 
@@ -70,7 +70,7 @@ This mimics functionally from `apkanalyser` and supports a `--json` switch for a
 ### Generating a baseline from an Android archive
 
 ```bash
-$> aaw generate --archive=ProtonMail-3.0.5.apk
+$> aaw generate --archive=tmp/ProtonMail-3.0.7.apk
 
 Baseline available at : ch.protonmail.android.toml
 
@@ -90,7 +90,7 @@ Optionally, you can generate a compact version of a baseline by passing "trusted
 related to your project structure. Those must be passed in a single argument, comma (`,`) separated
 
 ```bash
-$> aaw generate --archive=ProtonMail-3.0.5.apk --trusted='ch.protonmail,me.proton.core'
+$> aaw generate --archive=tmp/ProtonMail-3.0.7.apk --trusted='ch.protonmail,me.proton.core'
 
 Baseline available at : ch.protonmail.android.toml
 
@@ -102,12 +102,8 @@ permissions = [
     "android.permission.FOREGROUND_SERVICE",
     "android.permission.GET_ACCOUNTS",
     "android.permission.INTERNET",
-    "android.permission.POST_NOTIFICATIONS",
     "android.permission.READ_CONTACTS",
     "android.permission.READ_EXTERNAL_STORAGE",
-    "android.permission.READ_MEDIA_AUDIO",
-    "android.permission.READ_MEDIA_IMAGES",
-    "android.permission.READ_MEDIA_VIDEO",
     "android.permission.RECEIVE_BOOT_COMPLETED",
     "android.permission.SCHEDULE_EXACT_ALARM",
     "android.permission.USE_BIOMETRIC",
@@ -115,7 +111,6 @@ permissions = [
     "android.permission.VIBRATE",
     "android.permission.WAKE_LOCK",
     "android.permission.WRITE_EXTERNAL_STORAGE",
-    "ch.protonmail.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
     "com.google.android.c2dm.permission.RECEIVE"
 ]
 features = [
@@ -128,8 +123,7 @@ trustedPackages = [
 ]
 activities = [
     "androidx.biometric.DeviceCredentialHandlerActivity",
-    "com.google.android.gms.common.api.GoogleApiActivity",
-    "com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+    "com.google.android.gms.common.api.GoogleApiActivity"
 ]
  .
  .
@@ -141,34 +135,25 @@ activities = [
 
 ```bash
 # Considering the baseline file generated in the previous example
-$> aaw compare -a ProtonMail-3.0.17.apk -b ch.protonmail.android.toml
+$> aaw compare -a tmp/ProtonMail-3.0.17.apk -b ch.protonmail.android.toml
 
 Your baseline file does not match the supplied artifact.
 
-┌─────────────┬────────────────────────────────────────────────────────────────────────────┬───────────────────────────────┐
-│ Category    │ Finding                                                                    │ Description                   │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Permissions │ android.permission.POST_NOTIFICATIONS                                      │ Missing on your baseline file │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Permissions │ android.permission.READ_MEDIA_AUDIO                                        │ Missing on your baseline file │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Permissions │ android.permission.READ_MEDIA_IMAGES                                       │ Missing on your baseline file │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Permissions │ android.permission.READ_MEDIA_VIDEO                                        │ Missing on your baseline file │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Permissions │ ch.protonmail.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION             │ Missing on your baseline file │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Components  │ com.google.android.play.core.common.PlayCoreDialogWrapperActivity          │ Missing on your baseline file │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Components  │ me.proton.core.auth.presentation.ui.ConfirmPasswordActivity                │ Missing on your baseline file │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Components  │ me.proton.core.humanverification.presentation.ui.HumanVerificationActivity │ Missing on your baseline file │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Components  │ me.proton.core.plan.presentation.ui.UnredeemedPurchaseActivity             │ Missing on your baseline file │
-├─────────────┼────────────────────────────────────────────────────────────────────────────┼───────────────────────────────┤
-│ Components  │ androidx.profileinstaller.ProfileInstallReceiver                           │ Missing on your baseline file │
-└─────────────┴────────────────────────────────────────────────────────────────────────────┴───────────────────────────────┘
-
+┌─────────────┬───────────────────────────────────────────────────────────────────┬──────────────────────┐
+│ Category    │ Finding                                                           │ Description          │
+├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
+│ Permissions │ android.permission.POST_NOTIFICATIONS                             │ Not on your baseline │
+├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
+│ Permissions │ android.permission.READ_MEDIA_AUDIO                               │ Not on your baseline │
+├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
+│ Permissions │ android.permission.READ_MEDIA_IMAGES                              │ Not on your baseline │
+├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
+│ Permissions │ android.permission.READ_MEDIA_VIDEO                               │ Not on your baseline │
+├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
+│ Components  │ com.google.android.play.core.common.PlayCoreDialogWrapperActivity │ Not on your baseline │
+├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
+│ Components  │ androidx.profileinstaller.ProfileInstallReceiver                  │ Not on your baseline │
+└─────────────┴───────────────────────────────────────────────────────────────────┴──────────────────────┘
 ```
 
 This example illustrates how to track sensitive changes as part of your Continuous Integration, assuming that you have
