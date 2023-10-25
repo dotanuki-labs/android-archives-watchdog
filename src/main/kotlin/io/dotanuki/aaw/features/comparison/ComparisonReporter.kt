@@ -38,7 +38,7 @@ object ComparisonReporter {
 
     context (CompareContext)
     private fun BrokenExpectation.description() = when (this) {
-        BrokenExpectation.MISSING_ON_BASELINE -> "Missing on your baseline file"
-        BrokenExpectation.MISSING_ON_ARTIFACT -> "Not found in your artifact"
+        BrokenExpectation.MISSING_ON_BASELINE -> "Not on your baseline"
+        BrokenExpectation.MISSING_ON_ARTIFACT -> "Not on your artifact"
     }
 }
