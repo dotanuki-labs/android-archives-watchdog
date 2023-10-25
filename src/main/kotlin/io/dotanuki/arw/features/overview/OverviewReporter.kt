@@ -3,7 +3,7 @@ package io.dotanuki.arw.features.overview
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.magenta
 import com.github.ajalt.mordant.table.table
-import io.dotanuki.arw.core.infrastructure.cli.emptyLine
+import io.dotanuki.arw.core.cli.emptyLine
 
 object OverviewReporter {
 

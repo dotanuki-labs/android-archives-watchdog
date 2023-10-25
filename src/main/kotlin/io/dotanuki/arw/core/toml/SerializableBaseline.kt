@@ -1,15 +1,15 @@
-package io.dotanuki.arw.features.common
+package io.dotanuki.arw.core.toml
 
-import io.dotanuki.arw.core.domain.models.AnalysedArtifact
-import io.dotanuki.arw.core.domain.models.AndroidComponent
-import io.dotanuki.arw.core.domain.models.AndroidComponentType.ACTIVITY
-import io.dotanuki.arw.core.domain.models.AndroidComponentType.PROVIDER
-import io.dotanuki.arw.core.domain.models.AndroidComponentType.RECEIVER
-import io.dotanuki.arw.core.domain.models.AndroidComponentType.SERVICE
+import io.dotanuki.arw.core.android.AnalysedArtifact
+import io.dotanuki.arw.core.android.AndroidComponent
+import io.dotanuki.arw.core.android.AndroidComponentType.ACTIVITY
+import io.dotanuki.arw.core.android.AndroidComponentType.PROVIDER
+import io.dotanuki.arw.core.android.AndroidComponentType.RECEIVER
+import io.dotanuki.arw.core.android.AndroidComponentType.SERVICE
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ArtifactBaseline(
+data class SerializableBaseline(
     val applicationId: String,
     val minSdk: Int,
     val targetSdk: Int,
@@ -38,7 +38,7 @@ data class ArtifactBaseline(
 
     companion object {
         fun from(analysed: AnalysedArtifact) = with(analysed) {
-            ArtifactBaseline(
+            SerializableBaseline(
                 applicationId,
                 minSdk,
                 targetSdk,

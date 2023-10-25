@@ -1,4 +1,4 @@
-package io.dotanuki.arw.core.infrastructure.android
+package io.dotanuki.arw.core.android
 
 import arrow.core.raise.ensure
 import com.android.SdkConstants
@@ -14,12 +14,9 @@ import com.android.tools.apk.analyzer.BinaryXmlParser
 import com.android.tools.build.bundletool.commands.BuildApksCommand
 import com.android.tools.build.bundletool.flags.FlagParser
 import com.android.utils.NullLogger
-import io.dotanuki.arw.core.domain.errors.ArwError
-import io.dotanuki.arw.core.domain.errors.ErrorAware
-import io.dotanuki.arw.core.domain.models.AnalysedArtifact
-import io.dotanuki.arw.core.domain.models.AndroidComponent
-import io.dotanuki.arw.core.domain.models.AndroidComponentType
-import io.dotanuki.arw.core.infrastructure.filesystem.Unzipper
+import io.dotanuki.arw.core.errors.ArwError
+import io.dotanuki.arw.core.errors.ErrorAware
+import io.dotanuki.arw.core.filesystem.Unzipper
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Files

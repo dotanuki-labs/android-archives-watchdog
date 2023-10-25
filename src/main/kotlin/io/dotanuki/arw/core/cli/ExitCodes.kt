@@ -1,4 +1,4 @@
-package io.dotanuki.arw.core.infrastructure.cli
+package io.dotanuki.arw.core.cli
 
 object ExitCodes {
     const val FAILURE = 69

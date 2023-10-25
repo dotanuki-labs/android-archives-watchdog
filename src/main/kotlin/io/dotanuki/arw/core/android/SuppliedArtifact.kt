@@ -1,13 +1,14 @@
-package io.dotanuki.arw.core.infrastructure.android
+package io.dotanuki.arw.core.android
 
-import io.dotanuki.arw.core.domain.errors.ArwError
-import io.dotanuki.arw.core.domain.errors.ErrorAware
+import io.dotanuki.arw.core.errors.ArwError
+import io.dotanuki.arw.core.errors.ErrorAware
 
 data class SuppliedArtifact(
     val filePath: String,
     val type: AndroidArtifactType
 ) {
     companion object {
+
         context (ErrorAware)
         fun from(filePath: String): SuppliedArtifact =
             when {

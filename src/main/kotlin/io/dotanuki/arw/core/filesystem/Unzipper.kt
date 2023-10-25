@@ -1,4 +1,4 @@
-package io.dotanuki.arw.core.infrastructure.filesystem
+package io.dotanuki.arw.core.filesystem
 
 import java.io.BufferedOutputStream
 import java.io.File

@@ -1,4 +1,4 @@
-package io.dotanuki.arw.core.infrastructure.cli
+package io.dotanuki.arw.core.cli
 
 import com.github.ajalt.mordant.terminal.Terminal
 
