@@ -26,7 +26,7 @@ features = [
     "android.hardware.microphone",
     "android.hardware.screen.portrait"
 ]
-trustedComponents = [  ]
+trustedPackages = [  ]
 activities = [
     "com.duckduckgo.app.SelectedTextSearchActivity",
     "com.duckduckgo.app.WidgetThemeConfiguration",

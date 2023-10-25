@@ -29,7 +29,7 @@ permissions = [
     "org.mozilla.focus.permission.RECEIVE_DOWNLOAD_BROADCAST"
 ]
 features = [  ]
-trustedComponents = [  ]
+trustedPackages = [  ]
 activities = [
     "androidx.compose.ui.tooling.PreviewActivity",
     "com.google.android.gms.common.api.GoogleApiActivity",

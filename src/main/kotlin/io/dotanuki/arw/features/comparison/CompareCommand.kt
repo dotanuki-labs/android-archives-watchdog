@@ -13,12 +13,12 @@ import io.dotanuki.arw.core.toml.ValidatedTOML
 
 context (CompareContext)
 class CompareCommand : CliktCommand(
-    help = "arw compare -t/--target <path/to/target> -b/--baseline <path/to/baseline>",
+    help = "arw compare -a/--archive <path/to/archive> -b/--baseline <path/to/baseline>",
     name = "compare"
 ) {
 
-    private val target: String by option("-t", "--target").required()
-    private val baseline: String by option("-b", "--baseline").required()
+    private val pathToArchive: String by option("-a", "--archive").required()
+    private val pathToBaseline: String by option("-b", "--baseline").required()
     private val debugMode by option("--stacktrace").flag(default = false)
 
     override fun run() {
@@ -28,8 +28,8 @@ class CompareCommand : CliktCommand(
 
     context (ErrorAware)
     private fun performComparison() {
-        val current = AndroidArtifactAnalyser.analyse(ValidatedFile(target))
-        val reference = ValidatedTOML(ValidatedFile(baseline))
+        val current = AndroidArtifactAnalyser.analyse(ValidatedFile(pathToArchive))
+        val reference = ValidatedTOML(ValidatedFile(pathToBaseline))
         val comparison = ArtifactsComparator.compare(current, reference.asBaseline())
         ComparisonReporter.reportChanges(comparison)
     }

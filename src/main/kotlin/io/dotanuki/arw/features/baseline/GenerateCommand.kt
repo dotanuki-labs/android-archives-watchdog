@@ -13,12 +13,12 @@ import io.dotanuki.arw.core.toml.WatchdogConfig
 
 context (BaselineContext)
 class GenerateCommand : CliktCommand(
-    help = "arw generate -t/--target <path/to/target>",
+    help = "arw generate -a/--archive <path/to/archive> -t/--trust <packages>",
     name = "generate"
 ) {
 
-    private val target: String by option("-t", "--target").required()
-    private val ignored: String? by option("-i", "--ignore")
+    private val pathToArchive: String by option("-a", "--archive").required()
+    private val trustedPackages: String? by option("-t", "--trust")
     private val debugMode by option("--stacktrace").flag(default = false)
 
     override fun run() {
@@ -28,10 +28,9 @@ class GenerateCommand : CliktCommand(
 
     context (ErrorAware)
     private fun extractBaseline() {
-        val analysed = AndroidArtifactAnalyser.analyse(ValidatedFile(target))
+        val analysed = AndroidArtifactAnalyser.analyse(ValidatedFile(pathToArchive))
+        val baseline = WatchdogConfig.from(analysed, ValidatedPackages(trustedPackages))
         val outputFile = "${analysed.applicationId}.toml"
-
-        val baseline = WatchdogConfig.from(analysed, ignored)
         BaselineWriter.write(baseline, outputFile)
     }
 }
