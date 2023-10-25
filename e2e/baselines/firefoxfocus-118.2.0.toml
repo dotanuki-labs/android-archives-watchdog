@@ -1,6 +1,4 @@
 applicationId = "org.mozilla.focus"
-minSdk = 21
-targetSdk = 33
 permissions = [
     "android.permission.ACCESS_COARSE_LOCATION",
     "android.permission.ACCESS_FINE_LOCATION",
@@ -31,6 +29,7 @@ permissions = [
     "org.mozilla.focus.permission.RECEIVE_DOWNLOAD_BROADCAST"
 ]
 features = [  ]
+trustedComponents = [  ]
 activities = [
     "androidx.compose.ui.tooling.PreviewActivity",
     "com.google.android.gms.common.api.GoogleApiActivity",

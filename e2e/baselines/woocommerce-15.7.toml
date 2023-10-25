@@ -1,6 +1,4 @@
 applicationId = "com.woocommerce.android"
-minSdk = 24
-targetSdk = 33
 permissions = [
     "android.permission.ACCESS_COARSE_LOCATION",
     "android.permission.ACCESS_FINE_LOCATION",
@@ -36,6 +34,10 @@ features = [
     "android.hardware.location",
     "android.hardware.wifi"
 ]
+trustedComponents = [
+    "com.woocommerce.*",
+    "org.wordpress.*"
+]
 activities = [
     "androidx.compose.ui.tooling.PreviewActivity",
     "com.google.android.gms.auth.api.signin.internal.SignInHubActivity",
@@ -46,16 +48,6 @@ activities = [
     "com.s.p.Dashboard",
     "com.stripe.cots.simulator.SimulatedContactlessPaymentActivity",
     "com.stripe.stripeterminal.internal.common.usb.UsbEventReceiverActivity",
-    "com.woocommerce.android.support.SSRActivity",
-    "com.woocommerce.android.support.WooLogViewerActivity",
-    "com.woocommerce.android.support.help.HelpActivity",
-    "com.woocommerce.android.support.requests.SupportRequestFormActivity",
-    "com.woocommerce.android.ui.login.LoginActivity",
-    "com.woocommerce.android.ui.login.MagicLinkInterceptActivity",
-    "com.woocommerce.android.ui.main.MainActivity",
-    "com.woocommerce.android.ui.prefs.AppSettingsActivity",
-    "com.woocommerce.android.ui.prefs.UnifiedAboutScreenActivity",
-    "org.wordpress.android.mediapicker.ui.MediaPickerActivity",
     "zendesk.messaging.MessagingActivity",
     "zendesk.support.guide.HelpCenterActivity",
     "zendesk.support.guide.ViewArticleActivity",
@@ -78,12 +70,7 @@ services = [
     "com.google.firebase.components.ComponentDiscoveryService",
     "com.google.firebase.messaging.FirebaseMessagingService",
     "com.google.mlkit.common.internal.MlKitComponentDiscoveryService",
-    "com.stripe.cots.aidlservice.CotsService",
-    "com.woocommerce.android.media.ProductImagesJobService",
-    "com.woocommerce.android.media.ProductImagesService",
-    "com.woocommerce.android.notifications.NotificationsProcessingService",
-    "com.woocommerce.android.notifications.push.FCMMessageService",
-    "org.wordpress.android.login.LoginWpcomService"
+    "com.stripe.cots.aidlservice.CotsService"
 ]
 receivers = [
     "androidx.profileinstaller.ProfileInstallReceiver",
@@ -98,7 +85,6 @@ receivers = [
     "com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver",
     "com.google.android.gms.measurement.AppMeasurementReceiver",
     "com.google.firebase.iid.FirebaseInstanceIdReceiver",
-    "com.woocommerce.android.ui.appwidgets.stats.today.TodayStatsWidgetProvider",
     "zendesk.support.DeepLinkingBroadcastReceiver"
 ]
 providers = [
