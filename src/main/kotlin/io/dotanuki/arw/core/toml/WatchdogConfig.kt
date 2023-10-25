@@ -13,9 +13,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WatchdogConfig(
     val applicationId: String,
-    val ignoredPackages: Set<String> = emptySet(),
     val permissions: Set<String> = emptySet(),
     val features: Set<String> = emptySet(),
+    val trustedComponents: Set<String> = emptySet(),
     val activities: Set<String> = emptySet(),
     val services: Set<String> = emptySet(),
     val receivers: Set<String> = emptySet(),
@@ -27,7 +27,7 @@ data class WatchdogConfig(
             permissions,
             features,
             aggregateComponents().toSet(),
-            ignoredPackages
+            trustedComponents
         )
 
     private fun aggregateComponents() =
@@ -42,7 +42,7 @@ data class WatchdogConfig(
 
             WatchdogConfig(
                 applicationId,
-                ignoredPackages = packagesToIgnore.map { "$it.*" }.toSortedSet(),
+                trustedComponents = packagesToIgnore.map { "$it.*" }.toSortedSet(),
                 permissions = androidPermissions,
                 features = androidFeatures,
                 activities = androidComponents.declaredNames(ACTIVITY, packagesToIgnore),
