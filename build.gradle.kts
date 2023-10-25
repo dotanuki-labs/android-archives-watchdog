@@ -83,8 +83,8 @@ tasks.withType<KotlinCompile>().configureEach {
 tasks.withType<ShadowJar>().configureEach {
     manifest {
         attributes["Add-Opens"] = "java.base/java.lang.invoke"
-        attributes["Main-Class"] = "io.dotanuki.arw.MainKt"
-        archiveFileName.set("arw-$version.jar")
+        attributes["Main-Class"] = "io.dotanuki.aaw.MainKt"
+        archiveFileName.set("aaw-$version.jar")
     }
 }
 

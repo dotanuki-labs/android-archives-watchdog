@@ -19,7 +19,7 @@ e2e() {
 
   echo -e "• Comparing against $baseline"
 
-  arw compare -a ".tmp/$artifact" -b "$baseline" >/dev/null
+  aaw compare -a ".tmp/$artifact" -b "$baseline" >/dev/null
 
   echo -e "✔ No issues found"
 }
@@ -62,8 +62,8 @@ test_protonmail() {
   e2e "$repo" "$version" "$artifact" "$baseline"
 }
 
-if ! which arw >/dev/null; then
-  echo "✗ Error : missing 'arw' executable in your path"
+if ! which aaw >/dev/null; then
+  echo "✗ Error : missing 'aaw' executable in your path"
   echo
   exit 1
 fi
