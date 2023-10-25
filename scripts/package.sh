@@ -6,9 +6,9 @@ dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${dir%/*}"
 
 readonly version=$(grep "latest" src/main/resources/versions.properties | sed "s/latest=//g")
-readonly fatjar="build/libs/arw-$version.jar"
+readonly fatjar="build/libs/aaw-$version.jar"
 readonly output_folder="build/bin"
-readonly target_binary="$output_folder/arw"
+readonly target_binary="$output_folder/aaw"
 
 if ! test -f "$fatjar"; then
   echo "✗ Error : missing target fatjar!"
@@ -18,7 +18,7 @@ fi
 
 rm -rf "$"$output_folder""
 mkdir -p "$output_folder"
-touch "$output_folder/arw"
+touch "$output_folder/aaw"
 echo "#! /usr/bin/env bash" >>"$target_binary"
 echo "" >>"$target_binary"
 echo "exec java -Xmx1024m -jar \$0 \"\$@\"" >>"$target_binary"
