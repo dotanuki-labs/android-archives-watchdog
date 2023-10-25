@@ -1,9 +1,9 @@
 package io.dotanuki.arw.features.comparison
 
-import io.dotanuki.arw.core.domain.errors.ArwError
-import io.dotanuki.arw.core.domain.errors.ErrorAware
-import io.dotanuki.arw.core.domain.models.AnalysedArtifact
-import io.dotanuki.arw.core.domain.models.AndroidComponentType
+import io.dotanuki.arw.core.android.AnalysedArtifact
+import io.dotanuki.arw.core.android.AndroidComponentType
+import io.dotanuki.arw.core.errors.ArwError
+import io.dotanuki.arw.core.errors.ErrorAware
 
 object ArtifactsComparator {
 

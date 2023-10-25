@@ -1,7 +1,7 @@
-package io.dotanuki.arw.core.infrastructure.filesystem
+package io.dotanuki.arw.core.filesystem
 
-import io.dotanuki.arw.core.domain.errors.ArwError
-import io.dotanuki.arw.core.domain.errors.ErrorAware
+import io.dotanuki.arw.core.errors.ArwError
+import io.dotanuki.arw.core.errors.ErrorAware
 import java.io.File
 
 object ValidatedFile {

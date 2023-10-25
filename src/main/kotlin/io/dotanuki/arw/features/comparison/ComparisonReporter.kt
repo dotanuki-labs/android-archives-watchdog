@@ -2,8 +2,8 @@ package io.dotanuki.arw.features.comparison
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.table.table
-import io.dotanuki.arw.core.infrastructure.cli.ExitCodes
-import io.dotanuki.arw.core.infrastructure.cli.emptyLine
+import io.dotanuki.arw.core.cli.ExitCodes
+import io.dotanuki.arw.core.cli.emptyLine
 import kotlin.system.exitProcess
 
 object ComparisonReporter {

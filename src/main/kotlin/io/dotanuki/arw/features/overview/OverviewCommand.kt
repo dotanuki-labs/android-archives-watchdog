@@ -7,13 +7,13 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
-import io.dotanuki.arw.core.domain.errors.ErrorAware
-import io.dotanuki.arw.core.domain.models.AnalysedArtifact
-import io.dotanuki.arw.core.domain.models.AndroidComponentType
-import io.dotanuki.arw.core.domain.models.AndroidPermissions
-import io.dotanuki.arw.core.infrastructure.android.AndroidArtifactAnalyser
-import io.dotanuki.arw.core.infrastructure.cli.ErrorReporter
-import io.dotanuki.arw.core.infrastructure.filesystem.ValidatedFile
+import io.dotanuki.arw.core.android.AnalysedArtifact
+import io.dotanuki.arw.core.android.AndroidArtifactAnalyser
+import io.dotanuki.arw.core.android.AndroidComponentType
+import io.dotanuki.arw.core.android.AndroidPermissions
+import io.dotanuki.arw.core.cli.ErrorReporter
+import io.dotanuki.arw.core.errors.ErrorAware
+import io.dotanuki.arw.core.filesystem.ValidatedFile
 
 context (OverviewContext)
 class OverviewCommand : CliktCommand(

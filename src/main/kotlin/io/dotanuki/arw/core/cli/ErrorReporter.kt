@@ -1,8 +1,8 @@
-package io.dotanuki.arw.core.infrastructure.cli
+package io.dotanuki.arw.core.cli
 
 import com.github.ajalt.mordant.rendering.TextColors.red
 import com.github.ajalt.mordant.terminal.Terminal
-import io.dotanuki.arw.core.domain.errors.ArwError
+import io.dotanuki.arw.core.errors.ArwError
 import kotlin.system.exitProcess
 
 object ErrorReporter {

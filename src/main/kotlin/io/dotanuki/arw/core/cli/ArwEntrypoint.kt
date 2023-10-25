@@ -1,11 +1,11 @@
-package io.dotanuki.arw.core.infrastructure.cli
+package io.dotanuki.arw.core.cli
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.yellow
 
-class ARWCommand : CliktCommand(
+class ArwEntrypoint : CliktCommand(
     printHelpOnEmptyArgs = true,
     epilog =
     """

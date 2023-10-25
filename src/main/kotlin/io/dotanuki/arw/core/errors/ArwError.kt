@@ -1,4 +1,4 @@
-package io.dotanuki.arw.core.domain.errors
+package io.dotanuki.arw.core.errors
 
 import arrow.core.raise.Raise
 
