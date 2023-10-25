@@ -9,7 +9,7 @@ import io.dotanuki.arw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.arw.core.cli.ErrorReporter
 import io.dotanuki.arw.core.errors.ErrorAware
 import io.dotanuki.arw.core.filesystem.ValidatedFile
-import io.dotanuki.arw.core.toml.SerializableBaseline
+import io.dotanuki.arw.core.toml.WatchdogConfig
 
 context (BaselineContext)
 class GenerateCommand : CliktCommand(
@@ -18,6 +18,7 @@ class GenerateCommand : CliktCommand(
 ) {
 
     private val target: String by option("-t", "--target").required()
+    private val ignored: String? by option("-i", "--ignore")
     private val debugMode by option("--stacktrace").flag(default = false)
 
     override fun run() {
@@ -30,7 +31,7 @@ class GenerateCommand : CliktCommand(
         val analysed = AndroidArtifactAnalyser.analyse(ValidatedFile(target))
         val outputFile = "${analysed.applicationId}.toml"
 
-        val baseline = SerializableBaseline.from(analysed)
+        val baseline = WatchdogConfig.from(analysed, ignored)
         BaselineWriter.write(baseline, outputFile)
     }
 }
