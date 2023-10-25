@@ -6,8 +6,5 @@ object ValidatedPackages {
 
     context (ErrorAware)
     operator fun invoke(packages: String?): List<String> =
-        packages
-            ?.split(",")
-            ?.map { if (!it.endsWith(".*")) "$it.*" else it }
-            ?: emptyList()
+        packages?.split(",") ?: emptyList()
 }

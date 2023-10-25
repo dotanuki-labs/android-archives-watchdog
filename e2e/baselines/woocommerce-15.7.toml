@@ -35,8 +35,8 @@ features = [
     "android.hardware.wifi"
 ]
 trustedPackages = [
-    "com.woocommerce.*",
-    "org.wordpress.*"
+    "com.woocommerce",
+    "org.wordpress"
 ]
 activities = [
     "androidx.compose.ui.tooling.PreviewActivity",

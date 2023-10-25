@@ -58,7 +58,7 @@ class ArtifactsComparatorTests {
 
     private val compactBaseline = ArtifactBaseline(
         applicationId = "io.dotanuki.norris.android",
-        trustedPackages = setOf("io.dotanuki.*"),
+        trustedPackages = setOf("io.dotanuki"),
         androidPermissions = setOf(
             "android.permission.INTERNET"
         ),
