@@ -34,7 +34,7 @@ features = [
     "android.hardware.location",
     "android.hardware.wifi"
 ]
-trustedComponents = [
+trustedPackages = [
     "com.woocommerce.*",
     "org.wordpress.*"
 ]

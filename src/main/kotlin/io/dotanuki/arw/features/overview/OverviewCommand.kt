@@ -17,14 +17,14 @@ import io.dotanuki.arw.core.filesystem.ValidatedFile
 
 context (OverviewContext)
 class OverviewCommand : CliktCommand(
-    help = "arw overview [--console | --json] ",
+    help = "arw overview -a/--archive <path/to/archive> [--console | --json] ",
     name = "overview"
 ) {
 
     private val switches = listOf("--json" to "json", "--console" to "console").toTypedArray()
 
     private val format: String by option().switch(*switches).default("console")
-    private val target: String by option("-t", "--target").required()
+    private val pathToArchive: String by option("-a", "--archive").required()
     private val debugMode by option("--stacktrace").flag(default = false)
 
     override fun run() {
@@ -34,7 +34,7 @@ class OverviewCommand : CliktCommand(
 
     context (ErrorAware)
     private fun extractOverview() {
-        val analysed = AndroidArtifactAnalyser.analyse(ValidatedFile(target))
+        val analysed = AndroidArtifactAnalyser.analyse(ValidatedFile(pathToArchive))
 
         val overview = with(analysed) {
             ArtifactOverview(

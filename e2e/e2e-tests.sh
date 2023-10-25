@@ -19,7 +19,7 @@ e2e() {
 
   echo -e "• Comparing against $baseline"
 
-  arw compare -t ".tmp/$artifact" -b "$baseline" >/dev/null
+  arw compare -a ".tmp/$artifact" -b "$baseline" >/dev/null
 
   echo -e "✔ No issues found"
 }

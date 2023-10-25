@@ -13,7 +13,7 @@ test_usage() {
 }
 
 test_invalid_inputs() {
-  comparison=$("$arw" overview -t "$fixtures/missing.apk" -b "$toml" || true)
+  comparison=$("$arw" overview -a "$fixtures/missing.apk" -b "$toml" || true)
   echo "$comparison" | grep "missing.apk does not exist" >/dev/null
 }
 
@@ -21,9 +21,9 @@ test_overview() {
 
   echo "✔ Testing artifact overview"
 
-  "$arw" overview --target="$fixtures/app-debug.apk"
+  "$arw" overview --archive="$fixtures/app-debug.apk"
 
-  overview=$("$arw" overview --target="$fixtures/app-debug.apk" --json)
+  overview=$("$arw" overview --archive="$fixtures/app-debug.apk" --json)
   (( $(echo "$overview" | jq '.min_sdk') == 28 ))
   (( $(echo "$overview" | jq '.target_sdk') == 33 ))
 }
@@ -31,7 +31,7 @@ test_overview() {
 test_generate_baseline_complete() {
   echo "✔ Testing baseline generation (complete)"
 
-  "$arw" generate --target="$fixtures/app-debug.apk"
+  "$arw" generate -a "$fixtures/app-debug.apk"
 
   local complete_toml="io.dotanuki.norris.android.debug.toml"
 
@@ -45,7 +45,7 @@ test_generate_baseline_complete() {
 test_generate_baseline_compact() {
   echo "✔ Testing baseline generation (compact)"
 
-  "$arw" generate --target="$fixtures/app-debug.apk" --ignore="io.dotanuki"
+  "$arw" generate --archive="$fixtures/app-debug.apk" --trust="io.dotanuki"
 
   local compact_toml="io.dotanuki.norris.android.debug.toml"
 
@@ -60,10 +60,10 @@ test_compare_baseline_with_artifact() {
   echo
   echo "✔ Testing comparison between baseline and artifacts"
 
-  "$arw" generate --target="$fixtures/app-release.aab" --ignore="io.dotanuki"
+  "$arw" generate --archive="$fixtures/app-release.aab" --trust="io.dotanuki"
 
   local toml="io.dotanuki.norris.android.toml"
-  comparison=$("$arw" compare -t "$fixtures/app-release-changed.apk" -b "$toml" || true)
+  comparison=$("$arw" compare -a "$fixtures/app-release-changed.apk" -b "$toml" || true)
   echo "$comparison"
   echo "$comparison" | grep "Your baseline file does not match the supplied artifact" >/dev/null
 
