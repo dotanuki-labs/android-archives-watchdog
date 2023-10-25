@@ -81,22 +81,20 @@ object ArtifactsComparator {
         fromBaseline: Set<String>,
         trustedPackages: Set<String>
     ): Set<Pair<String, BrokenExpectation>> {
-        val sanitizedPrefixes = trustedPackages.map { it.replace(".*", "") }
-
         val missingOnBaseline = (fromArtifact subtract fromBaseline)
-            .filterNot { it.prefixedWithAny(sanitizedPrefixes) }
+            .filterNot { it.prefixedWithAny(trustedPackages) }
             .map { it to BrokenExpectation.MISSING_ON_BASELINE }
             .toSet()
 
         val missingOnTarget = (fromBaseline subtract fromArtifact)
-            .filterNot { it.prefixedWithAny(sanitizedPrefixes) }
+            .filterNot { it.prefixedWithAny(trustedPackages) }
             .map { it to BrokenExpectation.MISSING_ON_ARTIFACT }
             .toSet()
 
         return missingOnBaseline union missingOnTarget
     }
 
-    private fun String.prefixedWithAny(patterns: List<String>): Boolean {
+    private fun String.prefixedWithAny(patterns: Set<String>): Boolean {
         patterns.forEach {
             if (startsWith(it)) return true
         }

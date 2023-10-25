@@ -13,7 +13,7 @@ import io.dotanuki.arw.core.toml.WatchdogConfig
 
 context (BaselineContext)
 class GenerateCommand : CliktCommand(
-    help = "arw generate -a/--archive <path/to/archive> -t/--trust <packages>",
+    help = "arw generate -a/--archive <path/to/archive> -t/--trust <package1,package2,...>",
     name = "generate"
 ) {
 
