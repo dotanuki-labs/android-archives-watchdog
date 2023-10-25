@@ -9,7 +9,7 @@ import io.dotanuki.arw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.arw.core.cli.ErrorReporter
 import io.dotanuki.arw.core.errors.ErrorAware
 import io.dotanuki.arw.core.filesystem.ValidatedFile
-import io.dotanuki.arw.core.toml.ValidatedBaseline
+import io.dotanuki.arw.core.toml.ValidatedTOML
 
 context (CompareContext)
 class CompareCommand : CliktCommand(
@@ -29,8 +29,8 @@ class CompareCommand : CliktCommand(
     context (ErrorAware)
     private fun performComparison() {
         val current = AndroidArtifactAnalyser.analyse(ValidatedFile(target))
-        val reference = ValidatedBaseline(ValidatedFile(baseline))
-        val comparison = ArtifactsComparator.compare(current, reference.asArtifact())
+        val reference = ValidatedTOML(ValidatedFile(baseline))
+        val comparison = ArtifactsComparator.compare(current, reference.asBaseline())
         ComparisonReporter.reportChanges(comparison)
     }
 }

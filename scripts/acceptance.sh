@@ -28,25 +28,39 @@ test_overview() {
   (( $(echo "$overview" | jq '.target_sdk') == 33 ))
 }
 
-test_generate_baseline() {
-  echo "✔ Testing baseline generation"
+test_generate_baseline_complete() {
+  echo "✔ Testing baseline generation (complete)"
 
   "$arw" generate --target="$fixtures/app-debug.apk"
 
-  local toml="io.dotanuki.norris.android.debug.toml"
+  local complete_toml="io.dotanuki.norris.android.debug.toml"
 
   echo
-  cat "$toml"
+  cat "$complete_toml"
   echo
 
-  rm -rf "$toml"
+  rm -rf "$complete_toml"
+}
+
+test_generate_baseline_compact() {
+  echo "✔ Testing baseline generation (compact)"
+
+  "$arw" generate --target="$fixtures/app-debug.apk" --ignore="io.dotanuki"
+
+  local compact_toml="io.dotanuki.norris.android.debug.toml"
+
+  echo
+  cat "$compact_toml"
+  echo
+
+  rm -rf "$compact_toml"
 }
 
 test_compare_baseline_with_artifact() {
   echo
   echo "✔ Testing comparison between baseline and artifacts"
 
-  "$arw" generate --target="$fixtures/app-release.aab"
+  "$arw" generate --target="$fixtures/app-release.aab" --ignore="io.dotanuki"
 
   local toml="io.dotanuki.norris.android.toml"
   comparison=$("$arw" compare -t "$fixtures/app-release-changed.apk" -b "$toml" || true)
@@ -65,7 +79,8 @@ echo
 
 test_usage
 test_overview
-test_generate_baseline
+test_generate_baseline_complete
+test_generate_baseline_compact
 test_compare_baseline_with_artifact
 
 echo

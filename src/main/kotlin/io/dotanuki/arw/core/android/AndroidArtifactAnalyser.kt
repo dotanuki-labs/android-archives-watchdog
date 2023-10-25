@@ -48,8 +48,8 @@ object AndroidArtifactAnalyser {
 
         return AnalysedArtifact(
             applicationId = appInfo.packageId,
-            androidPermissions = appInfo.permissions.apply { sorted() },
-            androidFeatures = appInfo.usesFeature.keys.apply { sorted() },
+            androidPermissions = appInfo.permissions.toSortedSet(),
+            androidFeatures = appInfo.usesFeature.keys.toSortedSet(),
             androidComponents = parsedManifest.extractComponents(),
             minSdk = parsedManifest.minSdkVersion,
             targetSdk = parsedManifest.targetSdkVersion
