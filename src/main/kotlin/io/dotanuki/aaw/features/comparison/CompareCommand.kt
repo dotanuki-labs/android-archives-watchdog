@@ -13,7 +13,7 @@ import io.dotanuki.aaw.core.toml.ValidatedTOML
 
 context (CompareContext)
 class CompareCommand : CliktCommand(
-    help = "arw compare -a/--archive <path/to/archive> -b/--baseline <path/to/baseline>",
+    help = "aaw compare -a/--archive <path/to/archive> -b/--baseline <path/to/baseline>",
     name = "compare"
 ) {
 

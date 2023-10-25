@@ -2,7 +2,7 @@ package io.dotanuki.aaw
 
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.mordant.terminal.Terminal
-import io.dotanuki.aaw.core.cli.ArwEntrypoint
+import io.dotanuki.aaw.core.cli.AawEntrypoint
 import io.dotanuki.aaw.features.baseline.BaselineContext
 import io.dotanuki.aaw.features.baseline.GenerateCommand
 import io.dotanuki.aaw.features.comparison.CompareCommand
@@ -64,6 +64,6 @@ object Injection {
     }
 
     val entrypoint by lazy {
-        ArwEntrypoint().subcommands(overviewCommand, generateCommand, compareCommand)
+        AawEntrypoint().subcommands(overviewCommand, generateCommand, compareCommand)
     }
 }

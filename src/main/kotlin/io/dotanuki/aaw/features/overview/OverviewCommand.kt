@@ -17,7 +17,7 @@ import io.dotanuki.aaw.core.filesystem.ValidatedFile
 
 context (OverviewContext)
 class OverviewCommand : CliktCommand(
-    help = "arw overview -a/--archive <path/to/archive> [--console | --json] ",
+    help = "aaw overview -a/--archive <path/to/archive> [--console | --json] ",
     name = "overview"
 ) {
 

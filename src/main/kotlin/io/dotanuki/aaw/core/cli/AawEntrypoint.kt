@@ -5,7 +5,8 @@ import com.github.ajalt.clikt.core.context
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.yellow
 
-class ArwEntrypoint : CliktCommand(
+class AawEntrypoint : CliktCommand(
+    name = "aaw",
     printHelpOnEmptyArgs = true,
     epilog =
     """
