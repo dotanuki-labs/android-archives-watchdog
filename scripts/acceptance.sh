@@ -13,8 +13,14 @@ test_usage() {
 }
 
 test_invalid_inputs() {
-    comparison=$("$aaw" overview -a "$fixtures/missing.apk" -b "$toml" || true)
+    comparison=$("$aaw" overview -a "$fixtures/missing.apk" || true)
     echo "$comparison" | grep "missing.apk does not exist" >/dev/null
+}
+
+test_version() {
+    echo "✔ Testing version"
+    "$aaw" version
+    echo
 }
 
 test_overview() {
@@ -77,6 +83,8 @@ echo "→ Running tests"
 echo
 
 test_usage
+test_invalid_inputs
+test_version
 test_overview
 test_generate_baseline_complete
 test_generate_baseline_compact

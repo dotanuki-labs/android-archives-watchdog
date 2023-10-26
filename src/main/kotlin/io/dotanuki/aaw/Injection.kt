@@ -9,6 +9,8 @@ import io.dotanuki.aaw.features.comparison.CompareCommand
 import io.dotanuki.aaw.features.comparison.CompareContext
 import io.dotanuki.aaw.features.overview.OverviewCommand
 import io.dotanuki.aaw.features.overview.OverviewContext
+import io.dotanuki.aaw.features.version.VersionCommand
+import io.dotanuki.aaw.features.version.VersionContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
@@ -63,7 +65,22 @@ object Injection {
         }
     }
 
+    private val versionContext by lazy {
+        VersionContext(terminal)
+    }
+
+    private val versionCommand by lazy {
+        with(versionContext) {
+            VersionCommand()
+        }
+    }
+
     val entrypoint by lazy {
-        AawEntrypoint().subcommands(overviewCommand, generateCommand, compareCommand)
+        AawEntrypoint().subcommands(
+            overviewCommand,
+            generateCommand,
+            compareCommand,
+            versionCommand
+        )
     }
 }
