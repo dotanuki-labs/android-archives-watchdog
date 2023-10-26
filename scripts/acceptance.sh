@@ -9,65 +9,64 @@ readonly aaw="build/bin/aaw"
 readonly fixtures="src/test/resources"
 
 test_usage() {
-  "$aaw" | grep "Usage" >/dev/null
+    "$aaw" | grep "Usage" >/dev/null
 }
 
 test_invalid_inputs() {
-  comparison=$("$aaw" overview -a "$fixtures/missing.apk" -b "$toml" || true)
-  echo "$comparison" | grep "missing.apk does not exist" >/dev/null
+    comparison=$("$aaw" overview -a "$fixtures/missing.apk" -b "$toml" || true)
+    echo "$comparison" | grep "missing.apk does not exist" >/dev/null
 }
 
 test_overview() {
+    echo "✔ Testing artifact overview"
 
-  echo "✔ Testing artifact overview"
+    "$aaw" overview --archive="$fixtures/app-debug.apk"
 
-  "$aaw" overview --archive="$fixtures/app-debug.apk"
-
-  overview=$("$aaw" overview --archive="$fixtures/app-debug.apk" --json)
-  (( $(echo "$overview" | jq '.min_sdk') == 28 ))
-  (( $(echo "$overview" | jq '.target_sdk') == 33 ))
+    overview=$("$aaw" overview --archive="$fixtures/app-debug.apk" --json)
+    (($(echo "$overview" | jq '.min_sdk') == 28))
+    (($(echo "$overview" | jq '.target_sdk') == 33))
 }
 
 test_generate_baseline_complete() {
-  echo "✔ Testing baseline generation (complete)"
+    echo "✔ Testing baseline generation (complete)"
 
-  "$aaw" generate -a "$fixtures/app-debug.apk"
+    "$aaw" generate -a "$fixtures/app-debug.apk"
 
-  local complete_toml="io.dotanuki.norris.android.debug.toml"
+    local complete_toml="io.dotanuki.norris.android.debug.toml"
 
-  echo
-  cat "$complete_toml"
-  echo
+    echo
+    cat "$complete_toml"
+    echo
 
-  rm -rf "$complete_toml"
+    rm -rf "$complete_toml"
 }
 
 test_generate_baseline_compact() {
-  echo "✔ Testing baseline generation (compact)"
+    echo "✔ Testing baseline generation (compact)"
 
-  "$aaw" generate --archive="$fixtures/app-debug.apk" --trust="io.dotanuki"
+    "$aaw" generate --archive="$fixtures/app-debug.apk" --trust="io.dotanuki"
 
-  local compact_toml="io.dotanuki.norris.android.debug.toml"
+    local compact_toml="io.dotanuki.norris.android.debug.toml"
 
-  echo
-  cat "$compact_toml"
-  echo
+    echo
+    cat "$compact_toml"
+    echo
 
-  rm -rf "$compact_toml"
+    rm -rf "$compact_toml"
 }
 
 test_compare_baseline_with_artifact() {
-  echo
-  echo "✔ Testing comparison between baseline and artifacts"
+    echo
+    echo "✔ Testing comparison between baseline and artifacts"
 
-  "$aaw" generate --archive="$fixtures/app-release.aab" --trust="io.dotanuki"
+    "$aaw" generate --archive="$fixtures/app-release.aab" --trust="io.dotanuki"
 
-  local toml="io.dotanuki.norris.android.toml"
-  comparison=$("$aaw" compare -a "$fixtures/app-release-changed.apk" -b "$toml" || true)
-  echo "$comparison"
-  echo "$comparison" | grep "Your baseline file does not match the supplied artifact" >/dev/null
+    local toml="io.dotanuki.norris.android.toml"
+    comparison=$("$aaw" compare -a "$fixtures/app-release-changed.apk" -b "$toml" || true)
+    echo "$comparison"
+    echo "$comparison" | grep "Your baseline file does not match the supplied artifact" >/dev/null
 
-  rm -rf "$toml"
+    rm -rf "$toml"
 }
 
 echo
