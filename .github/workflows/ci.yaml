@@ -27,7 +27,7 @@ jobs:
         uses: gradle/gradle-build-action@v2.9.0
 
       - name: Check typos on code
-        uses: crate-ci/typos@v1.16.20
+        uses: crate-ci/typos@v1.16.21
 
       - name: Lint shell scripts
         run: ./scripts/code-quality-bash.sh
