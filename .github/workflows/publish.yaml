@@ -1,0 +1,38 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Project Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3.13.0
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Run Gradle build
+        run: ./gradlew shadowJar
+
+      - name: Package artifact
+        run: ./scripts/package.sh
+
+      - name: Prepare to release
+        id: prepare-release
+        run: ./scripts/prepare-release.sh
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          name: ${{ steps.prepare-release.outputs.version }}
+          tag_name: ${{ steps.prepare-release.outputs.version }}
+          files: build/bin/aaw
+          token: ${{ secrets.DOTANUKI_BOT_TOKEN }}
+          generate_release_notes: true
+          draft: true
