@@ -39,7 +39,7 @@ Every command supports archives in `.apk` and `.aab` formats.
 ### Getting an overview from an Android archive
 
 ```bash
-$> aaw overview -a tmp/ProtonMail-3.0.5.apk
+$> aaw overview -a tmp/ProtonMail-3.0.7.apk
 
 ┌────────────────────────────┬───────────────────────┐
 │ Attribute                  │ Evaluation            │
@@ -139,21 +139,22 @@ $> aaw compare -a tmp/ProtonMail-3.0.17.apk -b ch.protonmail.android.toml
 
 Your baseline file does not match the supplied artifact.
 
-┌─────────────┬───────────────────────────────────────────────────────────────────┬──────────────────────┐
-│ Category    │ Finding                                                           │ Description          │
-├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
-│ Permissions │ android.permission.POST_NOTIFICATIONS                             │ Not on your baseline │
-├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
-│ Permissions │ android.permission.READ_MEDIA_AUDIO                               │ Not on your baseline │
-├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
-│ Permissions │ android.permission.READ_MEDIA_IMAGES                              │ Not on your baseline │
-├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
-│ Permissions │ android.permission.READ_MEDIA_VIDEO                               │ Not on your baseline │
-├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
-│ Components  │ com.google.android.play.core.common.PlayCoreDialogWrapperActivity │ Not on your baseline │
-├─────────────┼───────────────────────────────────────────────────────────────────┼──────────────────────┤
-│ Components  │ androidx.profileinstaller.ProfileInstallReceiver                  │ Not on your baseline │
-└─────────────┴───────────────────────────────────────────────────────────────────┴──────────────────────┘
+┌─────────────┬───────────────────────────────────────────────────────────────────┬────────────┐
+│ Category    │ Finding                                                           │ Missing at │
+├─────────────┼───────────────────────────────────────────────────────────────────┼────────────┤
+│ Permissions │ android.permission.POST_NOTIFICATIONS                             │ Baseline   │
+├─────────────┼───────────────────────────────────────────────────────────────────┼────────────┤
+│ Permissions │ android.permission.READ_MEDIA_AUDIO                               │ Baseline   │
+├─────────────┼───────────────────────────────────────────────────────────────────┼────────────┤
+│ Permissions │ android.permission.READ_MEDIA_IMAGES                              │ Baseline   │
+├─────────────┼───────────────────────────────────────────────────────────────────┼────────────┤
+│ Permissions │ android.permission.READ_MEDIA_VIDEO                               │ Baseline   │
+├─────────────┼───────────────────────────────────────────────────────────────────┼────────────┤
+│ Components  │ com.google.android.play.core.common.PlayCoreDialogWrapperActivity │ Baseline   │
+├─────────────┼───────────────────────────────────────────────────────────────────┼────────────┤
+│ Components  │ androidx.profileinstaller.ProfileInstallReceiver                  │ Baseline   │
+└─────────────┴───────────────────────────────────────────────────────────────────┴────────────┘
+
 ```
 
 This example illustrates how to track sensitive changes as part of your Continuous Integration, assuming that you have

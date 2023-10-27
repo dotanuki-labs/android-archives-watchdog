@@ -18,11 +18,11 @@ object ComparisonReporter {
         }
 
         terminal.emptyLine()
-        terminal.println("Your baseline file does not match the supplied artifact !!!")
+        terminal.println("Your baseline file does not match the supplied artifact")
         terminal.emptyLine()
 
         val changeAsTable = table {
-            header { row(cyan("Category"), cyan("Finding"), cyan("Description")) }
+            header { row(cyan("Category"), cyan("Finding"), cyan("Missing at")) }
             comparison.map {
                 body {
                     row(it.category.description, it.what, it.expectation.description())
@@ -38,7 +38,7 @@ object ComparisonReporter {
 
     context (CompareContext)
     private fun BrokenExpectation.description() = when (this) {
-        BrokenExpectation.MISSING_ON_BASELINE -> "Not on your baseline"
-        BrokenExpectation.MISSING_ON_ARTIFACT -> "Not on your artifact"
+        BrokenExpectation.MISSING_ON_BASELINE -> "Baseline"
+        BrokenExpectation.MISSING_ON_ARTIFACT -> "Archive"
     }
 }
