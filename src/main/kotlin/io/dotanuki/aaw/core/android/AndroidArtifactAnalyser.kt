@@ -103,10 +103,19 @@ object AndroidArtifactAnalyser {
         val tempDir = Files.createTempDirectory("arw-$artifactName-extraction").toFile()
         val apkContainerOutput = "$tempDir/$artifactName.apks"
 
+        val keystore = ClassLoader.getSystemClassLoader().getResourceAsStream("aaw.keystore")?.readAllBytes()
+        ensure(keystore != null) { AawError("Failed when reading aaw.keystore") }
+
+        val keystoreFile = File("$tempDir/aaw.keystore").apply { writeBytes(keystore) }
+
         val flags = arrayOf(
             "--bundle=${artifact.filePath}",
             "--output=$apkContainerOutput",
             "--aapt2=${locateAapt2FromSdk()}",
+            "--ks=$keystoreFile",
+            "--ks-pass=pass:aaw-pass",
+            "--ks-key-alias=aaw-alias",
+            "--key-pass=pass:aaw-pass",
             "--mode=universal"
         )
 
