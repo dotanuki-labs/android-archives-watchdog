@@ -56,7 +56,7 @@ object Injection {
     }
 
     private val compareContext by lazy {
-        CompareContext(terminal, tomlSerializer)
+        CompareContext(terminal, tomlSerializer, jsonSerializer)
     }
 
     private val compareCommand by lazy {
