@@ -17,7 +17,5 @@ if [[ -n "$CI" ]]; then
         exit 1
     fi
 
-    rm -rf "release"
-    mkdir "release"
-    zip -j "release/aaw-$version.zip" "build/bin"
+    zip -j "aaw-$version.zip" "$binary"
 fi
