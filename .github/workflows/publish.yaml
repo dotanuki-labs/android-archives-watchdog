@@ -32,7 +32,7 @@ jobs:
         with:
           name: ${{ steps.prepare-release.outputs.version }}
           tag_name: ${{ steps.prepare-release.outputs.version }}
-          files: release/aaw-${{ steps.prepare-release.outputs.version }}.zip
+          files: aaw-${{ steps.prepare-release.outputs.version }}.zip
           token: ${{ secrets.DOTANUKI_BOT_TOKEN }}
           generate_release_notes: true
           draft: true
