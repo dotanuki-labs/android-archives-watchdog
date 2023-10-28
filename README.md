@@ -1,13 +1,16 @@
 # Android Archives Watchdog 🐶
 
 ## Overview
+
+> A tool to shift-left sensitive changes on your Android deployable archives
+
 `aaw` is command-line tool and a cross-over between functionalities from
 [apkanalyzer](https://developer.android.com/tools/apkanalyzer) and 
 [bundletool](https://developer.android.com/tools/bundletool). 
 
 
 This utility has as goal helping with detection of newly introduced Android frameworks components 
-in your release archives (`.apk` or `.aab`), especially transitive ones brought by 3rd party 
+and permissions in your release archives (`.apk` or `.aab`), especially transitive ones brought by 3rd party 
 project dependencies, following a shift-left approach.
 
 `aaw` is distributed as a 
@@ -23,7 +26,10 @@ targeting the following Android products with public open-source releases on Git
 
 ## Installing
 
-> Github releases and installing instruction to come, stay tuned!
+You can grab executables directly from 
+[Github releases](https://github.com/dotanuki-labs/android-archives-watchdog/releases).
+
+Unzip it and add it to your `$PATH`.
 
 ## Using
 
@@ -79,12 +85,9 @@ Baseline available at : ch.protonmail.android.toml
 This command will produce a `<applicationId>.toml` file in the current directory, which is intended to be available in 
 your VCS. This `toml` tracks a subset of information from the related merged `AndroidManifest.xml`, namely:
 
-- Application Permissions
-- Android Features
-- Activities
-- Services
-- Content Providers
-- Broadcast Receivers
+- [Application Permissions](https://developer.android.com/guide/topics/manifest/manifest-intro#perms)
+- [Device Compatibility](https://developer.android.com/guide/topics/manifest/manifest-intro#compatibility)
+- [Activities, Services, Content Providers and Broadcast Receivers](https://developer.android.com/guide/topics/manifest/manifest-intro#components)
 
 Optionally, you can generate a compact version of a baseline by passing "trusted" packages, usually the ones
 related to your project structure. Those must be passed in a single argument, comma (`,`) separated
@@ -158,12 +161,28 @@ Your baseline file does not match the supplied artifact.
 ```
 
 This example illustrates how to track sensitive changes as part of your Continuous Integration, assuming that you have
-a snapshot of your releasable archive produced at CI runtime. `compare` will exit with a failure status if a fresh 
+a snapshot of your releasable archive produced at CI runtime. 
+
+`compare` can also exit with a failure status if a fresh 
 archive does not match an existing baseline, forcing a baseline update as part of pull/merge request.
+
+```bash
+$> aaw compare -a tmp/ProtonMail-3.0.17.apk -b ch.protonmail.android.toml --fail
+```
+
+In addition, `compare` can produce output in a `json` format as well
+
+```bash
+$> aaw compare -a tmp/ProtonMail-3.0.17.apk -b ch.protonmail.android.toml --json
+```
 
 ## Credits
 
-> TODO
+This tool was inspired by the following blog posts and existing tools
+
+- [Android CI : Reveal Manifest changes in a Pull Request](https://proandroiddev.com/android-ci-reveal-manifest-changes-in-a-pull-request-a5cdd0600afa)
+- [How to compare apk / aab files](https://medium.com/bumble-tech/how-to-compare-apk-aab-files-par-1634563a5af6)
+- [Diffuse](https://github.com/JakeWharton/diffuse)
 
 ## License
 
