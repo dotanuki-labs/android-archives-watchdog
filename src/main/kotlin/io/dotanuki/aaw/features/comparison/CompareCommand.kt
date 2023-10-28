@@ -2,9 +2,11 @@ package io.dotanuki.aaw.features.comparison
 
 import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.options.switch
 import io.dotanuki.aaw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.aaw.core.cli.ErrorReporter
 import io.dotanuki.aaw.core.cli.ExitCodes
@@ -19,10 +21,13 @@ class CompareCommand : CliktCommand(
     name = "compare"
 ) {
 
+    private val outputFormats = listOf("--json" to "json", "--console" to "console").toTypedArray()
+
     private val pathToArchive: String by option("-a", "--archive").required()
     private val pathToBaseline: String by option("-b", "--baseline").required()
     private val exitWithFailure by option("--fail").flag(default = false)
     private val withStacktraces by option("--stacktrace").flag(default = false)
+    private val format: String by option().switch(*outputFormats).default("console")
 
     override fun run() {
         ErrorReporter.printStackTraces = withStacktraces
@@ -34,7 +39,7 @@ class CompareCommand : CliktCommand(
         val current = AndroidArtifactAnalyser.analyse(ValidatedFile(pathToArchive))
         val reference = ValidatedTOML(ValidatedFile(pathToBaseline))
         val comparison = ArtifactsComparator.compare(current, reference.asBaseline())
-        ComparisonReporter.reportChanges(comparison)
+        ComparisonReporter.reportChanges(comparison, format)
 
         if (exitWithFailure && comparison.isNotEmpty()) {
             exitProcess(ExitCodes.FAILURE)

@@ -72,6 +72,11 @@ test_compare_baseline_with_artifact() {
     echo "$comparison"
     echo "$comparison" | grep "Your baseline file does not match the supplied artifact" >/dev/null
 
+    echo
+    echo "As json output:"
+    echo
+
+    "$aaw" compare -a "$fixtures/app-release-changed.apk" -b "$toml" --json | jq
     rm -rf "$toml"
 }
 
