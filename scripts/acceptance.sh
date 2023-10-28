@@ -68,7 +68,7 @@ test_compare_baseline_with_artifact() {
     "$aaw" generate --archive="$fixtures/app-release.aab" --trust="io.dotanuki"
 
     local toml="io.dotanuki.norris.android.toml"
-    comparison=$("$aaw" compare -a "$fixtures/app-release-changed.apk" -b "$toml" || true)
+    comparison=$("$aaw" compare -a "$fixtures/app-release-changed.apk" -b "$toml" --fail || true)
     echo "$comparison"
     echo "$comparison" | grep "Your baseline file does not match the supplied artifact" >/dev/null
 
