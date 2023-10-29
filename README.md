@@ -16,7 +16,7 @@ project dependencies, following a shift-left approach.
 `aaw` is distributed as a 
 [truly-executable](https://skife.org/java/unix/2011/06/20/really_executable_jars.html) 
 [fatjar](https://imperceptiblethoughts.com/shadow/), and 
-it's tested against `jdk11`, `jdk17` and `jdk21`. In addition, this project has end-to-end tests
+it's tested against `jdk11`, `jdk17` and `jdk21` on Unix boxes. In addition, this project has end-to-end tests
 targeting the following Android products with public open-source releases on Github:
 
 - [DuckDuckGo](https://github.com/duckduckgo/Android)
@@ -24,12 +24,23 @@ targeting the following Android products with public open-source releases on Git
 - [WooCommerce](https://github.com/woocommerce/woocommerce-android)
 - [Mozilla Firefox](https://github.com/mozilla-mobile/firefox-android)
 
+## Requirements
+
+This tool requires `jdk11` or newer and a valid Android SDK installation. `aaw` inspects the following
+environment variables when locating your Android SDK installation folder:
+
+- `$ANDROID_HOME`
+- `$ANDROID_SDK`
+- `$ANDROID_SDK_HOME`
+
 ## Installing
 
 You can grab executables directly from 
-[Github releases](https://github.com/dotanuki-labs/android-archives-watchdog/releases).
+[Github releases](https://github.com/dotanuki-labs/android-archives-watchdog/releases). 
 
 Unzip it and add it to your `$PATH`.
+
+Alternatively, there is an [asdf-plugin](https://github.com/dotanuki-labs/asdf-aaw) available as well.
 
 ## Using
 
