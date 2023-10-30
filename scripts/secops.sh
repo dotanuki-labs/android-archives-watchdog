@@ -27,7 +27,7 @@ download_sbom() {
 }
 
 analyse_sbom() {
-    ./bomber scan "$sbom"
+    ./bomber scan .
 }
 
 echo
