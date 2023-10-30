@@ -25,6 +25,11 @@ jobs:
 
       - name: Setup Gradle build
         uses: gradle/gradle-build-action@v2.9.0
+        with:
+          generate-job-summary: false
+          gradle-home-cache-strict-match: false
+          gradle-home-cache-cleanup: true
+          dependency-graph: 'generate-and-submit'
 
       - name: Check typos on code
         uses: crate-ci/typos@v1.16.21
