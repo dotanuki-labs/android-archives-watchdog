@@ -39,7 +39,10 @@ jobs:
         run: ./gradlew build shadowJar
 
       - name: Run acceptance tests
-        run: ./scripts/acceptance.sh
+        run: |
+          npm install -g bats
+          ./scripts/package.sh
+          bats src/test/bash/acceptance.bats --print-output-on-failure
 
       - name: Archive executable
         uses: actions/upload-artifact@v3.1.3
@@ -64,7 +67,11 @@ jobs:
         uses: actions/download-artifact@v3.0.2
 
       - name: Add binary to the CLI path
-        run: chmod +x aaw-executable-jdk-11/aaw && echo "$GITHUB_WORKSPACE/aaw-executable-jdk-11" >> "$GITHUB_PATH"
+        run: |
+          chmod +x aaw-executable-jdk-11/aaw
+          echo "$GITHUB_WORKSPACE/aaw-executable-jdk-11" >> "$GITHUB_PATH"
 
       - name: Run E2E tests
-        run: ./scripts/e2e-tests.sh
+        run: |
+          npm install -g bats
+          bats src/test/bash/e2e.bats --print-output-on-failure
