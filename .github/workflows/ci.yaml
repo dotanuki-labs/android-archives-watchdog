@@ -80,3 +80,16 @@ jobs:
         run: |
           npm install -g bats
           bats src/test/bash/e2e.bats --print-output-on-failure
+
+  secops:
+    permissions:
+      security-events: read
+
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+      - name: Project Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Evaluate CVEs for the current Git sha
+        run: ./scripts/secops.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.sha }}
