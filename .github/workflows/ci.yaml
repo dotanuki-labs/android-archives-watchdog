@@ -40,7 +40,7 @@ jobs:
 
       - name: Run acceptance tests
         run: |
-          npm install -g bats
+          npm install -g bats >/dev/null
           ./scripts/package.sh
           bats src/test/bash/acceptance.bats --print-output-on-failure
 
@@ -74,4 +74,4 @@ jobs:
       - name: Run E2E tests
         run: |
           npm install -g bats
-          bats src/test/bash/e2e.bats --print-output-on-failure
+          bats src/test/bash/e2e.bats --print-output-on-failure --trace
