@@ -74,4 +74,4 @@ jobs:
       - name: Run E2E tests
         run: |
           npm install -g bats
-          bats src/test/bash/e2e.bats --print-output-on-failure --trace
+          bats src/test/bash/e2e.bats --print-output-on-failure
