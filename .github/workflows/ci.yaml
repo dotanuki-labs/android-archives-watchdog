@@ -82,7 +82,7 @@ jobs:
           bats src/test/bash/e2e.bats --print-output-on-failure
 
   secops:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     permissions:
       security-events: read
 
