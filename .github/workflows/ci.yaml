@@ -82,6 +82,7 @@ jobs:
           bats src/test/bash/e2e.bats --print-output-on-failure
 
   secops:
+    if: github.ref == 'refs/heads/master'
     permissions:
       security-events: read
 
@@ -95,7 +96,6 @@ jobs:
         run: ./scripts/secops.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.sha }}
 
       - name: Archive SBOM
-        if: always()
         uses: actions/upload-artifact@v3.1.3
         with:
           name: sbom
