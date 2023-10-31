@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+# shellcheck disable=SC2129
+
 set -euo pipefail
 
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -10,10 +12,9 @@ readonly git_commit="$2"
 readonly sbom="aaw-sbom-$git_commit.json"
 
 install_bomber() {
-    local package="bomber_0.4.5_linux_amd64.tar.gz"
-    local download_url="https://github.com/devops-kung-fu/bomber/releases/download/v0.4.5/$package"
-    curl -fsSL -o "$package" -C - "$download_url"
-    tar -xzvf "$package"
+    local download_url="https://github.com/google/osv-scanner/releases/download/v1.4.2/osv-scanner_1.4.2_linux_amd64"
+    curl -fsSL -o "osv-scanner" -C - "$download_url"
+    chmod +x ./osv-scanner
 }
 
 download_sbom() {
@@ -27,11 +28,17 @@ download_sbom() {
 }
 
 analyse_sbom() {
-    ./bomber scan .
+    local scanning
+
+    scanning=$(./osv-scanner --sbom="$sbom" --format markdown)
+
+    echo "CVEs attached to the latest Gradle dependency graph" >>"$GITHUB_STEP_SUMMARY"
+    echo "" >>"$GITHUB_STEP_SUMMARY"
+    echo "$scanning" >>"$GITHUB_STEP_SUMMARY"
 }
 
 echo
-echo "🔥 Analysing CVEs attached to the latest Gradle dependency graph"
+echo "🔥 Security analysis related to commit $git_commit"
 echo
 
 install_bomber
