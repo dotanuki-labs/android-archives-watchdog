@@ -1,3 +1,7 @@
+/*
+ * Copyright 2023 Dotanuki Labs
+ * SPDX-License-Identifier: MIT
+ */
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile

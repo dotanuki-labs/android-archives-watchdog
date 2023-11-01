@@ -1,3 +1,8 @@
+/*
+ * Copyright 2023 Dotanuki Labs
+ * SPDX-License-Identifier: MIT
+ */
+
 package io.dotanuki.aaw.core.cli
 
 import com.github.ajalt.mordant.rendering.TextColors.red

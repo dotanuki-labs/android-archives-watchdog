@@ -1,3 +1,8 @@
+/*
+ * Copyright 2023 Dotanuki Labs
+ * SPDX-License-Identifier: MIT
+ */
+
 package io.dotanuki.aaw.helpers
 
 import arrow.core.raise.recover

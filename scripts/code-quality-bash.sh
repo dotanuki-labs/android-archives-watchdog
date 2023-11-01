@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Copyright 2023 Dotanuki Labs
+# SPDX-License-Identifier: MIT
 
 set -e
 
