@@ -1,4 +1,6 @@
 #! /usr/bin/env bash
+# Copyright 2023 Dotanuki Labs
+# SPDX-License-Identifier: MIT
 
 # shellcheck disable=SC2129
 # shellcheck disable=SC2001
