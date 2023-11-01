@@ -41,7 +41,7 @@ analyse_sbom() {
     formatted=$(echo "$no_header" | sed "s/ $sbom |//g")
 
     {
-        echo "### CVEs attached to the latest Gradle dependency graph"
+        echo "### CVEs found in the latest Github Dependency Graph"
         echo "$formatted"
     } >>"$GITHUB_STEP_SUMMARY"
 }
