@@ -18,10 +18,7 @@ jobs:
           java-version: '11'
 
       - name: Run Gradle build
-        run: ./gradlew shadowJar
-
-      - name: Package artifact
-        run: ./scripts/package.sh
+        run: ./gradlew assembleExecutable
 
       - name: Prepare to release
         id: prepare-release
