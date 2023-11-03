@@ -92,6 +92,40 @@ tasks.withType<ShadowJar>().configureEach {
     }
 }
 
+val assembleExecutable by tasks.registering(DefaultTask::class) {
+    description = "Creates an executable standalone binary for this project"
+    group = "Build"
+
+    dependsOn(tasks.shadowJar)
+
+    val aawShadowJarFile =
+        tasks.shadowJar.orNull?.outputs?.files?.singleFile
+            ?: throw GradleException("Missing aaw shadowJar file")
+
+    inputs.files(aawShadowJarFile)
+
+    val outputDirectoryPath = "${layout.buildDirectory.get()}/bin"
+    val executableOutputPath = "$outputDirectoryPath/aaw"
+    outputs.files(executableOutputPath)
+
+    doLast {
+        File(executableOutputPath).apply {
+            logger.lifecycle("Creating the self-executable file: $outputDirectoryPath")
+            writeText(
+                """
+                #! /usr/bin/env bash
+
+                exec java -Xmx1024m -jar "$0" "$@"
+
+                """.trimIndent()
+            )
+            appendBytes(aawShadowJarFile.readBytes())
+
+            setExecutable(true, false)
+        }
+    }
+}
+
 // ------------------------------------------------------------------
 // Other helpers
 // ------------------------------------------------------------------

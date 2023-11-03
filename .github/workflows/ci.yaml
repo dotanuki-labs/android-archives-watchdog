@@ -42,7 +42,7 @@ jobs:
 
       - name: Run Gradle build
         id: build
-        run: ./gradlew build shadowJar --scan
+        run: ./gradlew build assembleExecutable --scan
 
       - name: Report Build Scan
         if: ${{ github.event_name == 'pull_request' }}
@@ -53,7 +53,6 @@ jobs:
       - name: Run acceptance tests
         run: |
           npm install -g bats >/dev/null
-          ./scripts/package.sh
           bats src/test/bash/acceptance.bats --print-output-on-failure
 
       - name: Archive executable
