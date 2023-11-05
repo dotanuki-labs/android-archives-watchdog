@@ -9,6 +9,9 @@ on:
 jobs:
   docs:
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+
     steps:
       - name: Project Checkout
         uses: actions/checkout@v4.1.1
