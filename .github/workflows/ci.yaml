@@ -7,8 +7,21 @@ on:
       - main
 
 jobs:
+  essential-checks:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Project Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Run essential checks
+        uses: dotanuki-labs/github-actions/essentials@main
+        with:
+          file-patterns: '*.sh,*.bats,*.kt,*.kts'
+          license: 'mit'
+
   build:
     runs-on: ubuntu-22.04
+    needs: essential-checks
     strategy:
       matrix:
         jdk: [ '11', '17', '21' ]
@@ -30,15 +43,6 @@ jobs:
           gradle-home-cache-strict-match: false
           gradle-home-cache-cleanup: true
           dependency-graph: 'generate-and-submit'
-
-      - name: Check typos on code
-        uses: crate-ci/typos@v1.16.22
-
-      - name: Check licenses
-        run: ./scripts/licenses.sh
-
-      - name: Lint shell scripts
-        run: ./scripts/code-quality-bash.sh
 
       - name: Run Gradle build
         id: build
