@@ -9,21 +9,19 @@ on:
 jobs:
   docs:
     runs-on: ubuntu-22.04
-    permissions:
-      contents: read
 
     steps:
       - name: Project Checkout
         uses: actions/checkout@v4.1.1
 
       - name: Lint documentation
-        uses: dotanuki-labs/github-actions/checks/docs@main
+        uses: dotanuki-labs/github-actions/checks/docs@79e92fd62cd93b73147742e99f4bf3793dcb453f
 
       - name: Lint shell scripts
-        uses: dotakuni-labs/github-actions/checks/bash@main
+        uses: dotakuni-labs/github-actions/checks/bash@79e92fd62cd93b73147742e99f4bf3793dcb453f
 
       - name: Enforce open-source license
-        uses: dotakuni-labs/github-actions/checks/licenses@main
+        uses: dotakuni-labs/github-actions/checks/licenses@79e92fd62cd93b73147742e99f4bf3793dcb453f
         with:
           file-patterns: "*.sh,*.bats,*.kt,*.kts"
           license: "mit"
