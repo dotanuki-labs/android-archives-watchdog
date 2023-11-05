@@ -10,11 +10,12 @@ max_line_length = 120
 indent_style = space
 indent_size = 4
 
-[*.{kt, kts}]
-indent_style = space
-indent_size = 4
+[*.{kt,kts}]
 continuation_indent_size = 4
 
-[*.{yaml, yml}]
-indent_style = space
+[*.{yaml,yml}]
 indent_size = 2
+
+# Dont format scripts managed by external tools
+[gradlew]
+ignore = true
