@@ -7,8 +7,27 @@ on:
       - main
 
 jobs:
+  docs:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Project Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Lint documentation
+        uses: dotanuki-labs/github-actions/checks/docs@main
+
+      - name: Lint shell scripts
+        uses: dotakuni-labs/github-actions/checks/bash@main
+
+      - name: Enforce open-source license
+        uses: dotakuni-labs/github-actions/checks/licenses@main
+        with:
+          file-patterns: "*.sh,*.bats,*.kt,*.kts"
+          license: "mit"
+
   build:
     runs-on: ubuntu-22.04
+    needs: docs
     strategy:
       matrix:
         jdk: [ '11', '17', '21' ]
@@ -30,15 +49,6 @@ jobs:
           gradle-home-cache-strict-match: false
           gradle-home-cache-cleanup: true
           dependency-graph: 'generate-and-submit'
-
-      - name: Check typos on code
-        uses: crate-ci/typos@v1.16.22
-
-      - name: Check licenses
-        run: ./scripts/licenses.sh
-
-      - name: Lint shell scripts
-        run: ./scripts/code-quality-bash.sh
 
       - name: Run Gradle build
         id: build
