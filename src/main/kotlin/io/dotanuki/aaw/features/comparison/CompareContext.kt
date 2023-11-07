@@ -12,5 +12,6 @@ import net.peanuuutz.tomlkt.Toml
 data class CompareContext(
     val tomlSerializer: Toml,
     val jsonSerializer: Json,
-    val analyser: AndroidArtifactAnalyser
+    val analyser: AndroidArtifactAnalyser,
+    val comparator: ArtifactsComparator
 )

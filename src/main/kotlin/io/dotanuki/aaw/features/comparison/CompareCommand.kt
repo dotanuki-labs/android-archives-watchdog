@@ -45,7 +45,7 @@ class CompareCommand : CliktCommand(
     private fun performComparison() {
         val current = analyser.analyse(ValidatedFile(pathToArchive))
         val reference = ValidatedTOML(ValidatedFile(pathToBaseline))
-        val comparison = ArtifactsComparator.compare(current, reference.asBaseline())
+        val comparison = comparator.compare(current, reference.asBaseline())
         reporter.reportChanges(comparison, format)
 
         if (exitWithFailure && comparison.isNotEmpty()) {

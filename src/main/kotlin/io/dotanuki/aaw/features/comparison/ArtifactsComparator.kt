@@ -10,8 +10,10 @@ import io.dotanuki.aaw.core.android.AndroidComponentType
 import io.dotanuki.aaw.core.android.declaredNames
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
+import io.dotanuki.aaw.core.logging.Logging
 
-object ArtifactsComparator {
+context (Logging)
+class ArtifactsComparator {
 
     context (ErrorAware)
     fun compare(target: AnalysedArtifact, baseline: ArtifactBaseline): Set<ComparisonFinding> {
@@ -20,7 +22,8 @@ object ArtifactsComparator {
         val permissions = evaluateChanges(
             target.androidPermissions,
             baseline.androidPermissions,
-            baseline.trustedPackages
+            baseline.trustedPackages,
+            "permissions"
         ).map { (what, expectation) ->
             ComparisonFinding(what, expectation, FindingCategory.PERMISSION)
         }
@@ -28,7 +31,8 @@ object ArtifactsComparator {
         val features = evaluateChanges(
             target.androidFeatures,
             baseline.androidFeatures,
-            baseline.trustedPackages
+            baseline.trustedPackages,
+            "system capabilities"
         ).map { (what, expectation) ->
             ComparisonFinding(what, expectation, FindingCategory.FEATURE)
         }
@@ -36,7 +40,8 @@ object ArtifactsComparator {
         val activities = evaluateChanges(
             target.androidComponents.declaredNames(AndroidComponentType.ACTIVITY),
             baseline.androidComponents.declaredNames(AndroidComponentType.ACTIVITY),
-            baseline.trustedPackages
+            baseline.trustedPackages,
+            "Activities"
         ).map { (what, expectation) ->
             ComparisonFinding(what, expectation, FindingCategory.COMPONENT)
         }
@@ -44,7 +49,8 @@ object ArtifactsComparator {
         val services = evaluateChanges(
             target.androidComponents.declaredNames(AndroidComponentType.SERVICE),
             baseline.androidComponents.declaredNames(AndroidComponentType.SERVICE),
-            baseline.trustedPackages
+            baseline.trustedPackages,
+            "Services"
         ).map { (what, expectation) ->
             ComparisonFinding(what, expectation, FindingCategory.COMPONENT)
         }
@@ -52,7 +58,8 @@ object ArtifactsComparator {
         val receivers = evaluateChanges(
             target.androidComponents.declaredNames(AndroidComponentType.RECEIVER),
             baseline.androidComponents.declaredNames(AndroidComponentType.RECEIVER),
-            baseline.trustedPackages
+            baseline.trustedPackages,
+            "Broadcast Receivers"
         ).map { (what, finding) ->
             ComparisonFinding(what, finding, FindingCategory.COMPONENT)
         }
@@ -60,7 +67,8 @@ object ArtifactsComparator {
         val providers = evaluateChanges(
             target.androidComponents.declaredNames(AndroidComponentType.PROVIDER),
             baseline.androidComponents.declaredNames(AndroidComponentType.PROVIDER),
-            baseline.trustedPackages
+            baseline.trustedPackages,
+            "Content Providers"
         ).map { (what, expectation) ->
             ComparisonFinding(what, expectation, FindingCategory.COMPONENT)
         }
@@ -81,16 +89,20 @@ object ArtifactsComparator {
         }
     }
 
+    context (Logging)
     private fun evaluateChanges(
         fromArtifact: Set<String>,
         fromBaseline: Set<String>,
-        trustedPackages: Set<String>
+        trustedPackages: Set<String>,
+        subject: String
     ): Set<Pair<String, BrokenExpectation>> {
+        logger.debug("Evaluating missing $subject on the baseline file")
         val missingOnBaseline = (fromArtifact subtract fromBaseline)
             .filterNot { it.prefixedWithAny(trustedPackages) }
             .map { it to BrokenExpectation.MISSING_ON_BASELINE }
             .toSet()
 
+        logger.debug("Evaluating missing $subject target archive")
         val missingOnTarget = (fromBaseline subtract fromArtifact)
             .filterNot { it.prefixedWithAny(trustedPackages) }
             .map { it to BrokenExpectation.MISSING_ON_ARTIFACT }

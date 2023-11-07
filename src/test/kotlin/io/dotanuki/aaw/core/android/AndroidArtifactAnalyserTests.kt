@@ -5,9 +5,7 @@
 
 package io.dotanuki.aaw.core.android
 
-import com.github.ajalt.mordant.terminal.Terminal
 import com.google.common.truth.Truth.assertThat
-import io.dotanuki.aaw.core.logging.Logger
 import io.dotanuki.aaw.core.logging.Logging
 import io.dotanuki.aaw.helpers.errorAwareTest
 import io.dotanuki.aaw.helpers.fixtureFromResources
@@ -16,10 +14,7 @@ import org.junit.Test
 class AndroidArtifactAnalyserTests {
 
     private val analyser by lazy {
-        val terminal = Terminal()
-        val logger = Logger(terminal, false)
-
-        with(Logging(logger)) {
+        with(Logging.create()) {
             AndroidArtifactAnalyser()
         }
     }

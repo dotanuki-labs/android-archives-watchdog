@@ -5,4 +5,14 @@
 
 package io.dotanuki.aaw.core.logging
 
-data class Logging(val logger: Logger)
+import com.github.ajalt.mordant.terminal.Terminal
+
+data class Logging(val logger: Logger) {
+    companion object {
+        fun create(verboseMode: Boolean = false): Logging {
+            val terminal = Terminal()
+            val logger = Logger(terminal, verboseMode)
+            return Logging(logger)
+        }
+    }
+}

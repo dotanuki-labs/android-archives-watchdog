@@ -14,10 +14,17 @@ import io.dotanuki.aaw.core.android.AndroidComponentType.APPLICATION
 import io.dotanuki.aaw.core.android.AndroidComponentType.PROVIDER
 import io.dotanuki.aaw.core.android.AndroidComponentType.RECEIVER
 import io.dotanuki.aaw.core.android.AndroidComponentType.SERVICE
+import io.dotanuki.aaw.core.logging.Logging
 import io.dotanuki.aaw.helpers.errorAwareTest
 import org.junit.Test
 
 class ArtifactsComparatorTests {
+
+    private val comparator by lazy {
+        with(Logging.create()) {
+            ArtifactsComparator()
+        }
+    }
 
     private val referenceArtifact = AnalysedArtifact(
         applicationId = "io.dotanuki.norris.android",
@@ -78,19 +85,19 @@ class ArtifactsComparatorTests {
     )
 
     @Test fun `should detect no changes when comparing with a complete baseline`() = errorAwareTest {
-        val comparison = ArtifactsComparator.compare(referenceArtifact, completeBaseline)
+        val comparison = comparator.compare(referenceArtifact, completeBaseline)
         assertThat(comparison).isEmpty()
     }
 
     @Test fun `should detect no changes when comparing with a compact baseline`() = errorAwareTest {
-        val comparison = ArtifactsComparator.compare(referenceArtifact, compactBaseline)
+        val comparison = comparator.compare(referenceArtifact, compactBaseline)
         assertThat(comparison).isEmpty()
     }
 
     @Test fun `should reject artefacts from different application`() {
         val debugVersion = referenceArtifact.copy(applicationId = "io.dotanuki.norris.android.debug")
         recover(
-            block = { ArtifactsComparator.compare(debugVersion, compactBaseline) },
+            block = { comparator.compare(debugVersion, compactBaseline) },
             recover = { surfaced ->
 
                 assertThat(surfaced.description).contains("Your application packages dont match")
@@ -103,7 +110,7 @@ class ArtifactsComparatorTests {
         val newPermissions = referenceArtifact.androidPermissions + "android.permission.CAMERA"
         val subject = referenceArtifact.copy(androidPermissions = newPermissions)
 
-        val comparison = ArtifactsComparator.compare(subject, completeBaseline)
+        val comparison = comparator.compare(subject, completeBaseline)
 
         val expected = setOf(
             ComparisonFinding(cameraPermission, BrokenExpectation.MISSING_ON_BASELINE, FindingCategory.PERMISSION)
@@ -117,7 +124,7 @@ class ArtifactsComparatorTests {
         val newPermissions = referenceArtifact.androidPermissions - removedPermission
         val subject = referenceArtifact.copy(androidPermissions = newPermissions)
 
-        val comparison = ArtifactsComparator.compare(subject, completeBaseline)
+        val comparison = comparator.compare(subject, completeBaseline)
 
         val expected = setOf(
             ComparisonFinding(removedPermission, BrokenExpectation.MISSING_ON_ARTIFACT, FindingCategory.PERMISSION)
@@ -132,7 +139,7 @@ class ArtifactsComparatorTests {
         val withMissingService = referenceArtifact.androidComponents + missingService
         val newReference = referenceArtifact.copy(androidComponents = withMissingService)
 
-        val comparison = ArtifactsComparator.compare(newReference, completeBaseline)
+        val comparison = comparator.compare(newReference, completeBaseline)
 
         val expected = setOf(
             ComparisonFinding(serviceName, BrokenExpectation.MISSING_ON_BASELINE, FindingCategory.COMPONENT)
@@ -147,7 +154,7 @@ class ArtifactsComparatorTests {
         val withDereferencedActivity = referenceArtifact.androidComponents + dereferencedActivity
         val newReference = completeBaseline.copy(androidComponents = withDereferencedActivity)
 
-        val comparison = ArtifactsComparator.compare(referenceArtifact, newReference)
+        val comparison = comparator.compare(referenceArtifact, newReference)
 
         val expected = setOf(
             ComparisonFinding(activityName, BrokenExpectation.MISSING_ON_ARTIFACT, FindingCategory.COMPONENT)
@@ -172,7 +179,7 @@ class ArtifactsComparatorTests {
             androidPermissions = newPermissions
         )
 
-        val comparison = ArtifactsComparator.compare(newReference, compactBaseline)
+        val comparison = comparator.compare(newReference, compactBaseline)
 
         val expected = setOf(
             ComparisonFinding(addedPermission, BrokenExpectation.MISSING_ON_BASELINE, FindingCategory.PERMISSION),
