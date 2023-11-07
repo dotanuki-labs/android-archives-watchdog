@@ -7,14 +7,11 @@ package io.dotanuki.aaw.features.comparison
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.table.table
-import io.dotanuki.aaw.core.cli.emptyLine
+import io.dotanuki.aaw.core.logging.Logging
 
-object ComparisonReporter {
+context (CompareContext, Logging)
+class ComparisonReporter {
 
-    private const val OUTCOME_NO_CHANGES = "No changes detected"
-    private const val OUTCOME_CHANGES_DETECTED = "Your baseline file does not match the supplied artifact"
-
-    context (CompareContext)
     fun reportChanges(comparison: Set<ComparisonFinding>, format: String) {
         when (format) {
             "console" -> reportAsText(comparison)
@@ -22,7 +19,6 @@ object ComparisonReporter {
         }
     }
 
-    context (CompareContext)
     private fun reportAsJson(comparison: Set<ComparisonFinding>) {
         val outcome = when {
             comparison.isEmpty() -> OUTCOME_NO_CHANGES
@@ -39,21 +35,20 @@ object ComparisonReporter {
 
         val serializable = SerializableComparison(outcome, results)
         val jsonContent = jsonSerializer.encodeToString(SerializableComparison.serializer(), serializable)
-        terminal.println(jsonContent)
+        logger.info(jsonContent)
     }
 
-    context (CompareContext)
     private fun reportAsText(comparison: Set<ComparisonFinding>) {
         if (comparison.isEmpty()) {
-            terminal.emptyLine()
-            terminal.println(OUTCOME_NO_CHANGES)
-            terminal.emptyLine()
+            logger.newLine()
+            logger.info(OUTCOME_NO_CHANGES)
+            logger.newLine()
             return
         }
 
-        terminal.emptyLine()
-        terminal.println(OUTCOME_CHANGES_DETECTED)
-        terminal.emptyLine()
+        logger.newLine()
+        logger.info(OUTCOME_CHANGES_DETECTED)
+        logger.newLine()
 
         val changeAsTable = table {
             header { row(cyan("Category"), cyan("Finding"), cyan("Missing at")) }
@@ -64,14 +59,18 @@ object ComparisonReporter {
             }
         }
 
-        terminal.println(changeAsTable)
-        terminal.emptyLine()
-        terminal.println("Please update your baseline accordingly")
+        logger.info(changeAsTable)
+        logger.newLine()
+        logger.info("Please update your baseline accordingly")
     }
 
-    context (CompareContext)
     private fun BrokenExpectation.description() = when (this) {
         BrokenExpectation.MISSING_ON_BASELINE -> "Baseline"
         BrokenExpectation.MISSING_ON_ARTIFACT -> "Archive"
+    }
+
+    companion object {
+        private const val OUTCOME_NO_CHANGES = "No changes detected"
+        private const val OUTCOME_CHANGES_DETECTED = "Your baseline file does not match the supplied artifact"
     }
 }

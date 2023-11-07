@@ -5,12 +5,19 @@
 
 package io.dotanuki.aaw.core.android
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
+import io.dotanuki.aaw.core.logging.Logging
 import io.dotanuki.aaw.helpers.errorAwareTest
 import io.dotanuki.aaw.helpers.fixtureFromResources
 import org.junit.Test
 
 class AndroidArtifactAnalyserTests {
+
+    private val analyser by lazy {
+        with(Logging.create()) {
+            AndroidArtifactAnalyser()
+        }
+    }
 
     private val developmentArtifact = AnalysedArtifact(
         applicationId = "io.dotanuki.norris.android.debug",
@@ -68,22 +75,22 @@ class AndroidArtifactAnalyserTests {
 
     @Test fun `should analyse a debug apk with success`() = errorAwareTest {
         val target = fixtureFromResources("app-debug.apk")
-        val analysed = AndroidArtifactAnalyser.analyse(target)
+        val analysed = analyser.analyse(target)
 
-        Truth.assertThat(analysed).isEqualTo(developmentArtifact)
+        assertThat(analysed).isEqualTo(developmentArtifact)
     }
 
     @Test fun `should analyse a release apk with success`() = errorAwareTest {
         val target = fixtureFromResources("app-release.apk")
-        val analysed = AndroidArtifactAnalyser.analyse(target)
+        val analysed = analyser.analyse(target)
 
-        Truth.assertThat(analysed).isEqualTo(releaseArtifact)
+        assertThat(analysed).isEqualTo(releaseArtifact)
     }
 
     @Test fun `should analyse a release app bundle with success`() = errorAwareTest {
         val target = fixtureFromResources("app-release.aab")
-        val analysed = AndroidArtifactAnalyser.analyse(target)
+        val analysed = analyser.analyse(target)
 
-        Truth.assertThat(analysed).isEqualTo(releaseArtifact)
+        assertThat(analysed).isEqualTo(releaseArtifact)
     }
 }

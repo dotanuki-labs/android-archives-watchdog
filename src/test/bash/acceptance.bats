@@ -57,9 +57,10 @@ teardown() {
 }
 
 @test "[baseline] should generate complete baseline" {
-    run "$sut" generate -a "$test_root/resources/app-debug.apk"
+    run "$sut" generate -a "$test_root/resources/app-debug.apk" --verbose
 
     complete_toml="io.dotanuki.norris.android.debug.toml"
+    [[ "$output" == *"Successfully identified artifact type -> APK"* ]]
     [[ "$output" == *"Baseline available at : $complete_toml"* ]]
     [ "$status" -eq 0 ]
 }

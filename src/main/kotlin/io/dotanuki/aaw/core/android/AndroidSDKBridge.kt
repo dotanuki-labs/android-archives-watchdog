@@ -5,14 +5,13 @@
 
 package io.dotanuki.aaw.core.android
 
-import arrow.core.raise.ensure
-import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
+import io.dotanuki.aaw.core.logging.Logging
 
-object AndroidSDKBridge {
+context (Logging)
+@Suppress("TooGenericExceptionThrown")
+class AndroidSDKBridge {
 
-    context (ErrorAware)
-    fun sdkFolder(): String =
+    val sdkFolder: String by lazy {
         with(System.getenv()) {
             when {
                 containsKey(FIRST_OPTION) -> this[FIRST_OPTION]
@@ -20,21 +19,25 @@ object AndroidSDKBridge {
                 containsKey(THIRD_OPTION) -> this[THIRD_OPTION]
                 else -> null
             }.let { androidHome ->
-                ensure(androidHome != null) { AawError(CANNOT_LOCATE_ANDROID_SDK) }
                 androidHome
+                    .also { logger.debug("Found Android SDK -> $it") }
+                    ?: throw RuntimeException(CANNOT_LOCATE_ANDROID_SDK)
             }
         }
+    }
 
-    private const val FIRST_OPTION = "ANDROID_HOME"
-    private const val SECOND_OPTION = "ANDROID_SDK_HOME"
-    private const val THIRD_OPTION = "ANDROID_SDK"
+    companion object {
+        private const val FIRST_OPTION = "ANDROID_HOME"
+        private const val SECOND_OPTION = "ANDROID_SDK_HOME"
+        private const val THIRD_OPTION = "ANDROID_SDK"
 
-    private val CANNOT_LOCATE_ANDROID_SDK =
-        """
-        Could not locate your Android SDK installation folder. 
-        Ensure that have it exposed in one of the following environment variables
-        • $FIRST_OPTION
-        • $SECOND_OPTION
-        • $THIRD_OPTION
-        """.trimIndent()
+        private val CANNOT_LOCATE_ANDROID_SDK =
+            """
+            Could not locate your Android SDK installation folder. 
+            Ensure that have it exposed in one of the following environment variables
+            • $FIRST_OPTION
+            • $SECOND_OPTION
+            • $THIRD_OPTION
+            """.trimIndent()
+    }
 }
