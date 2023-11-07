@@ -8,6 +8,7 @@ package io.dotanuki.aaw
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.mordant.terminal.Terminal
 import io.dotanuki.aaw.core.cli.AawEntrypoint
+import io.dotanuki.aaw.core.logging.Logger
 import io.dotanuki.aaw.features.baseline.BaselineContext
 import io.dotanuki.aaw.features.baseline.GenerateCommand
 import io.dotanuki.aaw.features.comparison.CompareCommand
@@ -22,10 +23,16 @@ import kotlinx.serialization.json.JsonNamingStrategy
 import net.peanuuutz.tomlkt.Toml
 
 @OptIn(ExperimentalSerializationApi::class)
-object Injection {
+class Injection private constructor(
+    private val verboseMode: Boolean
+) {
 
     private val terminal by lazy {
         Terminal()
+    }
+
+    private val logger by lazy {
+        Logger(terminal, verboseMode)
     }
 
     private val jsonSerializer by lazy {
@@ -51,7 +58,7 @@ object Injection {
     }
 
     private val baselineContext by lazy {
-        BaselineContext(terminal, tomlSerializer)
+        BaselineContext(terminal, tomlSerializer, logger)
     }
 
     private val generateCommand by lazy {
@@ -87,5 +94,9 @@ object Injection {
             compareCommand,
             versionCommand
         )
+    }
+
+    companion object {
+        fun inject(verboseMode: Boolean) = Injection(verboseMode)
     }
 }

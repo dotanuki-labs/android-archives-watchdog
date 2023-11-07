@@ -5,7 +5,6 @@
 
 package io.dotanuki.aaw.core.logging
 
-import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.red
 import com.github.ajalt.mordant.terminal.Terminal
 
@@ -17,14 +16,14 @@ data class Logger(
         terminal.println()
     }
 
+    fun info(message: String) {
+        terminal.println(message)
+    }
+
     fun debug(message: String) {
         if (verboseMode) {
             terminal.println(message)
         }
-    }
-
-    fun info(message: String) {
-        terminal.println(cyan(message))
     }
 
     fun error(message: String) {
