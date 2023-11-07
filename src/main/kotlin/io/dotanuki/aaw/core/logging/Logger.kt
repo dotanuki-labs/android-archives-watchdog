@@ -16,6 +16,12 @@ data class Logger(
     private val verboseMode: Boolean
 ) {
 
+    init {
+        if (verboseMode) {
+            newLine()
+        }
+    }
+
     fun newLine() {
         terminal.println()
     }

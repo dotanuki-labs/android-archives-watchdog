@@ -8,9 +8,9 @@ package io.dotanuki.aaw.features.overview
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.magenta
 import com.github.ajalt.mordant.table.table
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 
-context (OverviewContext, LoggingContext)
+context (OverviewContext, Logging)
 class OverviewReporter {
 
     fun reportSuccess(overview: ArtifactOverview, format: String) {

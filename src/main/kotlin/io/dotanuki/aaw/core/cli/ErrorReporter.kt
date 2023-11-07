@@ -6,14 +6,14 @@
 package io.dotanuki.aaw.core.cli
 
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 import kotlin.system.exitProcess
 
 object ErrorReporter {
 
     var printStackTraces: Boolean = false
 
-    context (LoggingContext)
+    context (Logging)
     fun reportFailure(surfaced: AawError) {
         logger.newLine()
         logger.error(surfaced.description)

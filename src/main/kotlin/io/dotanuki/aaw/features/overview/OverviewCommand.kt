@@ -12,17 +12,16 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
 import io.dotanuki.aaw.core.android.AnalysedArtifact
-import io.dotanuki.aaw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.aaw.core.android.AndroidComponentType
 import io.dotanuki.aaw.core.android.AndroidPermissions
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 import kotlin.system.exitProcess
 
-context (OverviewContext, LoggingContext)
+context (OverviewContext, Logging)
 class OverviewCommand : CliktCommand(
     help = "aaw overview -a/--archive <path/to/archive> [--console | --json] ",
     name = "overview"
@@ -43,7 +42,7 @@ class OverviewCommand : CliktCommand(
 
     context (ErrorAware)
     private fun extractOverview() {
-        val analysed = AndroidArtifactAnalyser.analyse(ValidatedFile(pathToArchive))
+        val analysed = analyser.analyse(ValidatedFile(pathToArchive))
 
         val overview = with(analysed) {
             ArtifactOverview(

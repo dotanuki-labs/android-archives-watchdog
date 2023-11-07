@@ -7,9 +7,10 @@ package io.dotanuki.aaw
 
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.mordant.terminal.Terminal
+import io.dotanuki.aaw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.aaw.core.cli.AawEntrypoint
 import io.dotanuki.aaw.core.logging.Logger
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 import io.dotanuki.aaw.features.baseline.BaselineContext
 import io.dotanuki.aaw.features.baseline.GenerateCommand
 import io.dotanuki.aaw.features.comparison.CompareCommand
@@ -30,7 +31,7 @@ class Injection(
     private val loggingContext by lazy {
         val terminal = Terminal()
         val logger = Logger(terminal, verboseMode)
-        LoggingContext(logger)
+        Logging(logger)
     }
 
     private val jsonSerializer by lazy {
@@ -45,8 +46,14 @@ class Injection(
         }
     }
 
+    private val artifactAnalyser by lazy {
+        with(loggingContext) {
+            AndroidArtifactAnalyser()
+        }
+    }
+
     private val overviewContext by lazy {
-        OverviewContext(jsonSerializer)
+        OverviewContext(jsonSerializer, artifactAnalyser)
     }
 
     private val overviewCommand by lazy {
@@ -58,7 +65,7 @@ class Injection(
     }
 
     private val baselineContext by lazy {
-        BaselineContext(tomlSerializer)
+        BaselineContext(tomlSerializer, artifactAnalyser)
     }
 
     private val generateCommand by lazy {
@@ -70,7 +77,7 @@ class Injection(
     }
 
     private val compareContext by lazy {
-        CompareContext(tomlSerializer, jsonSerializer)
+        CompareContext(tomlSerializer, jsonSerializer, artifactAnalyser)
     }
 
     private val compareCommand by lazy {

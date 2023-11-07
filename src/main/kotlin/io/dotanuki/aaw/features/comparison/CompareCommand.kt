@@ -12,16 +12,15 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
-import io.dotanuki.aaw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 import io.dotanuki.aaw.core.toml.ValidatedTOML
 import kotlin.system.exitProcess
 
-context (CompareContext, LoggingContext)
+context (CompareContext, Logging)
 class CompareCommand : CliktCommand(
     help = "aaw compare -a/--archive <path/to/archive> -b/--baseline <path/to/baseline>",
     name = "compare"
@@ -44,7 +43,7 @@ class CompareCommand : CliktCommand(
 
     context (ErrorAware)
     private fun performComparison() {
-        val current = AndroidArtifactAnalyser.analyse(ValidatedFile(pathToArchive))
+        val current = analyser.analyse(ValidatedFile(pathToArchive))
         val reference = ValidatedTOML(ValidatedFile(pathToBaseline))
         val comparison = ArtifactsComparator.compare(current, reference.asBaseline())
         reporter.reportChanges(comparison, format)

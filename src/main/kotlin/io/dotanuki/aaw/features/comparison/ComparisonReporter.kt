@@ -7,9 +7,9 @@ package io.dotanuki.aaw.features.comparison
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.table.table
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 
-context (CompareContext, LoggingContext)
+context (CompareContext, Logging)
 class ComparisonReporter {
 
     fun reportChanges(comparison: Set<ComparisonFinding>, format: String) {

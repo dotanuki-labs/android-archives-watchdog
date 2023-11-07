@@ -10,10 +10,10 @@ import com.github.ajalt.clikt.core.CliktCommand
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 import kotlin.system.exitProcess
 
-context (LoggingContext)
+context (Logging)
 class VersionCommand : CliktCommand(
     help = "aaw version",
     name = "version"
@@ -26,7 +26,6 @@ class VersionCommand : CliktCommand(
     context (ErrorAware)
     private fun printVersion() {
         val appVersion = AppVersionFinder.find()
-
         logger.info("aaw - v${appVersion.current}")
         logger.newLine()
     }

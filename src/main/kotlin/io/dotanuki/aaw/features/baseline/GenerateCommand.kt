@@ -9,16 +9,15 @@ import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
-import io.dotanuki.aaw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 import io.dotanuki.aaw.core.toml.WatchdogConfig
 import kotlin.system.exitProcess
 
-context (BaselineContext, LoggingContext)
+context (BaselineContext, Logging)
 class GenerateCommand : CliktCommand(
     help = "aaw generate -a/--archive <path/to/archive> -t/--trust <package1,package2,...>",
     name = "generate"
@@ -37,7 +36,7 @@ class GenerateCommand : CliktCommand(
 
     context (ErrorAware)
     private fun extractBaseline() {
-        val analysed = AndroidArtifactAnalyser.analyse(ValidatedFile(pathToArchive))
+        val analysed = analyser.analyse(ValidatedFile(pathToArchive))
         val baseline = WatchdogConfig.from(analysed, ValidatedPackages(trustedPackages))
         val outputFile = "${analysed.applicationId}.toml"
         writer.write(baseline, outputFile)

@@ -6,12 +6,12 @@
 package io.dotanuki.aaw.features.baseline
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 import io.dotanuki.aaw.core.toml.WatchdogConfig
 import java.nio.file.Paths
 import kotlin.io.path.writeText
 
-context (BaselineContext, LoggingContext)
+context (BaselineContext, Logging)
 class BaselineWriter {
 
     fun write(baseline: WatchdogConfig, filename: String) {

@@ -8,12 +8,12 @@ package io.dotanuki.aaw.features.version
 import arrow.core.raise.ensure
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
-import io.dotanuki.aaw.core.logging.LoggingContext
+import io.dotanuki.aaw.core.logging.Logging
 import java.util.*
 
 object AppVersionFinder {
 
-    context (ErrorAware, LoggingContext)
+    context (ErrorAware, Logging)
     fun find(): AppVersion = try {
         val properties = Properties().apply {
             load(ClassLoader.getSystemClassLoader().getResourceAsStream("versions.properties"))
