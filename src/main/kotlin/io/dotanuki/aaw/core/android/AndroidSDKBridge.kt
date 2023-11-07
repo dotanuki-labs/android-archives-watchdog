@@ -8,6 +8,7 @@ package io.dotanuki.aaw.core.android
 import io.dotanuki.aaw.core.logging.Logging
 
 context (Logging)
+@Suppress("TooGenericExceptionThrown")
 class AndroidSDKBridge {
 
     val sdkFolder: String by lazy {
