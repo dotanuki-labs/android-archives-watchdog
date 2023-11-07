@@ -6,7 +6,7 @@
 package io.dotanuki.aaw
 
 fun main(args: Array<String>) {
-    with(Injection) {
+    with(Injection.inject(args)) {
         entrypoint.main(args)
     }
 }

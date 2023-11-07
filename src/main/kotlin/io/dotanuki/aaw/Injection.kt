@@ -68,7 +68,7 @@ class Injection private constructor(
     }
 
     private val compareContext by lazy {
-        CompareContext(terminal, tomlSerializer, jsonSerializer)
+        CompareContext(terminal, tomlSerializer, jsonSerializer, logger)
     }
 
     private val compareCommand by lazy {
@@ -97,6 +97,6 @@ class Injection private constructor(
     }
 
     companion object {
-        fun inject(verboseMode: Boolean) = Injection(verboseMode)
+        fun inject(args: Array<String>) = Injection(false)
     }
 }

@@ -7,7 +7,6 @@ package io.dotanuki.aaw.features.comparison
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.table.table
-import io.dotanuki.aaw.core.cli.emptyLine
 
 object ComparisonReporter {
 
@@ -39,21 +38,21 @@ object ComparisonReporter {
 
         val serializable = SerializableComparison(outcome, results)
         val jsonContent = jsonSerializer.encodeToString(SerializableComparison.serializer(), serializable)
-        terminal.println(jsonContent)
+        logger.info(jsonContent)
     }
 
     context (CompareContext)
     private fun reportAsText(comparison: Set<ComparisonFinding>) {
         if (comparison.isEmpty()) {
-            terminal.emptyLine()
+            logger.newLine()
             terminal.println(OUTCOME_NO_CHANGES)
-            terminal.emptyLine()
+            logger.newLine()
             return
         }
 
-        terminal.emptyLine()
-        terminal.println(OUTCOME_CHANGES_DETECTED)
-        terminal.emptyLine()
+        logger.newLine()
+        logger.info(OUTCOME_CHANGES_DETECTED)
+        logger.newLine()
 
         val changeAsTable = table {
             header { row(cyan("Category"), cyan("Finding"), cyan("Missing at")) }
@@ -64,9 +63,9 @@ object ComparisonReporter {
             }
         }
 
-        terminal.println(changeAsTable)
-        terminal.emptyLine()
-        terminal.println("Please update your baseline accordingly")
+        logger.info(changeAsTable)
+        logger.newLine()
+        logger.info("Please update your baseline accordingly")
     }
 
     context (CompareContext)

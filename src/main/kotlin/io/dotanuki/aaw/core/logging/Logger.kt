@@ -6,6 +6,7 @@
 package io.dotanuki.aaw.core.logging
 
 import com.github.ajalt.mordant.rendering.TextColors.red
+import com.github.ajalt.mordant.rendering.Widget
 import com.github.ajalt.mordant.terminal.Terminal
 
 data class Logger(
@@ -14,6 +15,10 @@ data class Logger(
 ) {
     fun newLine() {
         terminal.println()
+    }
+
+    fun info(widget: Widget) {
+        terminal.println(widget)
     }
 
     fun info(message: String) {
