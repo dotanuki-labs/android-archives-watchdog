@@ -8,7 +8,6 @@ package io.dotanuki.aaw.features.overview
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.magenta
 import com.github.ajalt.mordant.table.table
-import io.dotanuki.aaw.core.cli.emptyLine
 
 object OverviewReporter {
 
@@ -23,7 +22,7 @@ object OverviewReporter {
     context (OverviewContext)
     private fun reportAsJson(overview: ArtifactOverview) {
         val content = jsonSerializer.encodeToString(ArtifactOverview.serializer(), overview)
-        terminal.println(content)
+        logger.info(content)
     }
 
     context (OverviewContext)
@@ -43,9 +42,10 @@ object OverviewReporter {
                 body { row(magenta("Content Providers"), totalProviders) }
             }
         }
-        terminal.emptyLine()
-        terminal.println(content)
-        terminal.emptyLine()
+
+        logger.newLine()
+        logger.info(content)
+        logger.newLine()
     }
 
     private fun Boolean.asAffirmation() = if (this) "Yes" else "No"

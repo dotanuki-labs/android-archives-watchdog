@@ -48,7 +48,7 @@ class Injection private constructor(
     }
 
     private val overviewContext by lazy {
-        OverviewContext(terminal, jsonSerializer)
+        OverviewContext(terminal, jsonSerializer, logger)
     }
 
     private val overviewCommand by lazy {
