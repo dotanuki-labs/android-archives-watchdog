@@ -5,6 +5,7 @@
 
 package io.dotanuki.aaw.core.logging
 
+import com.github.ajalt.mordant.rendering.TextColors.gray
 import com.github.ajalt.mordant.rendering.TextColors.red
 import com.github.ajalt.mordant.rendering.Widget
 import com.github.ajalt.mordant.terminal.Terminal
@@ -14,6 +15,7 @@ data class Logger(
     private val terminal: Terminal,
     private val verboseMode: Boolean
 ) {
+
     fun newLine() {
         terminal.println()
     }
@@ -28,7 +30,7 @@ data class Logger(
 
     fun debug(message: String) {
         if (verboseMode) {
-            terminal.println(message)
+            terminal.println(gray(message))
         }
     }
 

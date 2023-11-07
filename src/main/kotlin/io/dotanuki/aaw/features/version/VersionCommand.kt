@@ -26,11 +26,14 @@ class VersionCommand : CliktCommand(
     context (ErrorAware)
     private fun printVersion() {
         val appVersion = AppVersionFinder.find()
+
         logger.info("aaw - v${appVersion.current}")
+        logger.newLine()
     }
 
     private fun reportFailure(surfaced: AawError) {
         logger.error(surfaced)
+        logger.newLine()
         exitProcess(ExitCodes.FAILURE)
     }
 }
