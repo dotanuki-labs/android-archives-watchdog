@@ -23,8 +23,8 @@ import kotlinx.serialization.json.JsonNamingStrategy
 import net.peanuuutz.tomlkt.Toml
 
 @OptIn(ExperimentalSerializationApi::class)
-class Injection private constructor(
-    private val verboseMode: Boolean
+class Injection(
+    private val verboseMode: Boolean,
 ) {
 
     private val terminal by lazy {
@@ -78,7 +78,7 @@ class Injection private constructor(
     }
 
     private val versionContext by lazy {
-        VersionContext(terminal)
+        VersionContext(logger)
     }
 
     private val versionCommand by lazy {
@@ -94,9 +94,5 @@ class Injection private constructor(
             compareCommand,
             versionCommand
         )
-    }
-
-    companion object {
-        fun inject(args: Array<String>) = Injection(false)
     }
 }

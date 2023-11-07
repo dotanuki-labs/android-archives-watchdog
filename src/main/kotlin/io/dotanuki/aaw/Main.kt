@@ -6,7 +6,13 @@
 package io.dotanuki.aaw
 
 fun main(args: Array<String>) {
-    with(Injection.inject(args)) {
-        entrypoint.main(args)
+
+    val (verboseMode, filteredArguments) = when {
+        !args.contains("--verbose") -> Pair(false, args)
+        else -> Pair(true, args.toMutableList().apply { remove("--verbose") }.toTypedArray())
+    }
+
+    with(Injection(verboseMode)) {
+        entrypoint.main(filteredArguments)
     }
 }

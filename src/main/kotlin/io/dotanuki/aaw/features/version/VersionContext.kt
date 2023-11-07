@@ -5,8 +5,9 @@
 
 package io.dotanuki.aaw.features.version
 
-import com.github.ajalt.mordant.terminal.Terminal
+import io.dotanuki.aaw.core.logging.Logger
+import io.dotanuki.aaw.core.logging.LoggingContext
 
 data class VersionContext(
-    val terminal: Terminal
-)
+    override val logger: Logger
+) : LoggingContext

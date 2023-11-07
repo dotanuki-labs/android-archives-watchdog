@@ -7,10 +7,10 @@ package io.dotanuki.aaw.features.version
 
 import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.parameters.options.flag
-import com.github.ajalt.clikt.parameters.options.option
-import io.dotanuki.aaw.core.cli.ErrorReporter
+import io.dotanuki.aaw.core.cli.ExitCodes
+import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
+import kotlin.system.exitProcess
 
 context (VersionContext)
 class VersionCommand : CliktCommand(
@@ -18,16 +18,18 @@ class VersionCommand : CliktCommand(
     name = "version"
 ) {
 
-    private val debugMode by option("--stacktrace").flag(default = false)
-
     override fun run() {
-        ErrorReporter.printStackTraces = debugMode
-        recover(::printVersion, ErrorReporter::reportFailure)
+        recover(::printVersion, ::reportFailure)
     }
 
     context (ErrorAware)
     private fun printVersion() {
         val appVersion = AppVersionFinder.find()
-        terminal.println("aaw - v${appVersion.current}")
+        logger.info("aaw - v${appVersion.current}")
+    }
+
+    private fun reportFailure(surfaced: AawError) {
+        logger.error(surfaced)
+        exitProcess(ExitCodes.FAILURE)
     }
 }

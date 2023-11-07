@@ -14,5 +14,6 @@ import net.peanuuutz.tomlkt.Toml
 data class CompareContext(
     val terminal: Terminal,
     val tomlSerializer: Toml,
-    val jsonSerializer: Json, override val logger: Logger
+    val jsonSerializer: Json,
+    override val logger: Logger
 ) : LoggingContext

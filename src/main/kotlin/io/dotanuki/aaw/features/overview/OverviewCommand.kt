@@ -8,7 +8,6 @@ package io.dotanuki.aaw.features.overview
 import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
-import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
@@ -16,9 +15,11 @@ import io.dotanuki.aaw.core.android.AnalysedArtifact
 import io.dotanuki.aaw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.aaw.core.android.AndroidComponentType
 import io.dotanuki.aaw.core.android.AndroidPermissions
-import io.dotanuki.aaw.core.cli.ErrorReporter
+import io.dotanuki.aaw.core.cli.ExitCodes
+import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
+import kotlin.system.exitProcess
 
 context (OverviewContext)
 class OverviewCommand : CliktCommand(
@@ -30,11 +31,9 @@ class OverviewCommand : CliktCommand(
 
     private val format: String by option().switch(*switches).default("console")
     private val pathToArchive: String by option("-a", "--archive").required()
-    private val debugMode by option("--stacktrace").flag(default = false)
 
     override fun run() {
-        ErrorReporter.printStackTraces = debugMode
-        recover(::extractOverview, ErrorReporter::reportFailure)
+        recover(::extractOverview, ::reportFailure)
     }
 
     context (ErrorAware)
@@ -57,6 +56,11 @@ class OverviewCommand : CliktCommand(
         }
 
         OverviewReporter.reportSuccess(overview, format)
+    }
+
+    private fun reportFailure(surfaced: AawError) {
+        logger.error(surfaced)
+        exitProcess(ExitCodes.FAILURE)
     }
 
     private fun AnalysedArtifact.componentCount(selected: AndroidComponentType) =
