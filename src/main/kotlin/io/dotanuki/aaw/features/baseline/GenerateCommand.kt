@@ -14,10 +14,11 @@ import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
+import io.dotanuki.aaw.core.logging.LoggingContext
 import io.dotanuki.aaw.core.toml.WatchdogConfig
 import kotlin.system.exitProcess
 
-context (BaselineContext)
+context (BaselineContext, LoggingContext)
 class GenerateCommand : CliktCommand(
     help = "aaw generate -a/--archive <path/to/archive> -t/--trust <package1,package2,...>",
     name = "generate"
@@ -25,6 +26,10 @@ class GenerateCommand : CliktCommand(
 
     private val pathToArchive: String by option("-a", "--archive").required()
     private val trustedPackages: String? by option("-t", "--trust")
+
+    private val writer by lazy {
+        BaselineWriter()
+    }
 
     override fun run() {
         recover(::extractBaseline, ::reportFailure)
@@ -35,7 +40,7 @@ class GenerateCommand : CliktCommand(
         val analysed = AndroidArtifactAnalyser.analyse(ValidatedFile(pathToArchive))
         val baseline = WatchdogConfig.from(analysed, ValidatedPackages(trustedPackages))
         val outputFile = "${analysed.applicationId}.toml"
-        BaselineWriter.write(baseline, outputFile)
+        writer.write(baseline, outputFile)
     }
 
     private fun reportFailure(surfaced: AawError) {

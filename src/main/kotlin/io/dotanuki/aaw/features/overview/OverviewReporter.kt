@@ -8,10 +8,11 @@ package io.dotanuki.aaw.features.overview
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.magenta
 import com.github.ajalt.mordant.table.table
+import io.dotanuki.aaw.core.logging.LoggingContext
 
-object OverviewReporter {
+context (OverviewContext, LoggingContext)
+class OverviewReporter {
 
-    context (OverviewContext)
     fun reportSuccess(overview: ArtifactOverview, format: String) {
         when (format) {
             "console" -> reportAsText(overview)
@@ -19,13 +20,11 @@ object OverviewReporter {
         }
     }
 
-    context (OverviewContext)
     private fun reportAsJson(overview: ArtifactOverview) {
         val content = jsonSerializer.encodeToString(ArtifactOverview.serializer(), overview)
         logger.info(content)
     }
 
-    context (OverviewContext)
     private fun reportAsText(overview: ArtifactOverview) {
         val content = with(overview) {
             table {

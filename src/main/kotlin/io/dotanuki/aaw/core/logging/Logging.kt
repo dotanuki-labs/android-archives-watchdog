@@ -5,7 +5,4 @@
 
 package io.dotanuki.aaw.core.logging
 
-interface LoggingContext {
-
-    val logger: Logger
-}
+data class LoggingContext(val logger: Logger)

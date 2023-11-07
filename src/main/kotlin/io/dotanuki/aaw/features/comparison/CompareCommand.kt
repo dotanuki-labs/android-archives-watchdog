@@ -17,10 +17,11 @@ import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
+import io.dotanuki.aaw.core.logging.LoggingContext
 import io.dotanuki.aaw.core.toml.ValidatedTOML
 import kotlin.system.exitProcess
 
-context (CompareContext)
+context (CompareContext, LoggingContext)
 class CompareCommand : CliktCommand(
     help = "aaw compare -a/--archive <path/to/archive> -b/--baseline <path/to/baseline>",
     name = "compare"
@@ -33,6 +34,10 @@ class CompareCommand : CliktCommand(
     private val exitWithFailure by option("--fail").flag(default = false)
     private val format: String by option().switch(*outputFormats).default("console")
 
+    private val reporter by lazy {
+        ComparisonReporter()
+    }
+
     override fun run() {
         recover(::performComparison, ::reportFailure)
     }
@@ -42,7 +47,7 @@ class CompareCommand : CliktCommand(
         val current = AndroidArtifactAnalyser.analyse(ValidatedFile(pathToArchive))
         val reference = ValidatedTOML(ValidatedFile(pathToBaseline))
         val comparison = ArtifactsComparator.compare(current, reference.asBaseline())
-        ComparisonReporter.reportChanges(comparison, format)
+        reporter.reportChanges(comparison, format)
 
         if (exitWithFailure && comparison.isNotEmpty()) {
             exitProcess(ExitCodes.FAILURE)

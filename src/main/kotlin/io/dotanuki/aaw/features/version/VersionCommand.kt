@@ -10,9 +10,10 @@ import com.github.ajalt.clikt.core.CliktCommand
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
+import io.dotanuki.aaw.core.logging.LoggingContext
 import kotlin.system.exitProcess
 
-context (VersionContext)
+context (LoggingContext)
 class VersionCommand : CliktCommand(
     help = "aaw version",
     name = "version"

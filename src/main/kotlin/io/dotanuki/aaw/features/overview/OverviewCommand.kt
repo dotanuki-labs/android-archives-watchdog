@@ -19,9 +19,10 @@ import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
+import io.dotanuki.aaw.core.logging.LoggingContext
 import kotlin.system.exitProcess
 
-context (OverviewContext)
+context (OverviewContext, LoggingContext)
 class OverviewCommand : CliktCommand(
     help = "aaw overview -a/--archive <path/to/archive> [--console | --json] ",
     name = "overview"
@@ -31,6 +32,10 @@ class OverviewCommand : CliktCommand(
 
     private val format: String by option().switch(*switches).default("console")
     private val pathToArchive: String by option("-a", "--archive").required()
+
+    private val reporter by lazy {
+        OverviewReporter()
+    }
 
     override fun run() {
         recover(::extractOverview, ::reportFailure)
@@ -55,7 +60,7 @@ class OverviewCommand : CliktCommand(
             )
         }
 
-        OverviewReporter.reportSuccess(overview, format)
+        reporter.reportSuccess(overview, format)
     }
 
     private fun reportFailure(surfaced: AawError) {

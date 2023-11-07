@@ -7,13 +7,11 @@ package io.dotanuki.aaw.features.comparison
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.table.table
+import io.dotanuki.aaw.core.logging.LoggingContext
 
-object ComparisonReporter {
+context (CompareContext, LoggingContext)
+class ComparisonReporter {
 
-    private const val OUTCOME_NO_CHANGES = "No changes detected"
-    private const val OUTCOME_CHANGES_DETECTED = "Your baseline file does not match the supplied artifact"
-
-    context (CompareContext)
     fun reportChanges(comparison: Set<ComparisonFinding>, format: String) {
         when (format) {
             "console" -> reportAsText(comparison)
@@ -21,7 +19,6 @@ object ComparisonReporter {
         }
     }
 
-    context (CompareContext)
     private fun reportAsJson(comparison: Set<ComparisonFinding>) {
         val outcome = when {
             comparison.isEmpty() -> OUTCOME_NO_CHANGES
@@ -41,11 +38,10 @@ object ComparisonReporter {
         logger.info(jsonContent)
     }
 
-    context (CompareContext)
     private fun reportAsText(comparison: Set<ComparisonFinding>) {
         if (comparison.isEmpty()) {
             logger.newLine()
-            terminal.println(OUTCOME_NO_CHANGES)
+            logger.info(OUTCOME_NO_CHANGES)
             logger.newLine()
             return
         }
@@ -68,9 +64,13 @@ object ComparisonReporter {
         logger.info("Please update your baseline accordingly")
     }
 
-    context (CompareContext)
     private fun BrokenExpectation.description() = when (this) {
         BrokenExpectation.MISSING_ON_BASELINE -> "Baseline"
         BrokenExpectation.MISSING_ON_ARTIFACT -> "Archive"
+    }
+
+    companion object {
+        private const val OUTCOME_NO_CHANGES = "No changes detected"
+        private const val OUTCOME_CHANGES_DETECTED = "Your baseline file does not match the supplied artifact"
     }
 }
