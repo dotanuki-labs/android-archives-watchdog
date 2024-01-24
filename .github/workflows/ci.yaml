@@ -60,7 +60,7 @@ jobs:
           bats src/test/bash/acceptance.bats --print-output-on-failure
 
       - name: Archive executable
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.3.0
         with:
           name: aaw-executable-jdk-${{ matrix.jdk }}
           path: build/bin
@@ -79,7 +79,7 @@ jobs:
           java-version: '11'
 
       - name: Fetch executable from previous build
-        uses: actions/download-artifact@v3.0.2
+        uses: actions/download-artifact@v4.1.1
 
       - name: Add binary to the CLI path
         run: |
@@ -106,7 +106,7 @@ jobs:
         run: ./scripts/secops.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.sha }}
 
       - name: Archive SBOM
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.3.0
         with:
           name: sbom
           path: aaw-sbom-${{ github.sha }}.json
