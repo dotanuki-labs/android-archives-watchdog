@@ -10,7 +10,6 @@ import io.dotanuki.aaw.core.errors.ErrorAware
 import java.io.File
 
 object ValidatedFile {
-
     context (ErrorAware)
     operator fun invoke(filePath: String): String =
         File(filePath).run {

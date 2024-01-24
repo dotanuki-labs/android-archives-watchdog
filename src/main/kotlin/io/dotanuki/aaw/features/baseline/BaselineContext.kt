@@ -10,5 +10,5 @@ import net.peanuuutz.tomlkt.Toml
 
 data class BaselineContext(
     val tomlSerializer: Toml,
-    val analyser: AndroidArtifactAnalyser
+    val analyser: AndroidArtifactAnalyser,
 )

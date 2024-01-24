@@ -11,5 +11,5 @@ data class AnalysedArtifact(
     val targetSdk: Int,
     val androidPermissions: Set<String>,
     val androidFeatures: Set<String>,
-    val androidComponents: Set<AndroidComponent>
+    val androidComponents: Set<AndroidComponent>,
 )

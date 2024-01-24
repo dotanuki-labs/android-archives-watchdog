@@ -14,17 +14,16 @@ class AawEntrypoint : CliktCommand(
     name = "aaw",
     printHelpOnEmptyArgs = true,
     epilog =
-    """
-    
-    ${yellow("Where:")}
-    
-    • ${cyan("overview")} : $HELP_OVERVIEW${"\u0085"}
-    • ${cyan("generate")} : $HELP_GENERATE${"\u0085"}
-    • ${cyan("compare")} : $HELP_COMPARE
-    
-    """.trimIndent()
+        """
+        
+        ${yellow("Where:")}
+        
+        • ${cyan("overview")} : $HELP_OVERVIEW${"\u0085"}
+        • ${cyan("generate")} : $HELP_GENERATE${"\u0085"}
+        • ${cyan("compare")} : $HELP_COMPARE
+        
+        """.trimIndent(),
 ) {
-
     init {
         context {
             helpOptionNames = emptySet()

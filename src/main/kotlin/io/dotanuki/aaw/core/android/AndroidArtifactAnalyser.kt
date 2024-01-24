@@ -31,7 +31,6 @@ import kotlin.io.path.absolutePathString
 
 context (Logging)
 class AndroidArtifactAnalyser {
-
     private val sdkBridge by lazy {
         AndroidSDKBridge()
     }
@@ -51,7 +50,7 @@ class AndroidArtifactAnalyser {
     context (ErrorAware)
     private fun analyseAab(aab: SuppliedArtifact): AnalysedArtifact =
         analyseApk(
-            SuppliedArtifact(extractUniversalApkFromBundle(aab), AndroidArtifactType.APK)
+            SuppliedArtifact(extractUniversalApkFromBundle(aab), AndroidArtifactType.APK),
         )
 
     context (ErrorAware)
@@ -66,7 +65,7 @@ class AndroidArtifactAnalyser {
             androidFeatures = appInfo.usesFeature.keys.toSortedSet(),
             androidComponents = parsedManifest.extractComponents(),
             minSdk = parsedManifest.minSdkVersion,
-            targetSdk = parsedManifest.targetSdkVersion
+            targetSdk = parsedManifest.targetSdkVersion,
         )
     }
 
@@ -92,10 +91,11 @@ class AndroidArtifactAnalyser {
     context (ErrorAware)
     private fun retrieveAppInfoWithAapt(pathToArtifact: String) =
         try {
-            val sdkHandler = AndroidSdkHandler.getInstance(
-                AndroidLocationsSingleton,
-                sdkBridge.sdkFolder.asPath()
-            )
+            val sdkHandler =
+                AndroidSdkHandler.getInstance(
+                    AndroidLocationsSingleton,
+                    sdkBridge.sdkFolder.asPath(),
+                )
 
             val aaptInvoker = AaptInvoker(sdkHandler, NullLogger())
 
@@ -114,56 +114,59 @@ class AndroidArtifactAnalyser {
             .map {
                 AndroidComponent(
                     it.name,
-                    AndroidComponentType.valueOf(it.type.uppercase())
+                    AndroidComponentType.valueOf(it.type.uppercase()),
                 )
             }
             .toSet()
 
     context (ErrorAware)
-    private fun extractUniversalApkFromBundle(artifact: SuppliedArtifact): String = try {
-        logger.debug("Evaluating AppBundle information")
-        val artifactName = artifact.filePath.split("/").last().replace(".aab", "")
-        val tempDir = Files.createTempDirectory("arw-$artifactName-extraction").toFile()
-        val apkContainerOutput = "$tempDir/$artifactName.apks"
+    private fun extractUniversalApkFromBundle(artifact: SuppliedArtifact): String =
+        try {
+            logger.debug("Evaluating AppBundle information")
+            val artifactName = artifact.filePath.split("/").last().replace(".aab", "")
+            val tempDir = Files.createTempDirectory("arw-$artifactName-extraction").toFile()
+            val apkContainerOutput = "$tempDir/$artifactName.apks"
 
-        logger.debug("Retrieving fake keystore to sign artifacts")
-        val keystore = ClassLoader.getSystemClassLoader().getResourceAsStream("aaw.keystore")?.readAllBytes()
-        ensure(keystore != null) { AawError("Failed when reading aaw.keystore") }
-        val keystoreFile = File("$tempDir/aaw.keystore").apply { writeBytes(keystore) }
+            logger.debug("Retrieving fake keystore to sign artifacts")
+            val keystore = ClassLoader.getSystemClassLoader().getResourceAsStream("aaw.keystore")?.readAllBytes()
+            ensure(keystore != null) { AawError("Failed when reading aaw.keystore") }
+            val keystoreFile = File("$tempDir/aaw.keystore").apply { writeBytes(keystore) }
 
-        logger.debug("Generating universal APK from AppBundle with Bundletool")
-        val flags = arrayOf(
-            "--bundle=${artifact.filePath}",
-            "--output=$apkContainerOutput",
-            "--aapt2=${locateAapt2FromSdk()}",
-            "--ks=$keystoreFile",
-            "--ks-pass=pass:aaw-pass",
-            "--ks-key-alias=aaw-alias",
-            "--key-pass=pass:aaw-pass",
-            "--mode=universal"
-        )
+            logger.debug("Generating universal APK from AppBundle with Bundletool")
+            val flags =
+                arrayOf(
+                    "--bundle=${artifact.filePath}",
+                    "--output=$apkContainerOutput",
+                    "--aapt2=${locateAapt2FromSdk()}",
+                    "--ks=$keystoreFile",
+                    "--ks-pass=pass:aaw-pass",
+                    "--ks-key-alias=aaw-alias",
+                    "--key-pass=pass:aaw-pass",
+                    "--mode=universal",
+                )
 
-        val parsedFlags = FlagParser().parse(*flags)
-        val command = BuildApksCommand.fromFlags(parsedFlags, null)
-        val apkContainerPath = command.execute()
+            val parsedFlags = FlagParser().parse(*flags)
+            val command = BuildApksCommand.fromFlags(parsedFlags, null)
+            val apkContainerPath = command.execute()
 
-        val destinationFolder = "$tempDir/extracted"
-        Unzipper.unzip(apkContainerPath.toFile(), "$tempDir/extracted")
+            val destinationFolder = "$tempDir/extracted"
+            Unzipper.unzip(apkContainerPath.toFile(), "$tempDir/extracted")
 
-        "$destinationFolder/universal.apk".also {
-            logger.debug("Successfully extracted universal APK from -> ${artifact.filePath}")
+            "$destinationFolder/universal.apk".also {
+                logger.debug("Successfully extracted universal APK from -> ${artifact.filePath}")
+            }
+        } catch (surfaced: Throwable) {
+            raise(AawError("Cannot convert universal APK from AppBundle", surfaced))
         }
-    } catch (surfaced: Throwable) {
-        raise(AawError("Cannot convert universal APK from AppBundle", surfaced))
-    }
 
     context (ErrorAware)
     private fun locateAapt2FromSdk(): File {
         logger.debug("Locating aapt2 using Android SDK installation")
-        val sdkHandler = AndroidSdkHandler.getInstance(
-            AndroidLocationsSingleton,
-            sdkBridge.sdkFolder.asPath()
-        )
+        val sdkHandler =
+            AndroidSdkHandler.getInstance(
+                AndroidLocationsSingleton,
+                sdkBridge.sdkFolder.asPath(),
+            )
 
         val buildTools = sdkHandler.getLatestBuildTool(LoggerProgressIndicatorWrapper(NullLogger()), true)
         ensure(buildTools != null) {

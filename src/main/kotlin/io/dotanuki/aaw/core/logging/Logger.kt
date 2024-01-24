@@ -13,9 +13,8 @@ import io.dotanuki.aaw.core.errors.AawError
 
 data class Logger(
     private val terminal: Terminal,
-    private val verboseMode: Boolean
+    private val verboseMode: Boolean,
 ) {
-
     init {
         if (verboseMode) {
             newLine()

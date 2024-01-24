@@ -10,7 +10,6 @@ import io.dotanuki.aaw.core.logging.Logging
 context (Logging)
 @Suppress("TooGenericExceptionThrown")
 class AndroidSDKBridge {
-
     val sdkFolder: String by lazy {
         with(System.getenv()) {
             when {

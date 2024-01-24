@@ -16,9 +16,8 @@ import kotlin.system.exitProcess
 context (Logging)
 class VersionCommand : CliktCommand(
     help = "aaw version",
-    name = "version"
+    name = "version",
 ) {
-
     override fun run() {
         recover(::printVersion, ::reportFailure)
     }

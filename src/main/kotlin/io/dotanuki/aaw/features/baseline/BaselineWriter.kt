@@ -13,8 +13,10 @@ import kotlin.io.path.writeText
 
 context (BaselineContext, Logging)
 class BaselineWriter {
-
-    fun write(baseline: WatchdogConfig, filename: String) {
+    fun write(
+        baseline: WatchdogConfig,
+        filename: String,
+    ) {
         val toml = tomlSerializer.encodeToString(WatchdogConfig.serializer(), baseline)
 
         Paths.get(filename).run {

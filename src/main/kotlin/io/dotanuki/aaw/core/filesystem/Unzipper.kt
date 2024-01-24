@@ -12,7 +12,10 @@ import java.io.InputStream
 import java.util.zip.ZipFile
 
 object Unzipper {
-    fun unzip(target: File, destination: String) {
+    fun unzip(
+        target: File,
+        destination: String,
+    ) {
         File(destination).run {
             if (!exists()) {
                 mkdirs()
@@ -22,7 +25,10 @@ object Unzipper {
         ZipFile(target).use { unzipEntries(it, destination) }
     }
 
-    private fun unzipEntries(zip: ZipFile, destination: String) {
+    private fun unzipEntries(
+        zip: ZipFile,
+        destination: String,
+    ) {
         zip.entries().asSequence().forEach { entry ->
             zip.getInputStream(entry).use { input ->
                 val filePath = destination + File.separator + entry.name

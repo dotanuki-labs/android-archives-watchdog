@@ -12,5 +12,5 @@ data class ArtifactBaseline(
     val androidPermissions: Set<String>,
     val androidFeatures: Set<String>,
     val androidComponents: Set<AndroidComponent>,
-    val trustedPackages: Set<String> = emptySet()
+    val trustedPackages: Set<String> = emptySet(),
 )
