@@ -24,7 +24,7 @@ data class WatchdogConfig(
     val activities: Set<String> = emptySet(),
     val services: Set<String> = emptySet(),
     val receivers: Set<String> = emptySet(),
-    val providers: Set<String> = emptySet()
+    val providers: Set<String> = emptySet(),
 ) {
     fun asBaseline(): ArtifactBaseline =
         ArtifactBaseline(
@@ -32,7 +32,7 @@ data class WatchdogConfig(
             permissions,
             features,
             aggregateComponents().toSet(),
-            trustedPackages
+            trustedPackages,
         )
 
     private fun aggregateComponents() =
@@ -42,7 +42,10 @@ data class WatchdogConfig(
             providers.map { AndroidComponent(it, PROVIDER) }
 
     companion object {
-        fun from(analysed: AnalysedArtifact, packagesToIgnore: List<String>) = with(analysed) {
+        fun from(
+            analysed: AnalysedArtifact,
+            packagesToIgnore: List<String>,
+        ) = with(analysed) {
             WatchdogConfig(
                 applicationId,
                 trustedPackages = packagesToIgnore.toSortedSet(),
@@ -51,7 +54,7 @@ data class WatchdogConfig(
                 activities = androidComponents.declaredNames(ACTIVITY, packagesToIgnore),
                 services = androidComponents.declaredNames(SERVICE, packagesToIgnore),
                 receivers = androidComponents.declaredNames(RECEIVER, packagesToIgnore),
-                providers = androidComponents.declaredNames(PROVIDER, packagesToIgnore)
+                providers = androidComponents.declaredNames(PROVIDER, packagesToIgnore),
             )
         }
     }

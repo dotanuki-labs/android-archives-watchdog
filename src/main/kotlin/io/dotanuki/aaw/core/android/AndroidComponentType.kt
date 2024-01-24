@@ -10,5 +10,5 @@ enum class AndroidComponentType {
     ACTIVITY,
     SERVICE,
     PROVIDER,
-    RECEIVER
+    RECEIVER,
 }

@@ -24,9 +24,8 @@ import net.peanuuutz.tomlkt.Toml
 
 @OptIn(ExperimentalSerializationApi::class)
 class Injection(
-    private val verboseMode: Boolean
+    private val verboseMode: Boolean,
 ) {
-
     private val loggingContext by lazy {
         Logging.create(verboseMode)
     }
@@ -102,7 +101,7 @@ class Injection(
             overviewCommand,
             generateCommand,
             compareCommand,
-            versionCommand
+            versionCommand,
         )
     }
 }

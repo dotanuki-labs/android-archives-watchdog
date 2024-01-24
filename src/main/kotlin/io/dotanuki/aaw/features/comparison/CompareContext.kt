@@ -13,5 +13,5 @@ data class CompareContext(
     val tomlSerializer: Toml,
     val jsonSerializer: Json,
     val analyser: AndroidArtifactAnalyser,
-    val comparator: ArtifactsComparator
+    val comparator: ArtifactsComparator,
 )

@@ -10,7 +10,6 @@ import io.dotanuki.aaw.core.logging.Logging
 import kotlin.system.exitProcess
 
 object ErrorReporter {
-
     var printStackTraces: Boolean = false
 
     context (Logging)

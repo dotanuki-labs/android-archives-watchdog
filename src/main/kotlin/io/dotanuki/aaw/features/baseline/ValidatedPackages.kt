@@ -9,11 +9,11 @@ import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
 
 object ValidatedPackages {
-
     context (ErrorAware)
-    operator fun invoke(packages: String?): List<String> = try {
-        packages?.split(",") ?: emptyList()
-    } catch (surfaced: Throwable) {
-        raise(AawError("Failed to evaluate trusted packages", surfaced))
-    }
+    operator fun invoke(packages: String?): List<String> =
+        try {
+            packages?.split(",") ?: emptyList()
+        } catch (surfaced: Throwable) {
+            raise(AawError("Failed to evaluate trusted packages", surfaced))
+        }
 }

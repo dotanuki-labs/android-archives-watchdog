@@ -11,7 +11,6 @@ import io.dotanuki.aaw.features.comparison.CompareContext
 import java.io.File
 
 object ValidatedTOML {
-
     context (ErrorAware, CompareContext)
     operator fun invoke(baselinePath: String): WatchdogConfig =
         try {

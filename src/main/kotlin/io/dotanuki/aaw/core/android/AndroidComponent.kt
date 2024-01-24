@@ -7,12 +7,12 @@ package io.dotanuki.aaw.core.android
 
 data class AndroidComponent(
     val name: String,
-    val type: AndroidComponentType
+    val type: AndroidComponentType,
 )
 
 fun Set<AndroidComponent>.declaredNames(
     componentType: AndroidComponentType,
-    packagesToIgnore: List<String> = emptyList()
+    packagesToIgnore: List<String> = emptyList(),
 ): Set<String> =
     asSequence()
         .filter { it.type == componentType }

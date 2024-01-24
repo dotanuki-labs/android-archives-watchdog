@@ -12,8 +12,10 @@ import io.dotanuki.aaw.core.logging.Logging
 
 context (OverviewContext, Logging)
 class OverviewReporter {
-
-    fun reportSuccess(overview: ArtifactOverview, format: String) {
+    fun reportSuccess(
+        overview: ArtifactOverview,
+        format: String,
+    ) {
         when (format) {
             "console" -> reportAsText(overview)
             "json" -> reportAsJson(overview)
@@ -26,21 +28,22 @@ class OverviewReporter {
     }
 
     private fun reportAsText(overview: ArtifactOverview) {
-        val content = with(overview) {
-            table {
-                header { row(cyan("Attribute"), cyan("Evaluation")) }
-                body { row(magenta("Application Id"), overview.applicationId) }
-                body { row(magenta("Minimum SDK"), minSdk) }
-                body { row(magenta("Target SDK"), targetSdk) }
-                body { row(magenta("Total Used Features"), totalUsedFeatures) }
-                body { row(magenta("Total Manifest permissions"), totalPermissions) }
-                body { row(magenta("Dangerous permissions"), dangerousPermissions.asAffirmation()) }
-                body { row(magenta("Activities"), totalActivities) }
-                body { row(magenta("Services"), totalServices) }
-                body { row(magenta("Broadcast Receivers"), totalReceivers) }
-                body { row(magenta("Content Providers"), totalProviders) }
+        val content =
+            with(overview) {
+                table {
+                    header { row(cyan("Attribute"), cyan("Evaluation")) }
+                    body { row(magenta("Application Id"), overview.applicationId) }
+                    body { row(magenta("Minimum SDK"), minSdk) }
+                    body { row(magenta("Target SDK"), targetSdk) }
+                    body { row(magenta("Total Used Features"), totalUsedFeatures) }
+                    body { row(magenta("Total Manifest permissions"), totalPermissions) }
+                    body { row(magenta("Dangerous permissions"), dangerousPermissions.asAffirmation()) }
+                    body { row(magenta("Activities"), totalActivities) }
+                    body { row(magenta("Services"), totalServices) }
+                    body { row(magenta("Broadcast Receivers"), totalReceivers) }
+                    body { row(magenta("Content Providers"), totalProviders) }
+                }
             }
-        }
 
         logger.newLine()
         logger.info(content)

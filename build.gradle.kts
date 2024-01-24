@@ -6,7 +6,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
-import java.util.*
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -80,7 +80,7 @@ dependencies {
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions.freeCompilerArgs.set(
-        listOf("-Xcontext-receivers")
+        listOf("-Xcontext-receivers"),
     )
 }
 
@@ -117,7 +117,7 @@ val assembleExecutable by tasks.registering(DefaultTask::class) {
 
                 exec java -Xmx1024m -jar "$0" "$@"
 
-                """.trimIndent()
+                """.trimIndent(),
             )
             appendBytes(aawShadowJarFile.readBytes())
 

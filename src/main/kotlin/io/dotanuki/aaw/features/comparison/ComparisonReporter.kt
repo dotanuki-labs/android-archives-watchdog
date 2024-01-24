@@ -11,8 +11,10 @@ import io.dotanuki.aaw.core.logging.Logging
 
 context (CompareContext, Logging)
 class ComparisonReporter {
-
-    fun reportChanges(comparison: Set<ComparisonFinding>, format: String) {
+    fun reportChanges(
+        comparison: Set<ComparisonFinding>,
+        format: String,
+    ) {
         when (format) {
             "console" -> reportAsText(comparison)
             "json" -> reportAsJson(comparison)
@@ -20,18 +22,20 @@ class ComparisonReporter {
     }
 
     private fun reportAsJson(comparison: Set<ComparisonFinding>) {
-        val outcome = when {
-            comparison.isEmpty() -> OUTCOME_NO_CHANGES
-            else -> OUTCOME_CHANGES_DETECTED
-        }
+        val outcome =
+            when {
+                comparison.isEmpty() -> OUTCOME_NO_CHANGES
+                else -> OUTCOME_CHANGES_DETECTED
+            }
 
-        val results = comparison.map {
-            ComparisonResult(
-                item = it.what,
-                category = it.category.description,
-                finding = "Missing at ${it.expectation.description()}"
-            )
-        }
+        val results =
+            comparison.map {
+                ComparisonResult(
+                    item = it.what,
+                    category = it.category.description,
+                    finding = "Missing at ${it.expectation.description()}",
+                )
+            }
 
         val serializable = SerializableComparison(outcome, results)
         val jsonContent = jsonSerializer.encodeToString(SerializableComparison.serializer(), serializable)
@@ -50,24 +54,26 @@ class ComparisonReporter {
         logger.info(OUTCOME_CHANGES_DETECTED)
         logger.newLine()
 
-        val changeAsTable = table {
-            header { row(cyan("Category"), cyan("Finding"), cyan("Missing at")) }
-            comparison.map {
-                body {
-                    row(it.category.description, it.what, it.expectation.description())
+        val changeAsTable =
+            table {
+                header { row(cyan("Category"), cyan("Finding"), cyan("Missing at")) }
+                comparison.map {
+                    body {
+                        row(it.category.description, it.what, it.expectation.description())
+                    }
                 }
             }
-        }
 
         logger.info(changeAsTable)
         logger.newLine()
         logger.info("Please update your baseline accordingly")
     }
 
-    private fun BrokenExpectation.description() = when (this) {
-        BrokenExpectation.MISSING_ON_BASELINE -> "Baseline"
-        BrokenExpectation.MISSING_ON_ARTIFACT -> "Archive"
-    }
+    private fun BrokenExpectation.description() =
+        when (this) {
+            BrokenExpectation.MISSING_ON_BASELINE -> "Baseline"
+            BrokenExpectation.MISSING_ON_ARTIFACT -> "Archive"
+        }
 
     companion object {
         private const val OUTCOME_NO_CHANGES = "No changes detected"

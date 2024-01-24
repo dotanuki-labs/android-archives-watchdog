@@ -23,9 +23,8 @@ import kotlin.system.exitProcess
 context (CompareContext, Logging)
 class CompareCommand : CliktCommand(
     help = "aaw compare -a/--archive <path/to/archive> -b/--baseline <path/to/baseline>",
-    name = "compare"
+    name = "compare",
 ) {
-
     private val outputFormats = listOf("--json" to "json", "--console" to "console").toTypedArray()
 
     private val pathToArchive: String by option("-a", "--archive").required()

@@ -10,10 +10,9 @@ import io.dotanuki.aaw.core.errors.ErrorAware
 
 data class SuppliedArtifact(
     val filePath: String,
-    val type: AndroidArtifactType
+    val type: AndroidArtifactType,
 ) {
     companion object {
-
         context (ErrorAware)
         fun from(filePath: String): SuppliedArtifact =
             when {

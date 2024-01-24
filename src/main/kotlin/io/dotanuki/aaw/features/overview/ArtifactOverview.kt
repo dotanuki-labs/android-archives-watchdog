@@ -18,5 +18,5 @@ data class ArtifactOverview(
     val totalActivities: Int,
     val totalServices: Int,
     val totalReceivers: Int,
-    val totalProviders: Int
+    val totalProviders: Int,
 )

@@ -24,9 +24,8 @@ import kotlin.system.exitProcess
 context (OverviewContext, Logging)
 class OverviewCommand : CliktCommand(
     help = "aaw overview -a/--archive <path/to/archive> [--console | --json] ",
-    name = "overview"
+    name = "overview",
 ) {
-
     private val switches = listOf("--json" to "json", "--console" to "console").toTypedArray()
 
     private val format: String by option().switch(*switches).default("console")
@@ -44,20 +43,21 @@ class OverviewCommand : CliktCommand(
     private fun extractOverview() {
         val analysed = analyser.analyse(ValidatedFile(pathToArchive))
 
-        val overview = with(analysed) {
-            ArtifactOverview(
-                applicationId,
-                minSdk,
-                targetSdk,
-                totalUsedFeatures = androidFeatures.size,
-                totalPermissions = androidPermissions.size,
-                dangerousPermissions = AndroidPermissions.hasDangerous(androidPermissions),
-                totalActivities = componentCount(AndroidComponentType.ACTIVITY),
-                totalServices = componentCount(AndroidComponentType.SERVICE),
-                totalReceivers = componentCount(AndroidComponentType.RECEIVER),
-                totalProviders = componentCount(AndroidComponentType.PROVIDER)
-            )
-        }
+        val overview =
+            with(analysed) {
+                ArtifactOverview(
+                    applicationId,
+                    minSdk,
+                    targetSdk,
+                    totalUsedFeatures = androidFeatures.size,
+                    totalPermissions = androidPermissions.size,
+                    dangerousPermissions = AndroidPermissions.hasDangerous(androidPermissions),
+                    totalActivities = componentCount(AndroidComponentType.ACTIVITY),
+                    totalServices = componentCount(AndroidComponentType.SERVICE),
+                    totalReceivers = componentCount(AndroidComponentType.RECEIVER),
+                    totalProviders = componentCount(AndroidComponentType.PROVIDER),
+                )
+            }
 
         reporter.reportSuccess(overview, format)
     }

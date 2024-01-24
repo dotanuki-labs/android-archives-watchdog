@@ -20,9 +20,8 @@ import kotlin.system.exitProcess
 context (BaselineContext, Logging)
 class GenerateCommand : CliktCommand(
     help = "aaw generate -a/--archive <path/to/archive> -t/--trust <package1,package2,...>",
-    name = "generate"
+    name = "generate",
 ) {
-
     private val pathToArchive: String by option("-a", "--archive").required()
     private val trustedPackages: String? by option("-t", "--trust")
 

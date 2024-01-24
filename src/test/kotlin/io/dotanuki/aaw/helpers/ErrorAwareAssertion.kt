@@ -13,5 +13,5 @@ fun errorAwareTest(assertion: ErrorAware.() -> Unit) =
         block = assertion,
         recover = {
             throw AssertionError("Should not recover on this test!\nError = $it")
-        }
+        },
     )
