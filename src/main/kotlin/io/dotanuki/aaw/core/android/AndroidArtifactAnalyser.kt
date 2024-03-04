@@ -27,7 +27,6 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
-import kotlin.io.path.absolutePathString
 
 context (Logging)
 class AndroidArtifactAnalyser {
@@ -78,7 +77,7 @@ class AndroidArtifactAnalyser {
             val bytesToDecode = Files.readAllBytes(manifestPath)
 
             logger.debug("Decoding AndroidManifest.xml binary file")
-            val decodedXml = BinaryXmlParser.decodeXml(manifestPath.absolutePathString(), bytesToDecode)
+            val decodedXml = BinaryXmlParser.decodeXml(bytesToDecode)
 
             val inputStream = ByteArrayInputStream(decodedXml)
             AndroidManifestParser.parse(inputStream).also {
