@@ -25,7 +25,7 @@ jobs:
         run: ./scripts/prepare-release.sh
 
       - name: Create draft release
-        uses: softprops/action-gh-release@v2.0.3
+        uses: softprops/action-gh-release@v2.0.4
         with:
           name: ${{ steps.prepare-release.outputs.version }}
           tag_name: ${{ steps.prepare-release.outputs.version }}
