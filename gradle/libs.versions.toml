@@ -10,7 +10,7 @@ test-logger = "com.adarshr.test-logger:4.0.0"
 
 # Application
 ajalt-clikt = "com.github.ajalt.clikt:clikt:4.2.2"
-ajalt-mordant = "com.github.ajalt.mordant:mordant:2.3.0"
+ajalt-mordant = "com.github.ajalt.mordant:mordant:2.4.0"
 arrow-core = "io.arrow-kt:arrow-core:1.2.3"
 
 android-tools-sdklib = "com.android.tools:sdklib:31.3.0"
