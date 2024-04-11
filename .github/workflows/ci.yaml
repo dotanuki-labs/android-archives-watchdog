@@ -56,8 +56,9 @@ jobs:
 
       - name: Run acceptance tests
         run: |
-          npm install -g bats >/dev/null
-          bats src/test/bash/acceptance.bats --print-output-on-failure
+          sudo apt-get update >/dev/null
+          sudo apt-get install -y bats >/dev/null
+          bats src/test/bash/acceptance.bats
 
       - name: Archive executable
         uses: actions/upload-artifact@v4.3.1
@@ -88,8 +89,9 @@ jobs:
 
       - name: Run E2E tests
         run: |
-          npm install -g bats
-          bats src/test/bash/e2e.bats --print-output-on-failure
+          sudo apt-get update >/dev/null
+          sudo apt-get install -y bats >/dev/null
+          bats src/test/bash/e2e.bats
 
   secops:
     if: github.ref == 'refs/heads/main'
