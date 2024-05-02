@@ -28,5 +28,5 @@ peanutz-tomlkt = "net.peanuuutz.tomlkt:tomlkt:0.3.7"
 
 # Testing
 junit = "junit:junit:4.13.2"
-google-guava = "com.google.guava:guava:33.1.0-jre"
+google-guava = "com.google.guava:guava:33.2.0-jre"
 google-truth = "com.google.truth:truth:1.4.2"
