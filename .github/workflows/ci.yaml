@@ -7,21 +7,27 @@ on:
       - main
 
 jobs:
-  essential-checks:
+  docs:
     runs-on: ubuntu-22.04
     steps:
       - name: Project Checkout
         uses: actions/checkout@v4.1.6
 
-      - name: Run essential checks
-        uses: dotanuki-labs/github-actions/essentials@main
+      - name: Check typos on source files
+        uses: dotanuki-labs/github-actions/quality/typos@main
+
+      - name: Lint Markdown files
+        uses: dotanuki-labs/github-actions/quality/markdown@main
+
+      - name: Check MIT license on source files
+        uses: dotanuki-labs/github-actions/foss/check-licenses@main
         with:
-          file-patterns: '*.sh,*.bats,*.kt,*.kts'
-          license: 'mit'
+          file-patterns: "*.sh,*.bats,*.kt,*.kts"
+          license: "mit"
 
   build:
     runs-on: ubuntu-22.04
-    needs: essential-checks
+    needs: docs
     strategy:
       matrix:
         jdk: [ '11', '17', '21' ]
@@ -29,6 +35,9 @@ jobs:
     steps:
       - name: Project Checkout
         uses: actions/checkout@v4.1.6
+
+      - name: Lint Bash files
+        uses: dotanuki-labs/github-actions/quality/bash@main
 
       - name: Setup JDK
         uses: actions/setup-java@v4.2.1
