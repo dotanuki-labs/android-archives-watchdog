@@ -22,7 +22,7 @@ android-tools-common = "com.android.tools:common:31.4.1"
 android-tools-bundletool = "com.android.tools.build:bundletool:1.16.0"
 
 kotlinx-serialization-core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3"
-kotlinx-serialization-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.6.3"
+kotlinx-serialization-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.0"
 kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
 peanutz-tomlkt = "net.peanuuutz.tomlkt:tomlkt:0.3.7"
 
