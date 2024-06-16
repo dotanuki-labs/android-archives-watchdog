@@ -24,7 +24,7 @@ android-tools-bundletool = "com.android.tools.build:bundletool:1.16.0"
 kotlinx-serialization-core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.0"
 kotlinx-serialization-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.0"
 kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0"
-peanutz-tomlkt = "net.peanuuutz.tomlkt:tomlkt:0.3.7"
+peanutz-tomlkt = "net.peanuuutz.tomlkt:tomlkt:0.4.0"
 
 # Testing
 junit = "junit:junit:4.13.2"
