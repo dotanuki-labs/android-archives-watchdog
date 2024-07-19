@@ -19,7 +19,7 @@ android-tools-binaryresources = "com.android.tools.apkparser:binary-resources:31
 android-tools-repository = "com.android.tools:repository:31.5.1"
 android-tools-sdkcommon = "com.android.tools:sdk-common:31.5.1"
 android-tools-common = "com.android.tools:common:31.5.1"
-android-tools-bundletool = "com.android.tools.build:bundletool:1.17.0"
+android-tools-bundletool = "com.android.tools.build:bundletool:1.17.1"
 
 kotlinx-serialization-core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.1"
 kotlinx-serialization-jvm = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.1"
