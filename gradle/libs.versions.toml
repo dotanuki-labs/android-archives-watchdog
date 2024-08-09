@@ -15,7 +15,7 @@ arrow-core = "io.arrow-kt:arrow-core:1.2.4"
 
 android-tools-sdklib = "com.android.tools:sdklib:31.5.1"
 android-tools-apkanalyzer = "com.android.tools.apkparser:apkanalyzer:31.5.1"
-android-tools-binaryresources = "com.android.tools.apkparser:binary-resources:31.5.1"
+android-tools-binaryresources = "com.android.tools.apkparser:binary-resources:31.5.2"
 android-tools-repository = "com.android.tools:repository:31.5.1"
 android-tools-sdkcommon = "com.android.tools:sdk-common:31.5.1"
 android-tools-common = "com.android.tools:common:31.5.1"
