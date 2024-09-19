@@ -6,14 +6,21 @@
 package io.dotanuki.aaw.core.cli
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.yellow
 
 class AawEntrypoint : CliktCommand(
     name = "aaw",
-    printHelpOnEmptyArgs = true,
-    epilog =
+) {
+    init {
+        context {
+            helpOptionNames = emptySet()
+        }
+    }
+
+    override fun helpEpilog(context: Context): String =
         """
         
         ${yellow("Where:")}
@@ -22,13 +29,9 @@ class AawEntrypoint : CliktCommand(
         • ${cyan("generate")} : $HELP_GENERATE${"\u0085"}
         • ${cyan("compare")} : $HELP_COMPARE
         
-        """.trimIndent(),
-) {
-    init {
-        context {
-            helpOptionNames = emptySet()
-        }
-    }
+        """.trimIndent()
+
+    override val printHelpOnEmptyArgs: Boolean = true
 
     override fun run() = Unit
 

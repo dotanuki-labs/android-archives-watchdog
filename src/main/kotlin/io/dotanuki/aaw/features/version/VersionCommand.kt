@@ -7,6 +7,7 @@ package io.dotanuki.aaw.features.version
 
 import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.errors.ErrorAware
@@ -15,9 +16,10 @@ import kotlin.system.exitProcess
 
 context (Logging)
 class VersionCommand : CliktCommand(
-    help = "aaw version",
     name = "version",
 ) {
+    override fun help(context: Context): String = "aaw version"
+
     override fun run() {
         recover(::printVersion, ::reportFailure)
     }

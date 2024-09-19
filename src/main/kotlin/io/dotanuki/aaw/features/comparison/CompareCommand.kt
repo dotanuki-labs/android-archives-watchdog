@@ -7,6 +7,7 @@ package io.dotanuki.aaw.features.comparison
 
 import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
@@ -22,7 +23,6 @@ import kotlin.system.exitProcess
 
 context (CompareContext, Logging)
 class CompareCommand : CliktCommand(
-    help = "aaw compare -a/--archive <path/to/archive> -b/--baseline <path/to/baseline>",
     name = "compare",
 ) {
     private val outputFormats = listOf("--json" to "json", "--console" to "console").toTypedArray()
@@ -35,6 +35,9 @@ class CompareCommand : CliktCommand(
     private val reporter by lazy {
         ComparisonReporter()
     }
+
+    override fun help(context: Context): String =
+        "aaw compare -a/--archive <path/to/archive> -b/--baseline <path/to/baseline>"
 
     override fun run() {
         recover(::performComparison, ::reportFailure)
