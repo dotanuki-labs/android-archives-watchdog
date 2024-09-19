@@ -7,6 +7,7 @@ package io.dotanuki.aaw.features.baseline
 
 import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import io.dotanuki.aaw.core.cli.ExitCodes
@@ -19,7 +20,6 @@ import kotlin.system.exitProcess
 
 context (BaselineContext, Logging)
 class GenerateCommand : CliktCommand(
-    help = "aaw generate -a/--archive <path/to/archive> -t/--trust <package1,package2,...>",
     name = "generate",
 ) {
     private val pathToArchive: String by option("-a", "--archive").required()
@@ -28,6 +28,9 @@ class GenerateCommand : CliktCommand(
     private val writer by lazy {
         BaselineWriter()
     }
+
+    override fun help(context: Context): String =
+        "aaw generate -a/--archive <path/to/archive> -t/--trust <package1,package2,...>"
 
     override fun run() {
         recover(::extractBaseline, ::reportFailure)
