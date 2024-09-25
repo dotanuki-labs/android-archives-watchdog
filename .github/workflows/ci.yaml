@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
 
       - name: Check typos on source files
         uses: dotanuki-labs/github-actions/quality/typos@main
@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
 
       - name: Lint Bash files
         uses: dotanuki-labs/github-actions/quality/bash@main
@@ -75,7 +75,7 @@ jobs:
     needs: build
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
 
       - name: Setup JDK
         uses: actions/setup-java@v4.4.0
@@ -106,7 +106,7 @@ jobs:
     needs: build
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
 
       - name: Evaluate CVEs for the current Git sha
         run: ./scripts/secops.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.sha }}
