@@ -12,7 +12,7 @@ pluginManagement {
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
-    id("com.gradle.develocity") version "3.19.1"
+    id("com.gradle.develocity") version "3.19.2"
 }
 
 rootProject.name = "android-archives-watchdog"
