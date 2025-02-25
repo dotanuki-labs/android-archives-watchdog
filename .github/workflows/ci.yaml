@@ -84,7 +84,7 @@ jobs:
           java-version: '11'
 
       - name: Fetch executable from previous build
-        uses: actions/download-artifact@v4.1.8
+        uses: actions/download-artifact@v4.1.9
 
       - name: Add binary to the CLI path
         run: |
