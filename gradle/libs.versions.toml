@@ -2,7 +2,7 @@
 kotlin-jvm = "org.jetbrains.kotlin.jvm:2.1.10"
 kotlinx-serialization = "org.jetbrains.kotlin.plugin.serialization:2.1.10"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
-ktlint = "org.jlleitschuh.gradle.ktlint:12.1.2"
+ktlint = "org.jlleitschuh.gradle.ktlint:12.2.0"
 shadow = "com.github.johnrengelman.shadow:8.1.1"
 test-logger = "com.adarshr.test-logger:4.0.0"
 
