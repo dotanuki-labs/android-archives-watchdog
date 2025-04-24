@@ -19,6 +19,7 @@ rootProject.name = "android-archives-watchdog"
 
 develocity {
     buildScan {
-        publishing.onlyIf { false }
+        termsOfUseUrl.set("https://gradle.com/help/legal-terms-of-use")
+        termsOfUseAgree.set("yes")
     }
 }
