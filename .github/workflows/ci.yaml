@@ -56,7 +56,7 @@ jobs:
 
       - name: Run Gradle build
         id: build
-        run: ./gradlew build assembleExecutable --scan
+        run: ./gradlew build assembleExecutable
 
       - name: Run acceptance tests
         run: |

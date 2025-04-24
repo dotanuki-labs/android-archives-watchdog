@@ -12,13 +12,14 @@ pluginManagement {
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
-    id("com.gradle.develocity") version "3.19.2"
+    id("com.gradle.develocity") version "4.0"
 }
 
 rootProject.name = "android-archives-watchdog"
 
 develocity {
     buildScan {
-        publishing.onlyIf { false }
+        termsOfUseUrl.set("https://gradle.com/help/legal-terms-of-use")
+        termsOfUseAgree.set("yes")
     }
 }
