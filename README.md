@@ -19,7 +19,7 @@ ones brought by 3rd party project dependencies, following a shift-left approach.
 
 `aaw` is distributed as a
 [truly-executable](https://skife.org/java/unix/2011/06/20/really_executable_jars.html)
-[fatjar](https://imperceptiblethoughts.com/shadow/), and
+[fatjar](https://gradleup.com/shadow), and
 it's tested against `jdk11`, `jdk17` and `jdk21` on Unix boxes. In addition, this project has
 end-to-end tests targeting the following Android products with public open-source releases
 on Github:
