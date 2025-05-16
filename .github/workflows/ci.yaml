@@ -30,7 +30,7 @@ jobs:
     needs: docs
     strategy:
       matrix:
-        jdk: [ '11', '17', '21' ]
+        jdk: ["11", "17", "21"]
 
     steps:
       - name: Project Checkout
@@ -42,7 +42,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4.7.1
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: ${{ matrix.jdk }}
 
       - name: Setup Gradle build
@@ -56,10 +56,11 @@ jobs:
 
       - name: Run Gradle build
         id: build
-        run: ./gradlew build assembleExecutable
+        run: ./gradlew build
 
       - name: Run acceptance tests
         run: |
+          ./gradlew assembleExecutable
           sudo apt-get update >/dev/null
           sudo apt-get install -y bats >/dev/null
           bats src/test/bash/acceptance.bats
@@ -80,8 +81,8 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4.7.1
         with:
-          distribution: 'zulu'
-          java-version: '11'
+          distribution: "zulu"
+          java-version: "11"
 
       - name: Fetch executable from previous build
         uses: actions/download-artifact@v4.3.0
