@@ -20,7 +20,7 @@ ones brought by 3rd party project dependencies, following a shift-left approach.
 `aaw` is distributed as a
 [truly-executable](https://skife.org/java/unix/2011/06/20/really_executable_jars.html)
 [fatjar](https://gradleup.com/shadow), and
-it's tested against `jdk11`, `jdk17` and `jdk21` on Unix boxes. In addition, this project has
+it's tested against `jdk17` and `jdk21` on Unix boxes. In addition, this project has
 end-to-end tests targeting the following Android products with public open-source releases
 on Github:
 
@@ -31,7 +31,7 @@ on Github:
 
 ## Requirements
 
-This tool requires `jdk11` or newer and a valid Android SDK installation. `aaw` inspects the
+This tool requires `jdk17` or newer and a valid Android SDK installation. `aaw` inspects the
 following environment variables when locating your Android SDK installation folder:
 
 - `$ANDROID_HOME`

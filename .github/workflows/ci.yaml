@@ -30,7 +30,7 @@ jobs:
     needs: docs
     strategy:
       matrix:
-        jdk: ["11", "17", "21"]
+        jdk: ["17", "21"]
 
     steps:
       - name: Project Checkout
@@ -56,11 +56,10 @@ jobs:
 
       - name: Run Gradle build
         id: build
-        run: ./gradlew build
+        run: ./gradlew build assembleExecutable
 
       - name: Run acceptance tests
         run: |
-          ./gradlew assembleExecutable
           sudo apt-get update >/dev/null
           sudo apt-get install -y bats >/dev/null
           bats src/test/bash/acceptance.bats
@@ -82,15 +81,15 @@ jobs:
         uses: actions/setup-java@v4.7.1
         with:
           distribution: "zulu"
-          java-version: "11"
+          java-version: "17"
 
       - name: Fetch executable from previous build
         uses: actions/download-artifact@v4.3.0
 
       - name: Add binary to the CLI path
         run: |
-          chmod +x aaw-executable-jdk-11/aaw
-          echo "$GITHUB_WORKSPACE/aaw-executable-jdk-11" >> "$GITHUB_PATH"
+          chmod +x aaw-executable-jdk-17/aaw
+          echo "$GITHUB_WORKSPACE/aaw-executable-jdk-17" >> "$GITHUB_PATH"
 
       - name: Run E2E tests
         run: |
