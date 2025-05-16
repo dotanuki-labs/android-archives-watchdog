@@ -30,7 +30,7 @@ jobs:
     needs: docs
     strategy:
       matrix:
-        jdk: [ '11', '17', '21' ]
+        jdk: ["17", "21"]
 
     steps:
       - name: Project Checkout
@@ -42,7 +42,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4.7.1
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: ${{ matrix.jdk }}
 
       - name: Setup Gradle build
@@ -80,16 +80,16 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4.7.1
         with:
-          distribution: 'zulu'
-          java-version: '11'
+          distribution: "zulu"
+          java-version: "17"
 
       - name: Fetch executable from previous build
         uses: actions/download-artifact@v4.3.0
 
       - name: Add binary to the CLI path
         run: |
-          chmod +x aaw-executable-jdk-11/aaw
-          echo "$GITHUB_WORKSPACE/aaw-executable-jdk-11" >> "$GITHUB_PATH"
+          chmod +x aaw-executable-jdk-17/aaw
+          echo "$GITHUB_WORKSPACE/aaw-executable-jdk-17" >> "$GITHUB_PATH"
 
       - name: Run E2E tests
         run: |
