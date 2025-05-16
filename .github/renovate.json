@@ -1,18 +1,36 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [":prHourlyLimit2", "group:monorepos", "workarounds:all"],
+    "extends": [
+        ":prHourlyLimit2",
+        "group:monorepos",
+        "workarounds:all"
+    ],
     "osvVulnerabilityAlerts": true,
     "dependencyDashboard": true,
     "packageRules": [
         {
-            "matchUpdateTypes": ["major", "minor", "patch"],
+            "matchUpdateTypes": [
+                "major",
+                "minor",
+                "patch"
+            ],
             "automerge": false
         }
     ],
-    "enabledManagers": ["gradle", "gradle-wrapper", "github-actions"],
-    "labels": ["dependencies", "gradle"],
+    "enabledManagers": [
+        "gradle",
+        "gradle-wrapper",
+        "github-actions"
+    ],
+    "labels": [
+        "dependencies",
+        "gradle"
+    ],
     "gradle": {
-        "fileMatch": ["(^|\/)gradle\/.+\.toml$", "\.versions\.toml$"]
+        "managerFilePatterns": [
+            "/(^|/)gradle/.+.toml$/",
+            "/.versions.toml$/"
+        ]
     },
     "github-actions": {}
 }
