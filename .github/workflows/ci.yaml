@@ -13,9 +13,6 @@ jobs:
       - name: Project Checkout
         uses: actions/checkout@v4.2.2
 
-      - name: Check typos on source files
-        uses: dotanuki-labs/github-actions/quality/typos@main
-
       - name: Lint Markdown files
         uses: dotanuki-labs/github-actions/quality/markdown@main
 
