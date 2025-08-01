@@ -1,7 +1,6 @@
 # Android Archives Watchdog 🐶
 
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
-[![Maintainability](https://api.codeclimate.com/v1/badges/26b1c97497c6cab9c023/maintainability)](https://codeclimate.com/github/dotanuki-labs/android-archives-watchdog/maintainability)
 [![CI](https://github.com/dotanuki-labs/android-archives-watchdog/actions/workflows/ci.yaml/badge.svg)](https://github.com/dotanuki-labs/android-archives-watchdog/actions/workflows/ci.yaml)
 [![License](https://img.shields.io/github/license/dotanuki-labs/norris)](https://choosealicense.com/licenses/mit)
 
