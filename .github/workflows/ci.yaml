@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.3.0
 
       - name: Lint Markdown files
         uses: dotanuki-labs/github-actions/quality/markdown@main
@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.3.0
 
       - name: Lint Bash files
         uses: dotanuki-labs/github-actions/quality/bash@main
@@ -72,7 +72,7 @@ jobs:
     needs: build
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.3.0
 
       - name: Setup JDK
         uses: actions/setup-java@v4.7.1
@@ -103,7 +103,7 @@ jobs:
     needs: build
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.3.0
 
       - name: Evaluate CVEs for the current Git sha
         run: ./scripts/secops.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.sha }}
