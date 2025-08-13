@@ -19,9 +19,10 @@ import io.dotanuki.aaw.core.toml.WatchdogConfig
 import kotlin.system.exitProcess
 
 context (BaselineContext, Logging)
-class GenerateCommand : CliktCommand(
-    name = "generate",
-) {
+class GenerateCommand :
+    CliktCommand(
+        name = "generate",
+    ) {
     private val pathToArchive: String by option("-a", "--archive").required()
     private val trustedPackages: String? by option("-t", "--trust")
 

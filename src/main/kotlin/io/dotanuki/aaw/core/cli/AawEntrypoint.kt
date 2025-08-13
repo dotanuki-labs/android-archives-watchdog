@@ -11,9 +11,10 @@ import com.github.ajalt.clikt.core.context
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.yellow
 
-class AawEntrypoint : CliktCommand(
-    name = "aaw",
-) {
+class AawEntrypoint :
+    CliktCommand(
+        name = "aaw",
+    ) {
     init {
         context {
             helpOptionNames = emptySet()

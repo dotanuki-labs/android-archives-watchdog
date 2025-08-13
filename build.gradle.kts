@@ -99,7 +99,10 @@ val assembleExecutable by tasks.registering(DefaultTask::class) {
     dependsOn(tasks.shadowJar)
 
     val aawShadowJarFile =
-        tasks.shadowJar.orNull?.outputs?.files?.singleFile
+        tasks.shadowJar.orNull
+            ?.outputs
+            ?.files
+            ?.singleFile
             ?: throw GradleException("Missing aaw shadowJar file")
 
     inputs.files(aawShadowJarFile)

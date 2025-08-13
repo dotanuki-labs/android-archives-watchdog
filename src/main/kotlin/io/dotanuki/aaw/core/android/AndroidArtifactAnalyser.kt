@@ -115,14 +115,17 @@ class AndroidArtifactAnalyser {
                     it.name,
                     AndroidComponentType.valueOf(it.type.uppercase()),
                 )
-            }
-            .toSet()
+            }.toSet()
 
     context (ErrorAware)
     private fun extractUniversalApkFromBundle(artifact: SuppliedArtifact): String =
         try {
             logger.debug("Evaluating AppBundle information")
-            val artifactName = artifact.filePath.split("/").last().replace(".aab", "")
+            val artifactName =
+                artifact.filePath
+                    .split("/")
+                    .last()
+                    .replace(".aab", "")
             val tempDir = Files.createTempDirectory("arw-$artifactName-extraction").toFile()
             val apkContainerOutput = "$tempDir/$artifactName.apks"
 
