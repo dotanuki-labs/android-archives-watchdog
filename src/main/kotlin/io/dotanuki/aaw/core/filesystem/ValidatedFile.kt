@@ -12,15 +12,16 @@ import java.io.File
 object ValidatedFile {
     context (ErrorAware)
     operator fun invoke(filePath: String): String =
-        File(filePath).run {
-            if (!exists()) {
-                raise(AawError("$filePath does not exist"))
-            }
+        File(filePath)
+            .run {
+                if (!exists()) {
+                    raise(AawError("$filePath does not exist"))
+                }
 
-            if (!isFile()) {
-                raise(AawError("$filePath is not a file"))
+                if (!isFile()) {
+                    raise(AawError("$filePath is not a file"))
+                }
+            }.let {
+                filePath
             }
-        }.let {
-            filePath
-        }
 }

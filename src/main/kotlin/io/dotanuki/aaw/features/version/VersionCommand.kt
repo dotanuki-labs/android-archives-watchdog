@@ -15,9 +15,10 @@ import io.dotanuki.aaw.core.logging.Logging
 import kotlin.system.exitProcess
 
 context (Logging)
-class VersionCommand : CliktCommand(
-    name = "version",
-) {
+class VersionCommand :
+    CliktCommand(
+        name = "version",
+    ) {
     override fun help(context: Context): String = "aaw version"
 
     override fun run() {

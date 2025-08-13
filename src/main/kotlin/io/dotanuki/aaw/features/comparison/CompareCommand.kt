@@ -22,9 +22,10 @@ import io.dotanuki.aaw.core.toml.ValidatedTOML
 import kotlin.system.exitProcess
 
 context (CompareContext, Logging)
-class CompareCommand : CliktCommand(
-    name = "compare",
-) {
+class CompareCommand :
+    CliktCommand(
+        name = "compare",
+    ) {
     private val outputFormats = listOf("--json" to "json", "--console" to "console").toTypedArray()
 
     private val pathToArchive: String by option("-a", "--archive").required()

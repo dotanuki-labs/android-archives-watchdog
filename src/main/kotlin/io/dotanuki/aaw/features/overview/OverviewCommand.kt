@@ -23,9 +23,10 @@ import io.dotanuki.aaw.core.logging.Logging
 import kotlin.system.exitProcess
 
 context (OverviewContext, Logging)
-class OverviewCommand : CliktCommand(
-    name = "overview",
-) {
+class OverviewCommand :
+    CliktCommand(
+        name = "overview",
+    ) {
     private val switches = listOf("--json" to "json", "--console" to "console").toTypedArray()
 
     private val format: String by option().switch(*switches).default("console")
