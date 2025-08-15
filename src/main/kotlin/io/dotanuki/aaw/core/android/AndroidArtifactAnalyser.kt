@@ -5,7 +5,10 @@
 
 package io.dotanuki.aaw.core.android
 
-import arrow.core.raise.ensure
+import arrow.core.Either
+import arrow.core.flatMap
+import arrow.core.left
+import arrow.core.right
 import com.android.SdkConstants
 import com.android.ide.common.xml.AndroidManifestParser
 import com.android.ide.common.xml.ManifestData
@@ -20,7 +23,6 @@ import com.android.tools.build.bundletool.commands.BuildApksCommand
 import com.android.tools.build.bundletool.flags.FlagParser
 import com.android.utils.NullLogger
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.Unzipper
 import io.dotanuki.aaw.core.logging.Logging
 import java.io.ByteArrayInputStream
@@ -34,77 +36,80 @@ class AndroidArtifactAnalyser {
         AndroidSDKBridge()
     }
 
-    context (ErrorAware)
-    fun analyse(pathToTarget: String): AnalysedArtifact {
-        val artifact = SuppliedArtifact.from(pathToTarget)
-
-        logger.debug("Successfully identified artifact type -> ${artifact.type.name}")
-
-        return when (artifact.type) {
-            AndroidArtifactType.APK -> analyseApk(artifact)
-            AndroidArtifactType.AAB -> analyseAab(artifact)
-        }
-    }
-
-    context (ErrorAware)
-    private fun analyseAab(aab: SuppliedArtifact): AnalysedArtifact =
-        analyseApk(
-            SuppliedArtifact(extractUniversalApkFromBundle(aab), AndroidArtifactType.APK),
-        )
-
-    context (ErrorAware)
-    private fun analyseApk(apk: SuppliedArtifact): AnalysedArtifact {
-        logger.debug("Starting analysis -> ${apk.filePath}")
-        val appInfo = retrieveAppInfoWithAapt(apk.filePath)
-        val parsedManifest = parseAndroidManifestFromApk(apk.filePath)
-
-        return AnalysedArtifact(
-            applicationId = appInfo.packageId,
-            androidPermissions = appInfo.permissions.toSortedSet(),
-            androidFeatures = appInfo.usesFeature.keys.toSortedSet(),
-            androidComponents = parsedManifest.extractComponents(),
-            minSdk = parsedManifest.minSdkVersion,
-            targetSdk = parsedManifest.targetSdkVersion,
-        )
-    }
-
-    context (ErrorAware)
-    private fun parseAndroidManifestFromApk(pathToArtifact: String) =
-        try {
-            val archiveContext = Archives.open(pathToArtifact.asPath())
-
-            val manifestPath = archiveContext.archive.contentRoot.resolve("AndroidManifest.xml")
-            val bytesToDecode = Files.readAllBytes(manifestPath)
-
-            logger.debug("Decoding AndroidManifest.xml binary file")
-            val decodedXml = BinaryXmlParser.decodeXml(bytesToDecode)
-
-            val inputStream = ByteArrayInputStream(decodedXml)
-            AndroidManifestParser.parse(inputStream).also {
-                logger.debug("Successfully parsed AndroidManifest.xml")
+    fun analyse(pathToTarget: String): Either<AawError, AnalysedArtifact> =
+        SuppliedArtifact
+            .from(pathToTarget)
+            .flatMap { artifact ->
+                logger.debug("Successfully identified artifact type -> ${artifact.type.name}")
+                when (artifact.type) {
+                    AndroidArtifactType.APK -> analyseApk(artifact)
+                    AndroidArtifactType.AAB -> analyseAab(artifact)
+                }
             }
-        } catch (surfaced: Throwable) {
-            raise(AawError("Failed when reading AndroidManifest", surfaced))
-        }
 
-    context (ErrorAware)
-    private fun retrieveAppInfoWithAapt(pathToArtifact: String) =
-        try {
-            val sdkHandler =
-                AndroidSdkHandler.getInstance(
-                    AndroidLocationsSingleton,
-                    sdkBridge.sdkFolder.asPath(),
+    private fun analyseAab(aab: SuppliedArtifact): Either<AawError, AnalysedArtifact> =
+        locateAapt2FromSdk().flatMap { sdkLocation ->
+            extractUniversalApkFromBundle(aab, sdkLocation).flatMap { universalApk ->
+                analyseApk(
+                    SuppliedArtifact(universalApk, AndroidArtifactType.APK),
                 )
-
-            val aaptInvoker = AaptInvoker(sdkHandler, NullLogger())
-
-            logger.debug("Dumping application info using aapt")
-            AndroidApplicationInfo
-                .parseBadging(aaptInvoker.dumpBadging(pathToArtifact.asFile()))
-                .also { logger.debug("Successfully extracted application info") }
-        } catch (surfaced: Throwable) {
-            raise(AawError("Failed when invoking aapt from Android SDK", surfaced))
+            }
         }
+
+    private fun analyseApk(apk: SuppliedArtifact): Either<AawError, AnalysedArtifact> {
+        logger.debug("Starting analysis -> ${apk.filePath}")
+
+        return retrieveAppInfoWithAapt(apk.filePath).flatMap { appInfo ->
+            parseAndroidManifestFromApk(apk.filePath).flatMap { parsedManifest ->
+                AnalysedArtifact(
+                    applicationId = appInfo.packageId,
+                    androidPermissions = appInfo.permissions.toSortedSet(),
+                    androidFeatures = appInfo.usesFeature.keys.toSortedSet(),
+                    androidComponents = parsedManifest.extractComponents(),
+                    minSdk = parsedManifest.minSdkVersion,
+                    targetSdk = parsedManifest.targetSdkVersion,
+                ).right()
+            }
+        }
+    }
+
+    private fun parseAndroidManifestFromApk(pathToArtifact: String): Either<AawError, ManifestData> =
+        Either
+            .catch {
+                val archiveContext = Archives.open(pathToArtifact.asPath())
+
+                val manifestPath = archiveContext.archive.contentRoot.resolve("AndroidManifest.xml")
+                val bytesToDecode = Files.readAllBytes(manifestPath)
+
+                logger.debug("Decoding AndroidManifest.xml binary file")
+                val decodedXml = BinaryXmlParser.decodeXml(bytesToDecode)
+
+                val inputStream = ByteArrayInputStream(decodedXml)
+                AndroidManifestParser.parse(inputStream).also {
+                    logger.debug("Successfully parsed AndroidManifest.xml")
+                }
+            }.mapLeft {
+                AawError("Failed when reading AndroidManifest", it)
+            }
+
+    private fun retrieveAppInfoWithAapt(pathToArtifact: String): Either<AawError, AndroidApplicationInfo> =
+        Either
+            .catch {
+                val sdkHandler =
+                    AndroidSdkHandler.getInstance(
+                        AndroidLocationsSingleton,
+                        sdkBridge.sdkFolder.asPath(),
+                    )
+
+                val aaptInvoker = AaptInvoker(sdkHandler, NullLogger())
+
+                logger.debug("Dumping application info using aapt")
+                AndroidApplicationInfo
+                    .parseBadging(aaptInvoker.dumpBadging(pathToArtifact.asFile()))
+                    .also { logger.debug("Successfully extracted application info") }
+            }.mapLeft {
+                AawError("Failed when invoking aapt from Android SDK", it)
+            }
 
     private fun ManifestData.extractComponents(): Set<AndroidComponent> =
         keepClasses
@@ -117,52 +122,56 @@ class AndroidArtifactAnalyser {
                 )
             }.toSet()
 
-    context (ErrorAware)
-    private fun extractUniversalApkFromBundle(artifact: SuppliedArtifact): String =
-        try {
-            logger.debug("Evaluating AppBundle information")
-            val artifactName =
-                artifact.filePath
-                    .split("/")
-                    .last()
-                    .replace(".aab", "")
-            val tempDir = Files.createTempDirectory("arw-$artifactName-extraction").toFile()
-            val apkContainerOutput = "$tempDir/$artifactName.apks"
+    private fun extractUniversalApkFromBundle(
+        artifact: SuppliedArtifact,
+        aapt2Location: File,
+    ): Either<AawError, String> =
+        Either
+            .catch {
+                logger.debug("Evaluating AppBundle information")
+                val artifactName =
+                    artifact.filePath
+                        .split("/")
+                        .last()
+                        .replace(".aab", "")
+                val tempDir = Files.createTempDirectory("arw-$artifactName-extraction").toFile()
+                val apkContainerOutput = "$tempDir/$artifactName.apks"
 
-            logger.debug("Retrieving fake keystore to sign artifacts")
-            val keystore = ClassLoader.getSystemClassLoader().getResourceAsStream("aaw.keystore")?.readAllBytes()
-            ensure(keystore != null) { AawError("Failed when reading aaw.keystore") }
-            val keystoreFile = File("$tempDir/aaw.keystore").apply { writeBytes(keystore) }
+                logger.debug("Retrieving fake keystore to sign artifacts")
+                val keystore =
+                    ClassLoader.getSystemClassLoader().getResourceAsStream("aaw.keystore")?.readAllBytes()
+                        ?: return AawError("Failed when reading aaw.keystore").left()
 
-            logger.debug("Generating universal APK from AppBundle with Bundletool")
-            val flags =
-                arrayOf(
-                    "--bundle=${artifact.filePath}",
-                    "--output=$apkContainerOutput",
-                    "--aapt2=${locateAapt2FromSdk()}",
-                    "--ks=$keystoreFile",
-                    "--ks-pass=pass:aaw-pass",
-                    "--ks-key-alias=aaw-alias",
-                    "--key-pass=pass:aaw-pass",
-                    "--mode=universal",
-                )
+                val keystoreFile = File("$tempDir/aaw.keystore").apply { writeBytes(keystore) }
 
-            val parsedFlags = FlagParser().parse(*flags)
-            val command = BuildApksCommand.fromFlags(parsedFlags, null)
-            val apkContainerPath = command.execute()
+                logger.debug("Generating universal APK from AppBundle with Bundletool")
+                val flags =
+                    arrayOf(
+                        "--bundle=${artifact.filePath}",
+                        "--output=$apkContainerOutput",
+                        "--aapt2=$aapt2Location",
+                        "--ks=$keystoreFile",
+                        "--ks-pass=pass:aaw-pass",
+                        "--ks-key-alias=aaw-alias",
+                        "--key-pass=pass:aaw-pass",
+                        "--mode=universal",
+                    )
 
-            val destinationFolder = "$tempDir/extracted"
-            Unzipper.unzip(apkContainerPath.toFile(), "$tempDir/extracted")
+                val parsedFlags = FlagParser().parse(*flags)
+                val command = BuildApksCommand.fromFlags(parsedFlags, null)
+                val apkContainerPath = command.execute()
 
-            "$destinationFolder/universal.apk".also {
-                logger.debug("Successfully extracted universal APK from -> ${artifact.filePath}")
+                val destinationFolder = "$tempDir/extracted"
+                Unzipper.unzip(apkContainerPath.toFile(), "$tempDir/extracted")
+
+                "$destinationFolder/universal.apk".also {
+                    logger.debug("Successfully extracted universal APK from -> ${artifact.filePath}")
+                }
+            }.mapLeft {
+                AawError("Cannot convert universal APK from AppBundle", it)
             }
-        } catch (surfaced: Throwable) {
-            raise(AawError("Cannot convert universal APK from AppBundle", surfaced))
-        }
 
-    context (ErrorAware)
-    private fun locateAapt2FromSdk(): File {
+    private fun locateAapt2FromSdk(): Either<AawError, File> {
         logger.debug("Locating aapt2 using Android SDK installation")
         val sdkHandler =
             AndroidSdkHandler.getInstance(
@@ -170,12 +179,11 @@ class AndroidArtifactAnalyser {
                 sdkBridge.sdkFolder.asPath(),
             )
 
-        val buildTools = sdkHandler.getLatestBuildTool(LoggerProgressIndicatorWrapper(NullLogger()), true)
-        ensure(buildTools != null) {
-            AawError("Failed to locate build tools inside your Android SDK installation")
-        }
+        val buildTools =
+            sdkHandler.getLatestBuildTool(LoggerProgressIndicatorWrapper(NullLogger()), true)
+                ?: return AawError("Failed to locate build tools inside your Android SDK installation").left()
 
-        return buildTools.location.resolve(SdkConstants.FN_AAPT2).toFile().also {
+        return buildTools.location.resolve(SdkConstants.FN_AAPT2).toFile().right().also {
             logger.debug("Found aapt2 -> $it")
         }
     }

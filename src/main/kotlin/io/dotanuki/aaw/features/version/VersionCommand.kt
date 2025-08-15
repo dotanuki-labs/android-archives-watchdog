@@ -5,12 +5,10 @@
 
 package io.dotanuki.aaw.features.version
 
-import arrow.core.raise.recover
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.logging.Logging
 import kotlin.system.exitProcess
 
@@ -22,12 +20,13 @@ class VersionCommand :
     override fun help(context: Context): String = "aaw version"
 
     override fun run() {
-        recover(::printVersion, ::reportFailure)
+        AppVersionFinder
+            .find()
+            .onLeft { reportFailure(it) }
+            .onRight { printVersion(it) }
     }
 
-    context (ErrorAware)
-    private fun printVersion() {
-        val appVersion = AppVersionFinder.find()
+    private fun printVersion(appVersion: AppVersion) {
         logger.info("aaw - v${appVersion.current}")
         logger.newLine()
     }

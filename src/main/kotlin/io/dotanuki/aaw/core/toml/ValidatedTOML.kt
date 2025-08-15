@@ -5,17 +5,18 @@
 
 package io.dotanuki.aaw.core.toml
 
+import arrow.core.Either
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.features.comparison.CompareContext
 import java.io.File
 
 object ValidatedTOML {
-    context (ErrorAware, CompareContext)
-    operator fun invoke(baselinePath: String): WatchdogConfig =
-        try {
-            tomlSerializer.decodeFromString(WatchdogConfig.serializer(), File(baselinePath).readText())
-        } catch (surfaced: Throwable) {
-            raise(AawError("Failed when parsing configuration", surfaced))
-        }
+    context (CompareContext)
+    operator fun invoke(baselinePath: String): Either<AawError, WatchdogConfig> =
+        Either
+            .catch {
+                tomlSerializer.decodeFromString(WatchdogConfig.serializer(), File(baselinePath).readText())
+            }.mapLeft {
+                AawError("Failed when parsing configuration", it)
+            }
 }

@@ -5,7 +5,7 @@
 
 package io.dotanuki.aaw.features.overview
 
-import arrow.core.raise.recover
+import arrow.core.flatMap
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.default
@@ -17,7 +17,6 @@ import io.dotanuki.aaw.core.android.AndroidComponentType
 import io.dotanuki.aaw.core.android.AndroidPermissions
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
 import io.dotanuki.aaw.core.logging.Logging
 import kotlin.system.exitProcess
@@ -39,13 +38,13 @@ class OverviewCommand :
     override fun help(context: Context): String = "aaw overview -a/--archive <path/to/archive> [--console | --json]"
 
     override fun run() {
-        recover(::extractOverview, ::reportFailure)
+        ValidatedFile(pathToArchive)
+            .flatMap { analyser.analyse(it) }
+            .onLeft { reportFailure(it) }
+            .onRight { extractOverview(it) }
     }
 
-    context (ErrorAware)
-    private fun extractOverview() {
-        val analysed = analyser.analyse(ValidatedFile(pathToArchive))
-
+    private fun extractOverview(analysed: AnalysedArtifact) {
         val overview =
             with(analysed) {
                 ArtifactOverview(

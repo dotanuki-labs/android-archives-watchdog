@@ -5,7 +5,9 @@
 
 package io.dotanuki.aaw.features.comparison
 
-import arrow.core.raise.recover
+import arrow.core.Either
+import arrow.core.flatMap
+import arrow.core.right
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.default
@@ -15,7 +17,6 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
 import io.dotanuki.aaw.core.logging.Logging
 import io.dotanuki.aaw.core.toml.ValidatedTOML
@@ -41,18 +42,32 @@ class CompareCommand :
         "aaw compare -a/--archive <path/to/archive> -b/--baseline <path/to/baseline>"
 
     override fun run() {
-        recover(::performComparison, ::reportFailure)
+        ValidatedFile(pathToArchive)
+            .flatMap { artifactPath ->
+                ValidatedFile(pathToBaseline).flatMap { baselinePath ->
+                    Pair(artifactPath, baselinePath).right()
+                }
+            }.flatMap { (artifactPath, baselinePath) -> performComparison(artifactPath, baselinePath) }
+            .onLeft { reportFailure(it) }
+            .onRight { comparison ->
+                reporter.reportChanges(comparison, format)
+                if (exitWithFailure && comparison.isNotEmpty()) {
+                    exitProcess(ExitCodes.FAILURE)
+                }
+            }
     }
 
-    context (ErrorAware)
-    private fun performComparison() {
-        val current = analyser.analyse(ValidatedFile(pathToArchive))
-        val reference = ValidatedTOML(ValidatedFile(pathToBaseline))
-        val comparison = comparator.compare(current, reference.asBaseline())
-        reporter.reportChanges(comparison, format)
+    private fun performComparison(
+        artifactPath: String,
+        baselinePath: String,
+    ): Either<AawError, Set<ComparisonFinding>> {
+        val current = analyser.analyse(artifactPath)
+        val reference = ValidatedTOML(baselinePath)
 
-        if (exitWithFailure && comparison.isNotEmpty()) {
-            exitProcess(ExitCodes.FAILURE)
+        return current.flatMap { analysedArtifact ->
+            reference.flatMap { watchdogConfig ->
+                comparator.compare(analysedArtifact, watchdogConfig.asBaseline())
+            }
         }
     }
 

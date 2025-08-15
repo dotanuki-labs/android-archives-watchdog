@@ -5,29 +5,31 @@
 
 package io.dotanuki.aaw.features.version
 
-import arrow.core.raise.ensure
+import arrow.core.Either
+import arrow.core.left
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.logging.Logging
 import java.util.Properties
 
 object AppVersionFinder {
-    context (ErrorAware, Logging)
-    fun find(): AppVersion =
-        try {
-            val properties =
-                Properties().apply {
-                    load(ClassLoader.getSystemClassLoader().getResourceAsStream("versions.properties"))
-                }
+    context (Logging)
+    fun find(): Either<AawError, AppVersion> =
 
-            logger.debug("Successfully loaded version.properties file")
+        Either
+            .catch {
+                val properties =
+                    Properties().apply {
+                        load(ClassLoader.getSystemClassLoader().getResourceAsStream("versions.properties"))
+                    }
 
-            val actualVersion = properties["latest"]
-            ensure(actualVersion != null) { AawError("Cannot find 'latest' app version") }
+                logger.debug("Successfully loaded version.properties file")
+                val actualVersion =
+                    properties["latest"] ?: return AawError("Cannot find 'latest' app version").left()
 
-            logger.debug("Latest version as per tracked in resource -> $actualVersion")
-            AppVersion(actualVersion.toString())
-        } catch (surfaced: Throwable) {
-            raise(AawError("Failed when locating app resources", surfaced))
-        }
+                logger.debug("Latest version as per tracked in resource -> $actualVersion")
+
+                AppVersion(actualVersion.toString())
+            }.mapLeft {
+                AawError("Failed when locating app version", it)
+            }
 }

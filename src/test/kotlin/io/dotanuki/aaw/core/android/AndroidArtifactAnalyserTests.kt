@@ -7,8 +7,8 @@ package io.dotanuki.aaw.core.android
 
 import com.google.common.truth.Truth.assertThat
 import io.dotanuki.aaw.core.logging.Logging
-import io.dotanuki.aaw.helpers.errorAwareTest
 import io.dotanuki.aaw.helpers.fixtureFromResources
+import io.dotanuki.aaw.helpers.unwrapValue
 import org.junit.Test
 
 class AndroidArtifactAnalyserTests {
@@ -86,27 +86,23 @@ class AndroidArtifactAnalyserTests {
                 ),
         )
 
-    @Test fun `should analyse a debug apk with success`() =
-        errorAwareTest {
-            val target = fixtureFromResources("app-debug.apk")
-            val analysed = analyser.analyse(target)
+    @Test fun `should analyse a debug apk with success`() {
+        val target = fixtureFromResources("app-debug.apk")
+        val analysed = analyser.analyse(target).unwrapValue()
 
-            assertThat(analysed).isEqualTo(developmentArtifact)
-        }
+        assertThat(analysed).isEqualTo(developmentArtifact)
+    }
 
-    @Test fun `should analyse a release apk with success`() =
-        errorAwareTest {
-            val target = fixtureFromResources("app-release.apk")
-            val analysed = analyser.analyse(target)
+    @Test fun `should analyse a release apk with success`() {
+        val target = fixtureFromResources("app-release.apk")
+        val analysed = analyser.analyse(target).unwrapValue()
+        assertThat(analysed).isEqualTo(releaseArtifact)
+    }
 
-            assertThat(analysed).isEqualTo(releaseArtifact)
-        }
+    @Test fun `should analyse a release app bundle with success`() {
+        val target = fixtureFromResources("app-release.aab")
+        val analysed = analyser.analyse(target).unwrapValue()
 
-    @Test fun `should analyse a release app bundle with success`() =
-        errorAwareTest {
-            val target = fixtureFromResources("app-release.aab")
-            val analysed = analyser.analyse(target)
-
-            assertThat(analysed).isEqualTo(releaseArtifact)
-        }
+        assertThat(analysed).isEqualTo(releaseArtifact)
+    }
 }

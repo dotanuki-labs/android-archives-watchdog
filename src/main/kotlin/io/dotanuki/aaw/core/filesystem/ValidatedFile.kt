@@ -5,23 +5,24 @@
 
 package io.dotanuki.aaw.core.filesystem
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
 import java.io.File
 
 object ValidatedFile {
-    context (ErrorAware)
-    operator fun invoke(filePath: String): String =
+    operator fun invoke(filePath: String): Either<AawError, String> =
         File(filePath)
             .run {
                 if (!exists()) {
-                    raise(AawError("$filePath does not exist"))
+                    AawError("$filePath does not exist").left()
                 }
 
                 if (!isFile()) {
-                    raise(AawError("$filePath is not a file"))
+                    AawError("$filePath is not a file").left()
                 }
             }.let {
-                filePath
+                filePath.right()
             }
 }

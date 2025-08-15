@@ -5,21 +5,31 @@
 
 package io.dotanuki.aaw.features.comparison
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import io.dotanuki.aaw.core.android.AnalysedArtifact
 import io.dotanuki.aaw.core.android.AndroidComponentType
 import io.dotanuki.aaw.core.android.declaredNames
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.logging.Logging
 
 context (Logging)
+@Suppress("LongMethod")
 class ArtifactsComparator {
-    context (ErrorAware)
     fun compare(
         target: AnalysedArtifact,
         baseline: ArtifactBaseline,
-    ): Set<ComparisonFinding> {
-        ensureSameApplication(target, baseline)
+    ): Either<AawError, Set<ComparisonFinding>> {
+        if (target.applicationId != baseline.applicationId) {
+            val description =
+                """
+                Your application packages dont match !!!
+                From your artifact : ${target.applicationId}
+                From your baseline : ${baseline.applicationId}
+                """.trimIndent()
+            return AawError(description).left()
+        }
 
         val permissions =
             evaluateChanges(
@@ -81,24 +91,8 @@ class ArtifactsComparator {
                 ComparisonFinding(what, expectation, FindingCategory.COMPONENT)
             }
 
-        return permissions + features + activities + services + receivers union providers
-    }
-
-    context (ErrorAware)
-    private fun ensureSameApplication(
-        target: AnalysedArtifact,
-        baseline: ArtifactBaseline,
-    ) {
-        if (target.applicationId != baseline.applicationId) {
-            val description =
-                """
-                Your application packages dont match !!!
-                From your artifact : ${target.applicationId}
-                From your baseline : ${baseline.applicationId}
-                """.trimIndent()
-
-            raise(AawError(description))
-        }
+        val all = permissions + features + activities + services + receivers union providers
+        return all.right()
     }
 
     context (Logging)

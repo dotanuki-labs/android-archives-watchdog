@@ -5,14 +5,15 @@
 
 package io.dotanuki.aaw.features.baseline
 
-import arrow.core.raise.recover
+import arrow.core.flatMap
+import arrow.core.right
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import io.dotanuki.aaw.core.android.AnalysedArtifact
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.errors.ErrorAware
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
 import io.dotanuki.aaw.core.logging.Logging
 import io.dotanuki.aaw.core.toml.WatchdogConfig
@@ -34,13 +35,25 @@ class GenerateCommand :
         "aaw generate -a/--archive <path/to/archive> -t/--trust <package1,package2,...>"
 
     override fun run() {
-        recover(::extractBaseline, ::reportFailure)
+        ValidatedFile(pathToArchive)
+            .flatMap {
+                analyser
+                    .analyse(it)
+                    .flatMap { analysed ->
+                        ValidatedPackages(trustedPackages)
+                            .flatMap { validatedPackages ->
+                                Pair(analysed, validatedPackages).right()
+                            }
+                    }
+            }.onLeft { reportFailure(it) }
+            .onRight { extractBaseline(it.first, it.second) }
     }
 
-    context (ErrorAware)
-    private fun extractBaseline() {
-        val analysed = analyser.analyse(ValidatedFile(pathToArchive))
-        val baseline = WatchdogConfig.from(analysed, ValidatedPackages(trustedPackages))
+    private fun extractBaseline(
+        analysed: AnalysedArtifact,
+        packagesToIgnore: List<String>,
+    ) {
+        val baseline = WatchdogConfig.from(analysed, packagesToIgnore)
         val outputFile = "${analysed.applicationId}.toml"
         writer.write(baseline, outputFile)
     }
