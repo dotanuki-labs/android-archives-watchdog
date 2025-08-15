@@ -11,18 +11,18 @@ import arrow.core.right
 import io.dotanuki.aaw.core.errors.AawError
 import java.io.File
 
+@Suppress("ReturnCount")
 object ValidatedFile {
-    operator fun invoke(filePath: String): Either<AawError, String> =
-        File(filePath)
-            .run {
-                if (!exists()) {
-                    AawError("$filePath does not exist").left()
-                }
+    operator fun invoke(filePath: String): Either<AawError, String> {
+        val target = File(filePath)
+        if (!target.exists()) {
+            return AawError("$filePath does not exist").left()
+        }
 
-                if (!isFile()) {
-                    AawError("$filePath is not a file").left()
-                }
-            }.let {
-                filePath.right()
-            }
+        if (!target.isFile()) {
+            return AawError("$filePath is not a file").left()
+        }
+
+        return filePath.right()
+    }
 }
