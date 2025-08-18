@@ -4,7 +4,6 @@
  */
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import java.util.Properties
 
@@ -77,12 +76,6 @@ dependencies {
 // ------------------------------------------------------------------
 // Tasks
 // ------------------------------------------------------------------
-
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions.freeCompilerArgs.set(
-        listOf("-Xcontext-receivers"),
-    )
-}
 
 tasks.withType<ShadowJar>().configureEach {
     manifest {

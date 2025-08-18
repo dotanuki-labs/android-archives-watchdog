@@ -7,10 +7,13 @@ package io.dotanuki.aaw.features.comparison
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.table.table
-import io.dotanuki.aaw.core.logging.Logging
+import io.dotanuki.aaw.core.logging.Logger
+import kotlinx.serialization.json.Json
 
-context (CompareContext, Logging)
-class ComparisonReporter {
+class ComparisonReporter(
+    private val logger: Logger,
+    private val jsonSerializer: Json,
+) {
     fun reportChanges(
         comparison: Set<ComparisonFinding>,
         format: String,

@@ -20,9 +20,8 @@ import org.junit.Test
 
 class ArtifactsComparatorTests {
     private val comparator by lazy {
-        with(Logging.create()) {
-            ArtifactsComparator()
-        }
+        val logger = Logging.create().logger
+        ArtifactsComparator(logger)
     }
 
     private val referenceArtifact =
