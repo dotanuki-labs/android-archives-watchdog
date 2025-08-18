@@ -9,18 +9,19 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.logging.Logging
+import io.dotanuki.aaw.core.logging.Logger
 import kotlin.system.exitProcess
 
-context (Logging)
-class VersionCommand :
-    CliktCommand(
+class VersionCommand(
+    private val logger: Logger,
+    private val versionFinder: AppVersionFinder,
+) : CliktCommand(
         name = "version",
     ) {
     override fun help(context: Context): String = "aaw version"
 
     override fun run() {
-        AppVersionFinder
+        versionFinder
             .find()
             .onLeft { reportFailure(it) }
             .onRight { printVersion(it) }

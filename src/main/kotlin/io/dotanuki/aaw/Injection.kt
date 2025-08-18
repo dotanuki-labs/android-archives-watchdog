@@ -7,15 +7,17 @@ package io.dotanuki.aaw
 
 import com.github.ajalt.clikt.core.subcommands
 import io.dotanuki.aaw.core.android.AndroidArtifactAnalyser
+import io.dotanuki.aaw.core.android.AndroidSDKBridge
 import io.dotanuki.aaw.core.cli.AawEntrypoint
 import io.dotanuki.aaw.core.logging.Logging
-import io.dotanuki.aaw.features.baseline.BaselineContext
+import io.dotanuki.aaw.features.baseline.BaselineWriter
 import io.dotanuki.aaw.features.baseline.GenerateCommand
 import io.dotanuki.aaw.features.comparison.ArtifactsComparator
 import io.dotanuki.aaw.features.comparison.CompareCommand
-import io.dotanuki.aaw.features.comparison.CompareContext
+import io.dotanuki.aaw.features.comparison.ComparisonReporter
 import io.dotanuki.aaw.features.overview.OverviewCommand
-import io.dotanuki.aaw.features.overview.OverviewContext
+import io.dotanuki.aaw.features.overview.OverviewReporter
+import io.dotanuki.aaw.features.version.AppVersionFinder
 import io.dotanuki.aaw.features.version.VersionCommand
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -26,8 +28,8 @@ import net.peanuuutz.tomlkt.Toml
 class Injection(
     private val verboseMode: Boolean,
 ) {
-    private val loggingContext by lazy {
-        Logging.create(verboseMode)
+    private val logger by lazy {
+        Logging.create(verboseMode).logger
     }
 
     private val jsonSerializer by lazy {
@@ -43,57 +45,31 @@ class Injection(
     }
 
     private val artifactAnalyser by lazy {
-        with(loggingContext) {
-            AndroidArtifactAnalyser()
-        }
-    }
-
-    private val overviewContext by lazy {
-        OverviewContext(jsonSerializer, artifactAnalyser)
+        AndroidArtifactAnalyser(logger, AndroidSDKBridge())
     }
 
     private val overviewCommand by lazy {
-        with(loggingContext) {
-            with(overviewContext) {
-                OverviewCommand()
-            }
-        }
-    }
-
-    private val baselineContext by lazy {
-        BaselineContext(tomlSerializer, artifactAnalyser)
+        val reporter = OverviewReporter(logger, jsonSerializer)
+        OverviewCommand(logger, artifactAnalyser, reporter)
     }
 
     private val generateCommand by lazy {
-        with(loggingContext) {
-            with(baselineContext) {
-                GenerateCommand()
-            }
-        }
+        val baselineWriter = BaselineWriter(logger, tomlSerializer)
+        GenerateCommand(logger, artifactAnalyser, baselineWriter)
     }
 
-    private val comparator by lazy {
-        with(loggingContext) {
-            ArtifactsComparator()
-        }
-    }
-
-    private val compareContext by lazy {
-        CompareContext(tomlSerializer, jsonSerializer, artifactAnalyser, comparator)
+    private val artifactsComparator by lazy {
+        ArtifactsComparator(logger)
     }
 
     private val compareCommand by lazy {
-        with(loggingContext) {
-            with(compareContext) {
-                CompareCommand()
-            }
-        }
+        val reporter = ComparisonReporter(logger, jsonSerializer)
+        CompareCommand(logger, tomlSerializer, artifactAnalyser, artifactsComparator, reporter)
     }
 
     private val versionCommand by lazy {
-        with(loggingContext) {
-            VersionCommand()
-        }
+        val versionFinder = AppVersionFinder(logger)
+        VersionCommand(logger, versionFinder)
     }
 
     val entrypoint by lazy {

@@ -5,9 +5,6 @@
 
 package io.dotanuki.aaw.core.android
 
-import io.dotanuki.aaw.core.logging.Logging
-
-context (Logging)
 @Suppress("TooGenericExceptionThrown")
 class AndroidSDKBridge {
     val sdkFolder: String by lazy {
@@ -18,9 +15,7 @@ class AndroidSDKBridge {
                 containsKey(THIRD_OPTION) -> this[THIRD_OPTION]
                 else -> null
             }.let { androidHome ->
-                androidHome
-                    .also { logger.debug("Found Android SDK -> $it") }
-                    ?: throw RuntimeException(CANNOT_LOCATE_ANDROID_SDK)
+                androidHome ?: throw RuntimeException(CANNOT_LOCATE_ANDROID_SDK)
             }
         }
     }

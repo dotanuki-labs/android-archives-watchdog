@@ -12,11 +12,12 @@ import io.dotanuki.aaw.core.android.AnalysedArtifact
 import io.dotanuki.aaw.core.android.AndroidComponentType
 import io.dotanuki.aaw.core.android.declaredNames
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.logging.Logging
+import io.dotanuki.aaw.core.logging.Logger
 
-context (Logging)
 @Suppress("LongMethod")
-class ArtifactsComparator {
+class ArtifactsComparator(
+    private val logger: Logger,
+) {
     fun compare(
         target: AnalysedArtifact,
         baseline: ArtifactBaseline,
@@ -95,7 +96,6 @@ class ArtifactsComparator {
         return all.right()
     }
 
-    context (Logging)
     private fun evaluateChanges(
         fromArtifact: Set<String>,
         fromBaseline: Set<String>,

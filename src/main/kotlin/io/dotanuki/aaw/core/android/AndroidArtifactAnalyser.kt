@@ -24,18 +24,16 @@ import com.android.tools.build.bundletool.flags.FlagParser
 import com.android.utils.NullLogger
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.filesystem.Unzipper
-import io.dotanuki.aaw.core.logging.Logging
+import io.dotanuki.aaw.core.logging.Logger
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
-context (Logging)
-class AndroidArtifactAnalyser {
-    private val sdkBridge by lazy {
-        AndroidSDKBridge()
-    }
-
+class AndroidArtifactAnalyser(
+    private val logger: Logger,
+    private val sdkBridge: AndroidSDKBridge,
+) {
     fun analyse(pathToTarget: String): Either<AawError, AnalysedArtifact> =
         SuppliedArtifact
             .from(pathToTarget)

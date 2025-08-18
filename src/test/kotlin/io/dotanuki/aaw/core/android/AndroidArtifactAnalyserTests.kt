@@ -13,9 +13,8 @@ import org.junit.Test
 
 class AndroidArtifactAnalyserTests {
     private val analyser by lazy {
-        with(Logging.create()) {
-            AndroidArtifactAnalyser()
-        }
+        val logger = Logging.create().logger
+        AndroidArtifactAnalyser(logger, AndroidSDKBridge())
     }
 
     private val developmentArtifact =

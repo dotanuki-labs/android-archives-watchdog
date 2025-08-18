@@ -8,10 +8,13 @@ package io.dotanuki.aaw.features.overview
 import com.github.ajalt.mordant.rendering.TextColors.cyan
 import com.github.ajalt.mordant.rendering.TextColors.magenta
 import com.github.ajalt.mordant.table.table
-import io.dotanuki.aaw.core.logging.Logging
+import io.dotanuki.aaw.core.logging.Logger
+import kotlinx.serialization.json.Json
 
-context (OverviewContext, Logging)
-class OverviewReporter {
+class OverviewReporter(
+    private val logger: Logger,
+    private val jsonSerializer: Json,
+) {
     fun reportSuccess(
         overview: ArtifactOverview,
         format: String,

@@ -13,17 +13,20 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.switch
 import io.dotanuki.aaw.core.android.AnalysedArtifact
+import io.dotanuki.aaw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.aaw.core.android.AndroidComponentType
 import io.dotanuki.aaw.core.android.AndroidPermissions
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
-import io.dotanuki.aaw.core.logging.Logging
+import io.dotanuki.aaw.core.logging.Logger
 import kotlin.system.exitProcess
 
-context (OverviewContext, Logging)
-class OverviewCommand :
-    CliktCommand(
+class OverviewCommand(
+    private val logger: Logger,
+    private val artifactAnalyser: AndroidArtifactAnalyser,
+    private val reporter: OverviewReporter,
+) : CliktCommand(
         name = "overview",
     ) {
     private val switches = listOf("--json" to "json", "--console" to "console").toTypedArray()
@@ -31,15 +34,11 @@ class OverviewCommand :
     private val format: String by option().switch(*switches).default("console")
     private val pathToArchive: String by option("-a", "--archive").required()
 
-    private val reporter by lazy {
-        OverviewReporter()
-    }
-
     override fun help(context: Context): String = "aaw overview -a/--archive <path/to/archive> [--console | --json]"
 
     override fun run() {
         ValidatedFile(pathToArchive)
-            .flatMap { analyser.analyse(it) }
+            .flatMap { artifactAnalyser.analyse(it) }
             .onLeft { reportFailure(it) }
             .onRight { extractOverview(it) }
     }

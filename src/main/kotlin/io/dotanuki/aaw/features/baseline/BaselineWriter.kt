@@ -6,13 +6,16 @@
 package io.dotanuki.aaw.features.baseline
 
 import com.github.ajalt.mordant.rendering.TextColors.cyan
-import io.dotanuki.aaw.core.logging.Logging
+import io.dotanuki.aaw.core.logging.Logger
 import io.dotanuki.aaw.core.toml.WatchdogConfig
+import net.peanuuutz.tomlkt.Toml
 import java.nio.file.Paths
 import kotlin.io.path.writeText
 
-context (BaselineContext, Logging)
-class BaselineWriter {
+class BaselineWriter(
+    private val logger: Logger,
+    private val tomlSerializer: Toml,
+) {
     fun write(
         baseline: WatchdogConfig,
         filename: String,

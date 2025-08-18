@@ -12,24 +12,21 @@ import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import io.dotanuki.aaw.core.android.AnalysedArtifact
+import io.dotanuki.aaw.core.android.AndroidArtifactAnalyser
 import io.dotanuki.aaw.core.cli.ExitCodes
 import io.dotanuki.aaw.core.errors.AawError
 import io.dotanuki.aaw.core.filesystem.ValidatedFile
-import io.dotanuki.aaw.core.logging.Logging
+import io.dotanuki.aaw.core.logging.Logger
 import io.dotanuki.aaw.core.toml.WatchdogConfig
 import kotlin.system.exitProcess
 
-context (BaselineContext, Logging)
-class GenerateCommand :
-    CliktCommand(
-        name = "generate",
-    ) {
+class GenerateCommand(
+    private val logger: Logger,
+    private val artifactAnalyser: AndroidArtifactAnalyser,
+    private val writer: BaselineWriter,
+) : CliktCommand(name = "generate") {
     private val pathToArchive: String by option("-a", "--archive").required()
     private val trustedPackages: String? by option("-t", "--trust")
-
-    private val writer by lazy {
-        BaselineWriter()
-    }
 
     override fun help(context: Context): String =
         "aaw generate -a/--archive <path/to/archive> -t/--trust <package1,package2,...>"
@@ -37,7 +34,7 @@ class GenerateCommand :
     override fun run() {
         ValidatedFile(pathToArchive)
             .flatMap {
-                analyser
+                artifactAnalyser
                     .analyse(it)
                     .flatMap { analysed ->
                         ValidatedPackages(trustedPackages)

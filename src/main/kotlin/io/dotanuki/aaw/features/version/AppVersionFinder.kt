@@ -8,11 +8,12 @@ package io.dotanuki.aaw.features.version
 import arrow.core.Either
 import arrow.core.left
 import io.dotanuki.aaw.core.errors.AawError
-import io.dotanuki.aaw.core.logging.Logging
+import io.dotanuki.aaw.core.logging.Logger
 import java.util.Properties
 
-object AppVersionFinder {
-    context (Logging)
+class AppVersionFinder(
+    private val logger: Logger,
+) {
     fun find(): Either<AawError, AppVersion> =
 
         Either
