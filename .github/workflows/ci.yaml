@@ -37,7 +37,7 @@ jobs:
         uses: dotanuki-labs/github-actions/quality/bash@main
 
       - name: Setup JDK
-        uses: actions/setup-java@v4.7.1
+        uses: actions/setup-java@v5.0.0
         with:
           distribution: "zulu"
           java-version: ${{ matrix.jdk }}
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v5.0.0
 
       - name: Setup JDK
-        uses: actions/setup-java@v4.7.1
+        uses: actions/setup-java@v5.0.0
         with:
           distribution: "zulu"
           java-version: "17"
