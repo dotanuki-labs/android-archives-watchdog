@@ -43,13 +43,13 @@ jobs:
           java-version: ${{ matrix.jdk }}
 
       - name: Setup Gradle build
-        uses: gradle/actions/setup-gradle@v4.4.3
+        uses: gradle/actions/setup-gradle@v4.4.4
         with:
           gradle-home-cache-strict-match: false
           gradle-home-cache-cleanup: true
 
       - name: Setup Dependency Submission
-        uses: gradle/actions/dependency-submission@v4.4.3
+        uses: gradle/actions/dependency-submission@v4.4.4
 
       - name: Run Gradle build
         id: build
