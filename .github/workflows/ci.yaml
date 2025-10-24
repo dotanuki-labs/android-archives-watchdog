@@ -59,7 +59,7 @@ jobs:
           bats src/test/bash/acceptance.bats
 
       - name: Archive executable
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v5.0.0
         with:
           name: aaw-executable-jdk-${{ matrix.jdk }}
           path: build/bin
@@ -106,7 +106,7 @@ jobs:
         run: ./scripts/secops.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.sha }}
 
       - name: Archive SBOM
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v5.0.0
         with:
           name: sbom
           path: aaw-sbom-${{ github.sha }}.json
