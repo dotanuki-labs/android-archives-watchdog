@@ -205,4 +205,4 @@ This tool was inspired by the following blog posts and existing tools
 
 ## License
 
-Copyright (c) 2023 - Dotanuki Labs - [The MIT license](https://choosealicense.com/licenses/mit/)
+Copyright (c) 2025 - Dotanuki Labs - [The MIT license](https://choosealicense.com/licenses/mit/)

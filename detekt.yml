@@ -1,3 +1,6 @@
+# Copyright 2025 Dotanuki Labs
+# SPDX-License-Identifier: MIT
+
 build:
   maxIssues: 0
   excludeCorrectable: false

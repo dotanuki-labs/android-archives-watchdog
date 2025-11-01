@@ -1,3 +1,6 @@
+# Copyright 2025 Dotanuki Labs
+# SPDX-License-Identifier: MIT
+
 # Adapted from https://doc.mergify.io/examples.html#running-ci-pipelines-automatically
 # Validate your changes with:
 #   $ curl -F 'data=@.mergify.yml' https://gh.mergify.io/validate/
