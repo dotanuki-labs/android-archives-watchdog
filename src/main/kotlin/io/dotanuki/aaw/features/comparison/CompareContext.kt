@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Dotanuki Labs
+ * Copyright 2025 Dotanuki Labs
  * SPDX-License-Identifier: MIT
  */
 
