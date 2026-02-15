@@ -1,6 +1,6 @@
 [plugins]
-kotlin-jvm = "org.jetbrains.kotlin.jvm:2.2.21"
-kotlinx-serialization = "org.jetbrains.kotlin.plugin.serialization:2.2.21"
+kotlin-jvm = "org.jetbrains.kotlin.jvm:2.3.10"
+kotlinx-serialization = "org.jetbrains.kotlin.plugin.serialization:2.3.10"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
 shadow = "com.gradleup.shadow:9.2.2"
