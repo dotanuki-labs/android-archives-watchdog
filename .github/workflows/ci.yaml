@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Check MIT license on source files
         uses: korandoru/hawkeye@c57037afedf940370c41eb660837c8aa928d472a # v6.5.1
@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Lint Bash files
         uses: dotanuki-labs/github-actions/quality/bash@main
@@ -66,7 +66,7 @@ jobs:
     needs: build
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Setup JDK
         uses: actions/setup-java@v5.2.0
@@ -97,7 +97,7 @@ jobs:
     needs: build
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Evaluate CVEs for the current Git sha
         run: ./scripts/secops.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.sha }}
