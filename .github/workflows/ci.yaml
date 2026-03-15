@@ -75,7 +75,7 @@ jobs:
           java-version: "17"
 
       - name: Fetch executable from previous build
-        uses: actions/download-artifact@v8.0.0
+        uses: actions/download-artifact@v8.0.1
 
       - name: Add binary to the CLI path
         run: |
