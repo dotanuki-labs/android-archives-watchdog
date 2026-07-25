@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: Project Checkout
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v6.1.0
 
       - name: Setup JDK
         uses: actions/setup-java@v5.6.0
